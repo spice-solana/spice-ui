@@ -1,4 +1,4 @@
-# advent_ui
+# spice-ui
 
 A new Flutter project.
 
