@@ -1,29 +1,20 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:spice_ui/data.dart';
 import 'package:spice_ui/phantom_adapter.dart';
-import 'package:spice_ui/theme/controller/theme_cubit.dart';
-import 'package:spice_ui/theme/controller/theme_states.dart';
-import 'package:spice_ui/theme/theme_icons.dart';
 import 'package:spice_ui/utils/extensions.dart';
-import 'package:spice_ui/widgets/backlight_icon.dart';
-import 'package:spice_ui/widgets/backlight_icon_text.dart';
 import 'package:spice_ui/widgets/custom_inkwell.dart';
 import 'package:spice_ui/widgets/custom_vertical_divider.dart';
 import 'package:spice_ui/widgets/pool_table_widget.dart';
-import 'package:spice_ui/widgets/blinking_live_indicator.dart';
-import 'package:spice_ui/widgets/sand_effect.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+class IdoScreen extends StatefulWidget {
+  const IdoScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<IdoScreen> createState() => _IdoScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
-  
+class _IdoScreenState extends State<IdoScreen> {
   var walletAddress;
 
   @override
@@ -103,6 +94,29 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                   ),
+                  // Container(
+                  //   height: 36.0,
+                  //   width: 440.0,
+                  //   alignment: Alignment.centerLeft,
+                  //   padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  //   decoration: BoxDecoration(
+                  //       border: Border.all(color: Colors.grey.withOpacity(0.2), width: 1.0),
+                  //       borderRadius: BorderRadius.circular(5.0)
+                  // ),
+                  // child: Row(
+                  //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //   crossAxisAlignment: CrossAxisAlignment.center,
+                  //   children: [
+                  //     const Text('Search pool', style: TextStyle(color: Color(0xFF545454))),
+                  //     Row(
+                  //       children: [
+                  //         Image.asset('assets/icons/command_icon.png', height: 12.0, width: 12.0),
+                  //         const SizedBox(width: 4.0),
+                  //         const Text('k', style: TextStyle(fontSize: 14.0, color: Color(0xFF545454)))
+                  //       ],
+                  //     ),
+                  //   ],
+                  // )),
                   CustomInkWell(
                     onTap: () async {
                       walletAddress = await PhantomAdapter.connect();
@@ -137,14 +151,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Stack(
-                    alignment: Alignment.topCenter,
-                    children: [
-                      Image.asset('assets/images/spice_banner.png',
-                          width: MediaQuery.of(context).size.width / 1.7),
-                      SandEffect(width: MediaQuery.of(context).size.width / 1.7, height: 50.0),
-                    ],
-                  ),
+                  Image.asset('assets/images/spice_banner.png',
+                      width: MediaQuery.of(context).size.width / 1.7),
                   const Text('Unilateral liquidity',
                       textAlign: TextAlign.center,
                       style: TextStyle(
@@ -258,21 +266,30 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 Row(
                   children: [
-                    const BlinkingLiveIndicator(),
+                    Container(
+                      height: 8.0,
+                      width: 8.0,
+                      decoration: const BoxDecoration(
+                          shape: BoxShape.circle, color: Colors.greenAccent),
+                    ),
+                    const SizedBox(width: 16.0),
+                    const Text('Live', style: TextStyle(fontSize: 14.0)),
                     const SizedBox(width: 32.0),
                     const CustomVerticalDivider(height: 36.0),
                     const SizedBox(width: 32.0),
-                    BlocBuilder<ThemeCubit, ThemeState>(
-                      builder: (context, state) => BacklightIcon(
-                        iconData: appicon[state.darkTheme], 
-                        iconSize: 18.0, 
-                        onTap: () => context.read<ThemeCubit>().changeTheme())),
+                    Image.asset('assets/icons/sun_icon.png',
+                        height: 22.0, width: 22.0),
                     const SizedBox(width: 32.0),
-                    BacklightIcon(iconData: Icons.settings, iconSize: 20.0, onTap: () => null),
+                    Image.asset('assets/icons/settings_icon.png',
+                        height: 22.0, width: 22.0),
                     const SizedBox(width: 32.0),
                     const CustomVerticalDivider(height: 36.0),
                     const SizedBox(width: 32.0),
-                    BacklightIconText(text: 'Normal', iconData: Icons.speed, iconSize: 21.0, onTap: () => null)
+                    Image.asset('assets/icons/speed_icon.png',
+                        height: 22.0, width: 22.0),
+                    const SizedBox(width: 16.0),
+                    const Text('Normal',
+                        style: TextStyle(fontSize: 14.0)),
                   ],
                 ),
                 const Row(
