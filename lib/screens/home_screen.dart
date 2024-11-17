@@ -9,10 +9,12 @@ import 'package:spice_ui/theme/theme_icons.dart';
 import 'package:spice_ui/utils/extensions.dart';
 import 'package:spice_ui/widgets/backlight_icon.dart';
 import 'package:spice_ui/widgets/backlight_icon_text.dart';
+import 'package:spice_ui/widgets/custom_drop_menu.dart';
 import 'package:spice_ui/widgets/custom_inkwell.dart';
 import 'package:spice_ui/widgets/custom_vertical_divider.dart';
 import 'package:spice_ui/widgets/pool_table_widget.dart';
 import 'package:spice_ui/widgets/blinking_live_indicator.dart';
+import 'package:spice_ui/widgets/pools_grid.dart';
 import 'package:spice_ui/widgets/sand_effect.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -23,8 +25,40 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  
   var walletAddress;
+  bool isTables = true;
+
+  final GlobalKey _buttonKey = GlobalKey();
+  OverlayEntry? _overlayEntry;
+
+  void _toggleMenu() {
+    if (_overlayEntry != null) {
+      _closeMenu();
+    } else {
+      _openMenu();
+    }
+  }
+
+    void _openMenu() {
+    RenderBox buttonBox = _buttonKey.currentContext!.findRenderObject() as RenderBox;
+    Offset buttonPosition = buttonBox.localToGlobal(Offset.zero);
+    Size buttonSize = buttonBox.size;
+
+    Size screenSize = MediaQuery.of(context).size;
+
+    bool openDown = buttonPosition.dy + buttonSize.height + 64.0 + 150.0 < screenSize.height;
+
+    _overlayEntry = OverlayEntry(
+      builder: (context) => CustomDropdownMenu(position: buttonPosition, openDown: openDown, onClose: _closeMenu),
+    );
+
+    Overlay.of(context).insert(_overlayEntry!);
+  }
+
+  void _closeMenu() {
+    _overlayEntry?.remove();
+    _overlayEntry = null;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,6 +94,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     height: 36.0,
                     width: 440.0,
                     child: TextField(
+                      // onTap: _openMenu,
                       textCapitalization: TextCapitalization.words,
                       cursorColor: Colors.grey.withOpacity(0.2),
                       decoration: InputDecoration(
@@ -142,7 +177,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [
                       Image.asset('assets/images/spice_banner.png',
                           width: MediaQuery.of(context).size.width / 1.7),
-                      SandEffect(width: MediaQuery.of(context).size.width / 1.7, height: 50.0),
+                      SandEffect(
+                          width: MediaQuery.of(context).size.width / 1.7,
+                          height: 100.0),
                     ],
                   ),
                   const Text('Unilateral liquidity',
@@ -171,74 +208,87 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: FittedBox(
                               fit: BoxFit.fill,
                               child: CupertinoSwitch(
-                                  value: true,
-                                  onChanged: (value) => null,
+                                  value: isTables,
+                                  onChanged: (value) {
+                                    isTables = value;
+                                    setState(() {});
+                                  },
+                                  trackColor: const Color(0xFF80EEFB),
                                   activeColor: const Color(0xFF80EEFB)))),
                       const SizedBox(width: 16.0),
                       const Text('Tables'),
                     ],
                   ),
                   const SizedBox(height: 32.0),
-                  SizedBox(
+                  isTables ? Column(
+                    children: [
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width / 1.7,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Container(
+                                width: 100.0,
+                                alignment: Alignment.centerLeft,
+                                child: Text('Pools',
+                                    style: TextStyle(
+                                        color: Colors.grey.withOpacity(0.5)))),
+                            Container(
+                                width: 180.0,
+                                alignment: Alignment.center,
+                                child: Text('Total liquidity',
+                                    style: TextStyle(
+                                        color: Colors.grey.withOpacity(0.5)))),
+                            Container(
+                                width: 180.0,
+                                alignment: Alignment.center,
+                                child: Text('Volume (24)',
+                                    style: TextStyle(
+                                        color: Colors.grey.withOpacity(0.5)))),
+                            Container(
+                                width: 180.0,
+                                alignment: Alignment.center,
+                                child: Text('Fee (24)',
+                                    style: TextStyle(
+                                        color: Colors.grey.withOpacity(0.5)))),
+                            Container(
+                                width: 100.0,
+                                alignment: Alignment.centerRight,
+                                child: Text('APY',
+                                    style: TextStyle(
+                                        color: Colors.grey.withOpacity(0.5)))),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                          width: MediaQuery.of(context).size.width / 1.7,
+                          child: Divider(
+                              color: Colors.grey.withOpacity(0.2),
+                              thickness: 1.0)),
+                      SizedBox(
+                        height: poolsData.length * 57.0,
+                        width: MediaQuery.of(context).size.width / 1.7,
+                        child: ListView.builder(
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: poolsData.length,
+                            itemBuilder: (context, index) {
+                              return PoolTableWidget(
+                                  poolName: poolsData[index]['pool_name'],
+                                  poolLogo: poolsData[index]['pool_logo'],
+                                  totalLiquidity: poolsData[index]
+                                      ['pool_liquidity'],
+                                  volume24: poolsData[index]['pool_volume_24'],
+                                  fee24: poolsData[index]['pool_fee_24'],
+                                  apy: poolsData[index]['pool_apy']);
+                            }),
+                      ),
+                    ],
+                  ) 
+                  : SizedBox(
+                    height: 145.0 * poolsData.length,
                     width: MediaQuery.of(context).size.width / 1.7,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Container(
-                            width: 100.0,
-                            alignment: Alignment.centerLeft,
-                            child: Text('Pools',
-                                style: TextStyle(
-                                    color: Colors.grey.withOpacity(0.5)))),
-                        Container(
-                            width: 180.0,
-                            alignment: Alignment.center,
-                            child: Text('Total liquidity',
-                                style: TextStyle(
-                                    color: Colors.grey.withOpacity(0.5)))),
-                        Container(
-                            width: 180.0,
-                            alignment: Alignment.center,
-                            child: Text('Volume (24)',
-                                style: TextStyle(
-                                    color: Colors.grey.withOpacity(0.5)))),
-                        Container(
-                            width: 180.0,
-                            alignment: Alignment.center,
-                            child: Text('Fee (24)',
-                                style: TextStyle(
-                                    color: Colors.grey.withOpacity(0.5)))),
-                        Container(
-                            width: 100.0,
-                            alignment: Alignment.centerRight,
-                            child: Text('APY',
-                                style: TextStyle(
-                                    color: Colors.grey.withOpacity(0.5)))),
-                      ],
-                    ),
-                  ),
-                  SizedBox(
-                      width: MediaQuery.of(context).size.width / 1.7,
-                      child: Divider(
-                          color: Colors.grey.withOpacity(0.2), thickness: 1.0)),
-                  SizedBox(
-                    height: poolsData.length * 55.0,
-                    width: MediaQuery.of(context).size.width / 1.7,
-                    child: ListView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: poolsData.length,
-                        itemBuilder: (context, index) {
-                          return PoolTableWidget(
-                              poolName: poolsData[index]['pool_name'],
-                              poolLogo: poolsData[index]['pool_logo'],
-                              totalLiquidity: poolsData[index]
-                                  ['pool_liquidity'],
-                              volume24: poolsData[index]['pool_volume_24'],
-                              fee24: poolsData[index]['pool_fee_24'],
-                              apy: poolsData[index]['pool_apy']);
-                        }),
-                  ),
+                    child: const PoolsGrid(poolsData: poolsData)),
                   const SizedBox(height: 32.0),
                 ],
               ),
@@ -249,6 +299,7 @@ class _HomeScreenState extends State<HomeScreen> {
             width: MediaQuery.of(context).size.width,
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             decoration: BoxDecoration(
+                color: Theme.of(context).scaffoldBackgroundColor,
                 border: Border(
                     top: BorderSide(
                         color: Colors.grey.withOpacity(0.2), width: 1.0))),
@@ -263,16 +314,25 @@ class _HomeScreenState extends State<HomeScreen> {
                     const CustomVerticalDivider(height: 36.0),
                     const SizedBox(width: 32.0),
                     BlocBuilder<ThemeCubit, ThemeState>(
-                      builder: (context, state) => BacklightIcon(
-                        iconData: appicon[state.darkTheme], 
-                        iconSize: 18.0, 
-                        onTap: () => context.read<ThemeCubit>().changeTheme())),
+                        builder: (context, state) => BacklightIcon(
+                            iconData: appicon[state.darkTheme],
+                            iconSize: 18.0,
+                            onTap: () =>
+                                context.read<ThemeCubit>().changeTheme())),
                     const SizedBox(width: 32.0),
-                    BacklightIcon(iconData: Icons.settings, iconSize: 20.0, onTap: () => null),
+                    BacklightIcon(
+                        iconData: Icons.settings,
+                        iconSize: 20.0,
+                        onTap: () => null),
                     const SizedBox(width: 32.0),
                     const CustomVerticalDivider(height: 36.0),
                     const SizedBox(width: 32.0),
-                    BacklightIconText(text: 'Normal', iconData: Icons.speed, iconSize: 21.0, onTap: () => null)
+                    BacklightIconText(
+                        key: _buttonKey,
+                        text: 'Normal',
+                        iconData: Icons.speed,
+                        iconSize: 21.0,
+                        onTap: _toggleMenu)
                   ],
                 ),
                 const Row(

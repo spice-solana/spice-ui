@@ -71,14 +71,14 @@ class SandPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     var box = Hive.box('appBox');
-    var darkTheme = box.get('themeKey');
+    var darkTheme = box.get('themeKey') ?? true;
     final Paint paint = Paint()
       ..color = darkTheme ? Colors.amber.withOpacity(0.5) : Colors.black
       ..style = PaintingStyle.fill;
 
     // Рисуем все частицы
     for (var particle in particles) {
-      canvas.drawCircle(particle.position, 0.1, paint);
+      canvas.drawCircle(particle.position, darkTheme ? 0.1 : 0.4, paint);
     }
   }
 
