@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rive/rive.dart' as rive;
 import 'package:spice_ui/data.dart';
 import 'package:spice_ui/phantom_adapter.dart';
 import 'package:spice_ui/theme/controller/tb_cubit.dart';
@@ -8,13 +9,15 @@ import 'package:spice_ui/theme/controller/theme_states.dart';
 import 'package:spice_ui/transaction_bundle/theme_icons.dart';
 import 'package:spice_ui/utils/extensions.dart';
 import 'package:spice_ui/widgets/backlight_icon.dart';
+import 'package:spice_ui/widgets/backlight_text.dart';
 import 'package:spice_ui/widgets/custom_tb_menu.dart';
 import 'package:spice_ui/widgets/custom_inkwell.dart';
 import 'package:spice_ui/widgets/custom_vertical_divider.dart';
 import 'package:spice_ui/widgets/pool_table_widget.dart';
-import 'package:spice_ui/widgets/blinking_live_indicator.dart';
 import 'package:spice_ui/widgets/pools_grid.dart';
-import 'package:spice_ui/widgets/sand_effect.dart';
+// ignore: avoid_web_libraries_in_flutter
+import 'dart:js' as js;
+
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -26,7 +29,6 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   var walletAddress;
   bool isTables = true;
-
 
   @override
   Widget build(BuildContext context) {
@@ -106,49 +108,68 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                   ),
-                  CustomInkWell(
-                    onTap: () async {
-                      walletAddress = await PhantomAdapter.connect();
-                      setState(() {});
-                    },
-                    child: Container(
-                      height: 36.0,
-                      width: 180.0,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                          color: walletAddress != null
-                              ? Colors.transparent
-                              : const Color(0xFF80EEFB),
-                          borderRadius: BorderRadius.circular(5.0)),
-                      child: Text(
-                          walletAddress != null
-                              ? walletAddress.toString().cutText()
-                              : 'Connect',
-                          style: TextStyle(
-                              color: walletAddress != null
-                                  ? Colors.red.shade300
-                                  : Colors.black)),
-                    ),
-                  ),
+                  walletAddress != null
+                      ? CustomInkWell(
+                          onTap: () async {
+                            walletAddress = await PhantomAdapter.disconnect();
+                            setState(() {});
+                          },
+                          child: Container(
+                            height: 36.0,
+                            width: 180.0,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                                color: Colors.transparent,
+                                borderRadius: BorderRadius.circular(5.0)),
+                            child: Text(walletAddress.toString().cutText(),
+                                style:
+                                    const TextStyle(color: Colors.redAccent)),
+                          ),
+                        )
+                      : CustomInkWell(
+                          onTap: () async {
+                            walletAddress = await PhantomAdapter.connect();
+                            setState(() {});
+                          },
+                          child: Container(
+                            height: 36.0,
+                            width: 180.0,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                                color: const Color(0xFF80EEFB),
+                                borderRadius: BorderRadius.circular(5.0)),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Image.asset('assets/icons/phantom_logo.png',
+                                    height: 18.0, width: 18.0),
+                                const SizedBox(width: 16.0),
+                                const Text('Connect',
+                                    style: TextStyle(color: Colors.black)),
+                              ],
+                            ),
+                          ),
+                        ),
                 ],
               ),
             ),
           ),
           Expanded(
             child: SingleChildScrollView(
+              physics: const ClampingScrollPhysics(),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Stack(
-                    alignment: Alignment.topCenter,
-                    children: [
-                      Image.asset('assets/images/spice_banner.png',
-                          width: MediaQuery.of(context).size.width / 1.7),
-                      SandEffect(
-                          width: MediaQuery.of(context).size.width / 1.7,
-                          height: 100.0),
-                    ],
+                  SizedBox(
+                    height: 320.0,
+                    width: MediaQuery.of(context).size.width / 1.7,
+                    child: const rive.RiveAnimation.asset(
+                      'assets/rive/spice.riv',
+                      fit: BoxFit.cover,
+                      alignment: Alignment.center,
+                    ),
                   ),
                   const Text('Unilateral liquidity',
                       textAlign: TextAlign.center,
@@ -188,75 +209,83 @@ class _HomeScreenState extends State<HomeScreen> {
                     ],
                   ),
                   const SizedBox(height: 32.0),
-                  isTables ? Column(
-                    children: [
-                      SizedBox(
-                        width: MediaQuery.of(context).size.width / 1.7,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.center,
+                  isTables
+                      ? Column(
                           children: [
-                            Container(
-                                width: 100.0,
-                                alignment: Alignment.centerLeft,
-                                child: Text('Pools',
-                                    style: TextStyle(
-                                        color: Colors.grey.withOpacity(0.5)))),
-                            Container(
-                                width: 180.0,
-                                alignment: Alignment.center,
-                                child: Text('Total liquidity',
-                                    style: TextStyle(
-                                        color: Colors.grey.withOpacity(0.5)))),
-                            Container(
-                                width: 180.0,
-                                alignment: Alignment.center,
-                                child: Text('Volume (24)',
-                                    style: TextStyle(
-                                        color: Colors.grey.withOpacity(0.5)))),
-                            Container(
-                                width: 180.0,
-                                alignment: Alignment.center,
-                                child: Text('Fee (24)',
-                                    style: TextStyle(
-                                        color: Colors.grey.withOpacity(0.5)))),
-                            Container(
-                                width: 100.0,
-                                alignment: Alignment.centerRight,
-                                child: Text('APY',
-                                    style: TextStyle(
-                                        color: Colors.grey.withOpacity(0.5)))),
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width / 1.7,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Container(
+                                      width: 100.0,
+                                      alignment: Alignment.centerLeft,
+                                      child: Text('Pools',
+                                          style: TextStyle(
+                                              color: Colors.grey
+                                                  .withOpacity(0.5)))),
+                                  Container(
+                                      width: 180.0,
+                                      alignment: Alignment.center,
+                                      child: Text('Total liquidity',
+                                          style: TextStyle(
+                                              color: Colors.grey
+                                                  .withOpacity(0.5)))),
+                                  Container(
+                                      width: 180.0,
+                                      alignment: Alignment.center,
+                                      child: Text('Volume (24)',
+                                          style: TextStyle(
+                                              color: Colors.grey
+                                                  .withOpacity(0.5)))),
+                                  Container(
+                                      width: 180.0,
+                                      alignment: Alignment.center,
+                                      child: Text('Fee (24)',
+                                          style: TextStyle(
+                                              color: Colors.grey
+                                                  .withOpacity(0.5)))),
+                                  Container(
+                                      width: 100.0,
+                                      alignment: Alignment.centerRight,
+                                      child: Text('APY',
+                                          style: TextStyle(
+                                              color: Colors.grey
+                                                  .withOpacity(0.5)))),
+                                ],
+                              ),
+                            ),
+                            SizedBox(
+                                width: MediaQuery.of(context).size.width / 1.7,
+                                child: Divider(
+                                    color: Colors.grey.withOpacity(0.2),
+                                    thickness: 1.0)),
+                            SizedBox(
+                              height: poolsData.length * 57.0,
+                              width: MediaQuery.of(context).size.width / 1.7,
+                              child: ListView.builder(
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  itemCount: poolsData.length,
+                                  itemBuilder: (context, index) {
+                                    return PoolTableWidget(
+                                        poolName: poolsData[index]['pool_name'],
+                                        poolLogo: poolsData[index]['pool_logo'],
+                                        totalLiquidity: poolsData[index]
+                                            ['pool_liquidity'],
+                                        volume24: poolsData[index]
+                                            ['pool_volume_24'],
+                                        fee24: poolsData[index]['pool_fee_24'],
+                                        apy: poolsData[index]['pool_apy']);
+                                  }),
+                            ),
                           ],
-                        ),
-                      ),
-                      SizedBox(
+                        )
+                      : SizedBox(
+                          height: 145.0 * poolsData.length,
                           width: MediaQuery.of(context).size.width / 1.7,
-                          child: Divider(
-                              color: Colors.grey.withOpacity(0.2),
-                              thickness: 1.0)),
-                      SizedBox(
-                        height: poolsData.length * 57.0,
-                        width: MediaQuery.of(context).size.width / 1.7,
-                        child: ListView.builder(
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: poolsData.length,
-                            itemBuilder: (context, index) {
-                              return PoolTableWidget(
-                                  poolName: poolsData[index]['pool_name'],
-                                  poolLogo: poolsData[index]['pool_logo'],
-                                  totalLiquidity: poolsData[index]
-                                      ['pool_liquidity'],
-                                  volume24: poolsData[index]['pool_volume_24'],
-                                  fee24: poolsData[index]['pool_fee_24'],
-                                  apy: poolsData[index]['pool_apy']);
-                            }),
-                      ),
-                    ],
-                  ) 
-                  : SizedBox(
-                    height: 145.0 * poolsData.length,
-                    width: MediaQuery.of(context).size.width / 1.7,
-                    child: const PoolsGrid(poolsData: poolsData)),
+                          child: const PoolsGrid(poolsData: poolsData)),
                   const SizedBox(height: 32.0),
                 ],
               ),
@@ -277,7 +306,33 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 Row(
                   children: [
-                    const BlinkingLiveIndicator(),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        // SizedBox(
+                        //   height: 10.0,
+                        //   width: 10.0,
+                        //   child: rive.RiveAnimation.asset(
+                        //     'assets/rive/live.riv',
+                        //     fit: BoxFit.cover,
+                        //     alignment: Alignment.center,
+                        //   ),
+                        // ),
+                        // SizedBox(width: 16.0),
+                        // Text('Live')
+                        Container(
+                          height: 8.0,
+                          width: 8.0,
+                          decoration: const BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.redAccent
+                          ),
+                        ),
+                        const SizedBox(width: 16.0),
+                        const Text('Off')
+                      ],
+                    ),
                     const SizedBox(width: 32.0),
                     const CustomVerticalDivider(height: 36.0),
                     const SizedBox(width: 32.0),
@@ -293,15 +348,18 @@ class _HomeScreenState extends State<HomeScreen> {
                     const CustomTbMenu(),
                   ],
                 ),
-                const Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    CustomVerticalDivider(height: 36.0),
-                    SizedBox(width: 32.0),
-                    Text('Daily Volume 134 M',
-                        style: TextStyle(fontSize: 14.0)),
-                    SizedBox(width: 16.0),
+                    BacklightText(text: 'X', onTap: () => js.context.callMethod('open', ['https://x.com/spice_protocol'])),
+                    const SizedBox(width: 32.0),
+                    BacklightText(text: 'Github', onTap: () => js.context.callMethod('open', ['https://github.com/spice-solana'])),
+                    const SizedBox(width: 32.0),
+                    const CustomVerticalDivider(height: 36.0),
+                    const SizedBox(width: 32.0),
+                    const Text('Daily Volume 0', style: TextStyle(fontSize: 14.0)),
+                    const SizedBox(width: 16.0),
                   ],
                 )
               ],

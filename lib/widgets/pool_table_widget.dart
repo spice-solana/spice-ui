@@ -40,7 +40,7 @@ class PoolTableWidget extends StatelessWidget {
                             height: 25.0,
                             width: 25.0,
                           )),
-                      const SizedBox(width: 8.0),
+                      const SizedBox(width: 16.0),
                       Text(poolName),
                     ],
                   )),

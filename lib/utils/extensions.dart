@@ -41,7 +41,7 @@ String removeDigitsAfterDecimal() {
     return this;
   }
   
-  String startSymbols = substring(0, 5);
+  String startSymbols = substring(0, 4);
   String endSymbols = substring(length - 7);
 
   return '$startSymbols...$endSymbols';
