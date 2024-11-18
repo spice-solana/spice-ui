@@ -3,13 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:spice_ui/data.dart';
 import 'package:spice_ui/phantom_adapter.dart';
-import 'package:spice_ui/theme/controller/theme_cubit.dart';
+import 'package:spice_ui/theme/controller/tb_cubit.dart';
 import 'package:spice_ui/theme/controller/theme_states.dart';
-import 'package:spice_ui/theme/theme_icons.dart';
+import 'package:spice_ui/transaction_bundle/theme_icons.dart';
 import 'package:spice_ui/utils/extensions.dart';
 import 'package:spice_ui/widgets/backlight_icon.dart';
-import 'package:spice_ui/widgets/backlight_icon_text.dart';
-import 'package:spice_ui/widgets/custom_drop_menu.dart';
+import 'package:spice_ui/widgets/custom_tb_menu.dart';
 import 'package:spice_ui/widgets/custom_inkwell.dart';
 import 'package:spice_ui/widgets/custom_vertical_divider.dart';
 import 'package:spice_ui/widgets/pool_table_widget.dart';
@@ -28,37 +27,6 @@ class _HomeScreenState extends State<HomeScreen> {
   var walletAddress;
   bool isTables = true;
 
-  final GlobalKey _buttonKey = GlobalKey();
-  OverlayEntry? _overlayEntry;
-
-  void _toggleMenu() {
-    if (_overlayEntry != null) {
-      _closeMenu();
-    } else {
-      _openMenu();
-    }
-  }
-
-    void _openMenu() {
-    RenderBox buttonBox = _buttonKey.currentContext!.findRenderObject() as RenderBox;
-    Offset buttonPosition = buttonBox.localToGlobal(Offset.zero);
-    Size buttonSize = buttonBox.size;
-
-    Size screenSize = MediaQuery.of(context).size;
-
-    bool openDown = buttonPosition.dy + buttonSize.height + 64.0 + 150.0 < screenSize.height;
-
-    _overlayEntry = OverlayEntry(
-      builder: (context) => CustomDropdownMenu(position: buttonPosition, openDown: openDown, onClose: _closeMenu),
-    );
-
-    Overlay.of(context).insert(_overlayEntry!);
-  }
-
-  void _closeMenu() {
-    _overlayEntry?.remove();
-    _overlayEntry = null;
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -320,19 +288,9 @@ class _HomeScreenState extends State<HomeScreen> {
                             onTap: () =>
                                 context.read<ThemeCubit>().changeTheme())),
                     const SizedBox(width: 32.0),
-                    BacklightIcon(
-                        iconData: Icons.settings,
-                        iconSize: 20.0,
-                        onTap: () => null),
-                    const SizedBox(width: 32.0),
                     const CustomVerticalDivider(height: 36.0),
                     const SizedBox(width: 32.0),
-                    BacklightIconText(
-                        key: _buttonKey,
-                        text: 'Normal',
-                        iconData: Icons.speed,
-                        iconSize: 21.0,
-                        onTap: _toggleMenu)
+                    const CustomTbMenu(),
                   ],
                 ),
                 const Row(
