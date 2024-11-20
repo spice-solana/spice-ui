@@ -1,11 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:spice_ui/data.dart';
-import 'package:spice_ui/phantom_adapter.dart';
+import 'package:spice_ui/adapter/phantom_adapter.dart';
 import 'package:spice_ui/utils/extensions.dart';
 import 'package:spice_ui/widgets/custom_inkwell.dart';
 import 'package:spice_ui/widgets/custom_vertical_divider.dart';
-import 'package:spice_ui/widgets/pool_table_widget.dart';
 
 class IdoScreen extends StatefulWidget {
   const IdoScreen({super.key});
@@ -230,23 +228,6 @@ class _IdoScreenState extends State<IdoScreen> {
                       width: MediaQuery.of(context).size.width / 1.7,
                       child: Divider(
                           color: Colors.grey.withOpacity(0.2), thickness: 1.0)),
-                  SizedBox(
-                    height: poolsData.length * 55.0,
-                    width: MediaQuery.of(context).size.width / 1.7,
-                    child: ListView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: poolsData.length,
-                        itemBuilder: (context, index) {
-                          return PoolTableWidget(
-                              poolName: poolsData[index]['pool_name'],
-                              poolLogo: poolsData[index]['pool_logo'],
-                              totalLiquidity: poolsData[index]
-                                  ['pool_liquidity'],
-                              volume24: poolsData[index]['pool_volume_24'],
-                              fee24: poolsData[index]['pool_fee_24'],
-                              apy: poolsData[index]['pool_apy']);
-                        }),
-                  ),
                   const SizedBox(height: 32.0),
                 ],
               ),

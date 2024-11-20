@@ -3,21 +3,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rive/rive.dart' as rive;
 import 'package:spice_ui/data.dart';
-import 'package:spice_ui/phantom_adapter.dart';
+import 'package:spice_ui/adapter/phantom_adapter.dart';
 import 'package:spice_ui/theme/controller/tb_cubit.dart';
 import 'package:spice_ui/theme/controller/theme_states.dart';
 import 'package:spice_ui/transaction_bundle/theme_icons.dart';
 import 'package:spice_ui/utils/extensions.dart';
+import 'package:spice_ui/utils/toastification.dart';
 import 'package:spice_ui/widgets/backlight_icon.dart';
 import 'package:spice_ui/widgets/backlight_text.dart';
 import 'package:spice_ui/widgets/custom_tb_menu.dart';
 import 'package:spice_ui/widgets/custom_inkwell.dart';
 import 'package:spice_ui/widgets/custom_vertical_divider.dart';
+import 'package:spice_ui/widgets/pool_card_widget.dart';
 import 'package:spice_ui/widgets/pool_table_widget.dart';
-import 'package:spice_ui/widgets/pools_grid.dart';
 // ignore: avoid_web_libraries_in_flutter
 import 'dart:js' as js;
-
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -270,6 +270,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                   itemCount: poolsData.length,
                                   itemBuilder: (context, index) {
                                     return PoolTableWidget(
+                                        onTap: () => Toastification.soon(
+                                            context,
+                                            'Liquidity pool is not active'),
                                         poolName: poolsData[index]['pool_name'],
                                         poolLogo: poolsData[index]['pool_logo'],
                                         totalLiquidity: poolsData[index]
@@ -285,7 +288,27 @@ class _HomeScreenState extends State<HomeScreen> {
                       : SizedBox(
                           height: 145.0 * poolsData.length,
                           width: MediaQuery.of(context).size.width / 1.7,
-                          child: const PoolsGrid(poolsData: poolsData)),
+                          child: GridView.builder(
+                            physics: const NeverScrollableScrollPhysics(),
+                            padding: const EdgeInsets.all(8.0),
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 3,
+                              crossAxisSpacing: 16.0,
+                              mainAxisSpacing: 16.0,
+                              childAspectRatio: 0.75,
+                            ),
+                            itemCount: poolsData.length,
+                            itemBuilder: (context, index) {
+                              final pool = poolsData[index];
+                              return PoolCardWidget(
+                                onTap: () => Toastification.soon(
+                                            context,
+                                            'Liquidity pool is not active'),
+                                pool: pool,
+                              );
+                            },
+                          )),
                   const SizedBox(height: 32.0),
                 ],
               ),
@@ -325,9 +348,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           height: 8.0,
                           width: 8.0,
                           decoration: const BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.redAccent
-                          ),
+                              shape: BoxShape.circle, color: Colors.redAccent),
                         ),
                         const SizedBox(width: 16.0),
                         const Text('Off')
@@ -352,13 +373,20 @@ class _HomeScreenState extends State<HomeScreen> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    BacklightText(text: 'X', onTap: () => js.context.callMethod('open', ['https://x.com/spice_protocol'])),
+                    BacklightText(
+                        text: 'X',
+                        onTap: () => js.context.callMethod(
+                            'open', ['https://x.com/spice_protocol'])),
                     const SizedBox(width: 32.0),
-                    BacklightText(text: 'Github', onTap: () => js.context.callMethod('open', ['https://github.com/spice-solana'])),
+                    BacklightText(
+                        text: 'Github',
+                        onTap: () => js.context.callMethod(
+                            'open', ['https://github.com/spice-solana'])),
                     const SizedBox(width: 32.0),
                     const CustomVerticalDivider(height: 36.0),
                     const SizedBox(width: 32.0),
-                    const Text('Daily Volume 0', style: TextStyle(fontSize: 14.0)),
+                    const Text('Daily Volume 0',
+                        style: TextStyle(fontSize: 14.0)),
                     const SizedBox(width: 16.0),
                   ],
                 )

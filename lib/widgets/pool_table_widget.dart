@@ -8,15 +8,14 @@ class PoolTableWidget extends StatelessWidget {
   final String volume24;
   final String fee24;
   final String apy;
+  final Function() onTap;
 
-  const PoolTableWidget({super.key, required this.poolName, required this.poolLogo, required this.totalLiquidity, required this.volume24, required this.fee24, required this.apy});
+  const PoolTableWidget({super.key, required this.poolName, required this.poolLogo, required this.totalLiquidity, required this.volume24, required this.fee24, required this.apy, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        
-      },
+      onTap: onTap,
       highlightColor: Colors.transparent,
       focusColor: Colors.transparent,
       splashColor: Colors.transparent,
