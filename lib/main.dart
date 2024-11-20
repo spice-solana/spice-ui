@@ -1,18 +1,17 @@
 import 'dart:io';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:spice_ui/screens/home_screen.dart';
-import 'package:spice_ui/screens/ido_screen.dart';
 import 'package:spice_ui/screens/notification_screen.dart';
 import 'package:spice_ui/theme/controller/tb_cubit.dart';
 import 'package:spice_ui/theme/controller/theme_states.dart';
 import 'package:spice_ui/theme/themes.dart';
 import 'package:spice_ui/transaction_bundle/controller/tb_cubit.dart';
 import 'package:spice_ui/widgets/no_thumb_scroll_behavior.dart';
+
 
 void main() async {
   var path = kIsWeb ? "" : Directory.systemTemp.path;
@@ -32,9 +31,6 @@ void main() async {
             return OKToast(
               child: MaterialApp(
                 title: 'Spice',
-                routes: {
-                  'ido': (context) => const IdoScreen()
-                },
                 scrollBehavior:
                     NoThumbScrollBehavior().copyWith(scrollbars: false),
                 debugShowCheckedModeBanner: false,
