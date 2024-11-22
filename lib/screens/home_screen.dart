@@ -37,129 +37,138 @@ class _HomeScreenState extends State<HomeScreen> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Container(
-            height: 50.0,
-            width: MediaQuery.of(context).size.width,
-            decoration: BoxDecoration(
-                color: Theme.of(context).scaffoldBackgroundColor,
-                border: Border(
-                    bottom: BorderSide(
-                        color: Colors.grey.withOpacity(0.2), width: 1.0))),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  CustomInkWell(
-                    onTap: () => Navigator.pushNamed(context, '/roadmap'),
-                    child: SizedBox(
-                      width: 180.0,
-                      child: Row(
-                        children: [
-                          Image.asset('assets/icons/spice_logo.png',
-                              height: 21.0, width: 21.0),
-                          const SizedBox(width: 16.0),
-                          const Text('Spice'),
-                          const SizedBox(width: 16.0),
-                          const Text('devnet',
-                              style: TextStyle(fontSize: 12.0, color: Colors.amber))
-                        ],
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 36.0,
-                    width: 440.0,
-                    child: TextField(
-                      // onTap: _openMenu,
-                      textCapitalization: TextCapitalization.words,
-                      cursorColor: Colors.grey.withOpacity(0.2),
-                      decoration: InputDecoration(
-                        contentPadding:
-                            const EdgeInsets.symmetric(horizontal: 16.0),
-                        fillColor: Colors.transparent,
-                        hintText: "Search pool",
-                        isDense: true,
-                        hintStyle: TextStyle(
-                            fontSize: 14.0,
-                            fontWeight: FontWeight.normal,
-                            color:
-                                Theme.of(context).hintColor.withOpacity(0.5)),
-                        filled: true,
-                        suffixIcon: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(CupertinoIcons.command, size: 12.0, color: Colors.grey.withOpacity(0.8)),
-                            const SizedBox(width: 4.0),
-                            Text('k',
-                                style: TextStyle(
-                                    fontSize: 14.0, color: Colors.grey.withOpacity(0.8)))
-                          ],
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: BorderSide(
-                                color: Colors.grey.withOpacity(0.2),
-                                width: 1.0)),
-                        focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: BorderSide(
-                                color: Colors.grey.withOpacity(0.2),
-                                width: 1.0)),
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5.0),
-                            borderSide: BorderSide(
-                                color: Colors.grey.withOpacity(0.2),
-                                width: 1.0)),
-                      ),
-                    ),
-                  ),
-                  walletAddress != null
-                      ? CustomInkWell(
-                          onTap: () async {
-                            walletAddress = await PhantomAdapter.disconnect();
-                            setState(() {});
-                          },
-                          child: Container(
-                            height: 36.0,
-                            width: 180.0,
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                                color: Colors.transparent,
-                                borderRadius: BorderRadius.circular(5.0)),
-                            child: Text(walletAddress.toString().cutText(),
-                                style:
-                                    const TextStyle(color: Colors.redAccent)),
+          Column(
+            children: [
+              // Container(
+              //   height: 35.0,
+              //   width: MediaQuery.of(context).size.width,
+              //   color: Colors.amber,
+              // ),
+              Container(
+                height: 50.0,
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(
+                    color: Theme.of(context).scaffoldBackgroundColor,
+                    border: Border(
+                        bottom: BorderSide(
+                            color: Colors.grey.withOpacity(0.2), width: 1.0))),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      CustomInkWell(
+                        onTap: () => Navigator.pushNamed(context, '/roadmap'),
+                        child: SizedBox(
+                          width: 180.0,
+                          child: Row(
+                            children: [
+                              Image.asset('assets/icons/spice_logo.png',
+                                  height: 21.0, width: 21.0),
+                              const SizedBox(width: 16.0),
+                              const Text('Spice'),
+                              const SizedBox(width: 16.0),
+                              const Text('devnet',
+                                  style: TextStyle(fontSize: 12.0, color: Colors.amber))
+                            ],
                           ),
-                        )
-                      : CustomInkWell(
-                          onTap: () async {
-                            walletAddress = await PhantomAdapter.connect();
-                            setState(() {});
-                          },
-                          child: Container(
-                            height: 36.0,
-                            width: 180.0,
-                            alignment: Alignment.center,
-                            decoration: BoxDecoration(
-                                color: const Color(0xFF80EEFB),
-                                borderRadius: BorderRadius.circular(5.0)),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 36.0,
+                        width: 440.0,
+                        child: TextField(
+                          // onTap: _openMenu,
+                          textCapitalization: TextCapitalization.words,
+                          cursorColor: Colors.grey.withOpacity(0.2),
+                          decoration: InputDecoration(
+                            contentPadding:
+                                const EdgeInsets.symmetric(horizontal: 16.0),
+                            fillColor: Colors.transparent,
+                            hintText: "Search pool",
+                            isDense: true,
+                            hintStyle: TextStyle(
+                                fontSize: 14.0,
+                                fontWeight: FontWeight.normal,
+                                color:
+                                    Theme.of(context).hintColor.withOpacity(0.5)),
+                            filled: true,
+                            suffixIcon: Row(
+                              mainAxisSize: MainAxisSize.min,
                               children: [
-                                Image.asset('assets/icons/phantom_logo.png',
-                                    height: 18.0, width: 18.0),
-                                const SizedBox(width: 16.0),
-                                const Text('Connect',
-                                    style: TextStyle(color: Colors.black)),
+                                Icon(CupertinoIcons.command, size: 12.0, color: Colors.grey.withOpacity(0.8)),
+                                const SizedBox(width: 4.0),
+                                Text('k',
+                                    style: TextStyle(
+                                        fontSize: 14.0, color: Colors.grey.withOpacity(0.8)))
                               ],
                             ),
+                            enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(5.0),
+                                borderSide: BorderSide(
+                                    color: Colors.grey.withOpacity(0.2),
+                                    width: 1.0)),
+                            focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(5.0),
+                                borderSide: BorderSide(
+                                    color: Colors.grey.withOpacity(0.2),
+                                    width: 1.0)),
+                            border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(5.0),
+                                borderSide: BorderSide(
+                                    color: Colors.grey.withOpacity(0.2),
+                                    width: 1.0)),
                           ),
                         ),
-                ],
+                      ),
+                      walletAddress != null
+                          ? CustomInkWell(
+                              onTap: () async {
+                                walletAddress = await PhantomAdapter.disconnect();
+                                setState(() {});
+                              },
+                              child: Container(
+                                height: 36.0,
+                                width: 180.0,
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                    color: Colors.transparent,
+                                    borderRadius: BorderRadius.circular(5.0)),
+                                child: Text(walletAddress.toString().cutText(),
+                                    style:
+                                        const TextStyle(color: Colors.redAccent)),
+                              ),
+                            )
+                          : CustomInkWell(
+                              onTap: () async {
+                                walletAddress = await PhantomAdapter.connect();
+                                setState(() {});
+                              },
+                              child: Container(
+                                height: 36.0,
+                                width: 180.0,
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                    color: const Color(0xFF80EEFB),
+                                    borderRadius: BorderRadius.circular(5.0)),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Image.asset('assets/icons/phantom_logo.png',
+                                        height: 18.0, width: 18.0),
+                                    const SizedBox(width: 16.0),
+                                    const Text('Connect',
+                                        style: TextStyle(color: Colors.black)),
+                                  ],
+                                ),
+                              ),
+                            ),
+                    ],
+                  ),
+                ),
               ),
-            ),
+            ],
           ),
           Expanded(
             child: SingleChildScrollView(
@@ -169,7 +178,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   SizedBox(
-                    height: 320.0,
+                    height: 340.0,
                     width: MediaQuery.of(context).size.width / 1.7,
                     child: const rive.RiveAnimation.asset(
                       'assets/rive/spice.riv',
@@ -177,17 +186,25 @@ class _HomeScreenState extends State<HomeScreen> {
                       alignment: Alignment.center,
                     ),
                   ),
-                  const Text('Unilateral liquidity',
+                  const Text('Unilateral liquidity protocol',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           letterSpacing: -2.0,
-                          wordSpacing: -10.0,
-                          fontSize: 60.0)),
-                  const Text('protocol',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(letterSpacing: -2.0, fontSize: 60.0)),
-                  const SizedBox(height: 16.0),
-                  Text('FAST DATA ⋅ DEEPEST LIQIDITY ⋅ HIGH INCOME',
+                          fontSize: 48.0)),
+                  const SizedBox(height: 32.0),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Image.asset('assets/icons/solana_logo.png', height: 14.0),
+                      const SizedBox(width: 32.0),
+                      const CustomVerticalDivider(height: 21.0),
+                      const SizedBox(width: 32.0),
+                      Image.asset('assets/icons/pyth_logo.png', height: 21.0),
+                    ],
+                  ),
+                  const SizedBox(height: 40.0),
+                  Text('ZERO SLIPPAGE ⋅ NO IMPERMANENT LOSS ⋅ HIGH INCOME',
                       style: TextStyle(
                           color: Colors.grey.withOpacity(0.5), fontSize: 14.0)),
                   const SizedBox(height: 32.0),
@@ -385,14 +402,13 @@ class _HomeScreenState extends State<HomeScreen> {
                             'open', ['https://x.com/spice_protocol'])),
                     const SizedBox(width: 32.0),
                     BacklightText(
+                        text: 'Docs',
+                        onTap: () => null),
+                    const SizedBox(width: 32.0),
+                    BacklightText(
                         text: 'Github',
                         onTap: () => js.context.callMethod(
                             'open', ['https://github.com/spice-solana'])),
-                    const SizedBox(width: 32.0),
-                    const CustomVerticalDivider(height: 36.0),
-                    const SizedBox(width: 32.0),
-                    const Text('Daily Volume 0',
-                        style: TextStyle(fontSize: 14.0)),
                     const SizedBox(width: 16.0),
                   ],
                 )
