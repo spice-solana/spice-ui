@@ -49,18 +49,21 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  SizedBox(
-                    width: 180.0,
-                    child: Row(
-                      children: [
-                        Image.asset('assets/icons/spice_logo.png',
-                            height: 21.0, width: 21.0),
-                        const SizedBox(width: 16.0),
-                        const Text('Spice'),
-                        const SizedBox(width: 16.0),
-                        const Text('devnet',
-                            style: TextStyle(fontSize: 12.0, color: Colors.amber))
-                      ],
+                  CustomInkWell(
+                    onTap: () => Navigator.pushNamed(context, '/roadmap'),
+                    child: SizedBox(
+                      width: 180.0,
+                      child: Row(
+                        children: [
+                          Image.asset('assets/icons/spice_logo.png',
+                              height: 21.0, width: 21.0),
+                          const SizedBox(width: 16.0),
+                          const Text('Spice'),
+                          const SizedBox(width: 16.0),
+                          const Text('devnet',
+                              style: TextStyle(fontSize: 12.0, color: Colors.amber))
+                        ],
+                      ),
                     ),
                   ),
                   SizedBox(
@@ -85,12 +88,11 @@ class _HomeScreenState extends State<HomeScreen> {
                         suffixIcon: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Image.asset('assets/icons/command_icon.png',
-                                height: 12.0, width: 12.0),
+                            Icon(CupertinoIcons.command, size: 12.0, color: Colors.grey.withOpacity(0.8)),
                             const SizedBox(width: 4.0),
-                            const Text('k',
+                            Text('k',
                                 style: TextStyle(
-                                    fontSize: 14.0, color: Color(0xFF545454)))
+                                    fontSize: 14.0, color: Colors.grey.withOpacity(0.8)))
                           ],
                         ),
                         enabledBorder: OutlineInputBorder(
