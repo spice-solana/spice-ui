@@ -27,7 +27,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  var walletAddress;
+  String? walletAddress;
   bool isTables = true;
 
   @override
@@ -41,6 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
             height: 50.0,
             width: MediaQuery.of(context).size.width,
             decoration: BoxDecoration(
+                color: Theme.of(context).scaffoldBackgroundColor,
                 border: Border(
                     bottom: BorderSide(
                         color: Colors.grey.withOpacity(0.2), width: 1.0))),
