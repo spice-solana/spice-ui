@@ -14,15 +14,7 @@ class PhantomAdapter {
       try {
         final response = js.context['solana'] as js.JsObject;
 
-        final options = js.JsObject.jsify({
-          'onlyIfTrusted': false,
-          'app': {
-            'name': 'Spice',
-            'icon': 'https://76btz57hb42jsjrp7fil36dvtnaouxcoumf4olflbx4utsvl3kxq.arweave.net/_4M89-cPNJkmL_lQvfh1m0DqXE6jC8csqw35Scqr2q8'
-          }
-        });
-
-        await response.callMethod('connect', [options]);
+        await response.callMethod('connect');
 
         var publicKey = response['publicKey'];
 

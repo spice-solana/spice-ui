@@ -49,16 +49,19 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Row(
-                    children: [
-                      Image.asset('assets/icons/spice_logo.png',
-                          height: 21.0, width: 21.0),
-                      const SizedBox(width: 16.0),
-                      const Text('Spice'),
-                      const SizedBox(width: 16.0),
-                      const Text('devnet',
-                          style: TextStyle(fontSize: 12.0, color: Colors.amber))
-                    ],
+                  SizedBox(
+                    width: 180.0,
+                    child: Row(
+                      children: [
+                        Image.asset('assets/icons/spice_logo.png',
+                            height: 21.0, width: 21.0),
+                        const SizedBox(width: 16.0),
+                        const Text('Spice'),
+                        const SizedBox(width: 16.0),
+                        const Text('devnet',
+                            style: TextStyle(fontSize: 12.0, color: Colors.amber))
+                      ],
+                    ),
                   ),
                   SizedBox(
                     height: 36.0,
