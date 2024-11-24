@@ -178,7 +178,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   SizedBox(
-                    height: 340.0,
+                    height: 400.0,
                     width: MediaQuery.of(context).size.width / 1.7,
                     child: const rive.RiveAnimation.asset(
                       'assets/rive/spice.riv',
@@ -192,18 +192,6 @@ class _HomeScreenState extends State<HomeScreen> {
                           letterSpacing: -2.0,
                           fontSize: 48.0)),
                   const SizedBox(height: 32.0),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Image.asset(Theme.of(context).scaffoldBackgroundColor == Colors.white ? 'assets/icons/solana_logo_dark.png' : 'assets/icons/solana_logo.png', height: 14.0),
-                      const SizedBox(width: 32.0),
-                      const CustomVerticalDivider(height: 21.0),
-                      const SizedBox(width: 32.0),
-                      Image.asset(Theme.of(context).scaffoldBackgroundColor == Colors.white ? 'assets/icons/pyth_logo_dark.png' : 'assets/icons/pyth_logo.png', height: 21.0),
-                    ],
-                  ),
-                  const SizedBox(height: 40.0),
                   Text('ZERO SLIPPAGE ⋅ NO IMPERMANENT LOSS ⋅ HIGH INCOME',
                       style: TextStyle(
                           color: Colors.grey.withOpacity(0.5), fontSize: 14.0)),
