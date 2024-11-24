@@ -196,11 +196,11 @@ class _HomeScreenState extends State<HomeScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Image.asset('assets/icons/solana_logo.png', height: 14.0),
+                      Image.asset(Theme.of(context).scaffoldBackgroundColor == Colors.white ? 'assets/icons/solana_logo_dark.png' : 'assets/icons/solana_logo.png', height: 14.0),
                       const SizedBox(width: 32.0),
                       const CustomVerticalDivider(height: 21.0),
                       const SizedBox(width: 32.0),
-                      Image.asset('assets/icons/pyth_logo.png', height: 21.0),
+                      Image.asset(Theme.of(context).scaffoldBackgroundColor == Colors.white ? 'assets/icons/pyth_logo_dark.png' : 'assets/icons/pyth_logo.png', height: 21.0),
                     ],
                   ),
                   const SizedBox(height: 40.0),
