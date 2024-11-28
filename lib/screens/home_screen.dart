@@ -192,7 +192,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           letterSpacing: -2.0,
                           fontSize: 48.0)),
                   const SizedBox(height: 32.0),
-                  Text('ZERO SLIPPAGE ⋅ NO IMPERMANENT LOSS ⋅ HIGH INCOME',
+                  Text('FAST DATA ⋅ ZERO SLIPPAGE ⋅ HIGH INCOME',
                       style: TextStyle(
                           color: Colors.grey.withOpacity(0.5), fontSize: 14.0)),
                   const SizedBox(height: 32.0),
@@ -297,7 +297,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ],
                         )
                       : SizedBox(
-                          height: 145.0 * poolsData.length,
+                          height: MediaQuery.of(context).size.height,
                           width: MediaQuery.of(context).size.width / 1.7,
                           child: GridView.builder(
                             physics: const NeverScrollableScrollPhysics(),
@@ -391,7 +391,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     const SizedBox(width: 32.0),
                     BacklightText(
                         text: 'Docs',
-                        onTap: () => null),
+                        onTap: () => js.context.callMethod(
+                          'open', ['https://spice.slite.page/p/l0emu5gAcQxsrO/Unilateral-liquidity-protocol-with-zero-slippage']
+                          )),
                     const SizedBox(width: 32.0),
                     BacklightText(
                         text: 'Github',

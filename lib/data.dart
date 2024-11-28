@@ -8,14 +8,6 @@ const List<Map<String, dynamic>> poolsData = [
     "pool_apy": "0%"
   },
   {
-    "pool_logo": "https://s2.coinmarketcap.com/static/img/coins/64x64/1.png",
-    "pool_name": "BTC",
-    "pool_liquidity": "0",
-    "pool_volume_24": "0",
-    "pool_fee_24": "0",
-    "pool_apy": "0%"
-  },
-  {
     "pool_logo": "https://s2.coinmarketcap.com/static/img/coins/64x64/3408.png",
     "pool_name": "USDC",
     "pool_liquidity": "0",
@@ -31,17 +23,9 @@ const List<Map<String, dynamic>> poolsData = [
     "pool_fee_24": "0",
     "pool_apy": "0%"
   },
-  {
-    "pool_logo": "https://s2.coinmarketcap.com/static/img/coins/64x64/23095.png",
-    "pool_name": "BONK",
-    "pool_liquidity": "0",
-    "pool_volume_24": "0",
-    "pool_fee_24": "0",
-    "pool_apy": "0%"
-  },
-  {
-    "pool_logo": "https://s2.coinmarketcap.com/static/img/coins/64x64/28752.png",
-    "pool_name": "WIF",
+    {
+    "pool_logo": "https://s2.coinmarketcap.com/static/img/coins/64x64/28177.png",
+    "pool_name": "PYTH",
     "pool_liquidity": "0",
     "pool_volume_24": "0",
     "pool_fee_24": "0",
