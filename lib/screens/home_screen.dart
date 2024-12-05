@@ -64,7 +64,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: Row(
                             children: [
                               Image.asset('assets/icons/spice_logo.png',
-                                  height: 21.0, width: 21.0),
+                                  height: 18.0, width: 18.0),
                               const SizedBox(width: 16.0),
                               const Text('Spice'),
                               const SizedBox(width: 16.0),
@@ -151,17 +151,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                 decoration: BoxDecoration(
                                     color: const Color(0xFF80EEFB),
                                     borderRadius: BorderRadius.circular(5.0)),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Image.asset('assets/icons/phantom_logo.png',
-                                        height: 18.0, width: 18.0),
-                                    const SizedBox(width: 16.0),
-                                    const Text('Connect',
-                                        style: TextStyle(color: Colors.black)),
-                                  ],
-                                ),
+                                child: const Text('Connect',
+                                    style: TextStyle(color: Colors.black)),
                               ),
                             ),
                     ],
@@ -177,13 +168,17 @@ class _HomeScreenState extends State<HomeScreen> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  SizedBox(
+                  Container(
                     height: 400.0,
                     width: MediaQuery.of(context).size.width / 1.7,
-                    child: const rive.RiveAnimation.asset(
-                      'assets/rive/spice.riv',
-                      fit: BoxFit.cover,
-                      alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Colors.grey.withOpacity(0.05),
+                          Colors.transparent
+                        ])
                     ),
                   ),
                   const Text('Unilateral liquidity protocol',
