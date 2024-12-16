@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:rive/rive.dart' as rive;
+// import 'package:rive/rive.dart' as rive;
 import 'package:spice_ui/data.dart';
 import 'package:spice_ui/adapter/phantom_adapter.dart';
 import 'package:spice_ui/theme/controller/tb_cubit.dart';
@@ -60,7 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       CustomInkWell(
                         onTap: () => Navigator.pushNamed(context, '/roadmap'),
                         child: SizedBox(
-                          width: 180.0,
+                          width: 160.0,
                           child: Row(
                             children: [
                               Image.asset('assets/icons/spice_logo.png',
@@ -69,7 +69,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               const Text('Spice'),
                               const SizedBox(width: 16.0),
                               const Text('devnet',
-                                  style: TextStyle(fontSize: 12.0, color: Colors.amber))
+                                  style: TextStyle(
+                                      fontSize: 12.0, color: Colors.amber))
                             ],
                           ),
                         ),
@@ -90,17 +91,21 @@ class _HomeScreenState extends State<HomeScreen> {
                             hintStyle: TextStyle(
                                 fontSize: 14.0,
                                 fontWeight: FontWeight.normal,
-                                color:
-                                    Theme.of(context).hintColor.withOpacity(0.5)),
+                                color: Theme.of(context)
+                                    .hintColor
+                                    .withOpacity(0.5)),
                             filled: true,
                             suffixIcon: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                Icon(CupertinoIcons.command, size: 12.0, color: Colors.grey.withOpacity(0.8)),
+                                Icon(CupertinoIcons.command,
+                                    size: 12.0,
+                                    color: Colors.grey.withOpacity(0.8)),
                                 const SizedBox(width: 4.0),
                                 Text('k',
                                     style: TextStyle(
-                                        fontSize: 14.0, color: Colors.grey.withOpacity(0.8)))
+                                        fontSize: 14.0,
+                                        color: Colors.grey.withOpacity(0.8)))
                               ],
                             ),
                             enabledBorder: OutlineInputBorder(
@@ -124,19 +129,21 @@ class _HomeScreenState extends State<HomeScreen> {
                       walletAddress != null
                           ? CustomInkWell(
                               onTap: () async {
-                                walletAddress = await PhantomAdapter.disconnect();
+                                PhantomAdapter.disconnect();
+                                walletAddress = null;
                                 setState(() {});
                               },
                               child: Container(
-                                height: 36.0,
-                                width: 180.0,
+                                height: 32.0,
+                                width: 160.0,
                                 alignment: Alignment.center,
                                 decoration: BoxDecoration(
                                     color: Colors.transparent,
                                     borderRadius: BorderRadius.circular(5.0)),
                                 child: Text(walletAddress.toString().cutText(),
-                                    style:
-                                        const TextStyle(color: Colors.redAccent)),
+                                    style: const TextStyle(
+                                        color: Colors.redAccent,
+                                        fontSize: 14.0)),
                               ),
                             )
                           : CustomInkWell(
@@ -146,7 +153,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               },
                               child: Container(
                                 height: 36.0,
-                                width: 180.0,
+                                width: 160.0,
                                 alignment: Alignment.center,
                                 decoration: BoxDecoration(
                                     color: const Color(0xFF80EEFB),
@@ -169,25 +176,22 @@ class _HomeScreenState extends State<HomeScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Container(
-                    height: 400.0,
+                    height: 360.0,
                     width: MediaQuery.of(context).size.width / 1.7,
                     decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
+                        gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
                           Colors.grey.withOpacity(0.05),
                           Colors.transparent
-                        ])
-                    ),
+                        ])),
                   ),
-                  const Text('Unilateral liquidity protocol',
+                  const Text('Single-sided liquidity protocol',
                       textAlign: TextAlign.center,
-                      style: TextStyle(
-                          letterSpacing: -2.0,
-                          fontSize: 48.0)),
+                      style: TextStyle(letterSpacing: -2.0, fontSize: 38.0)),
                   const SizedBox(height: 32.0),
-                  Text('FAST DATA ⋅ ZERO SLIPPAGE ⋅ HIGH INCOME',
+                  Text('EASE OF USE ⋅ NO INPERMANENT LOSS ⋅ HIGH YIELD',
                       style: TextStyle(
                           color: Colors.grey.withOpacity(0.5), fontSize: 14.0)),
                   const SizedBox(height: 32.0),
@@ -292,29 +296,22 @@ class _HomeScreenState extends State<HomeScreen> {
                           ],
                         )
                       : SizedBox(
-                          height: MediaQuery.of(context).size.height,
                           width: MediaQuery.of(context).size.width / 1.7,
-                          child: GridView.builder(
-                            physics: const NeverScrollableScrollPhysics(),
-                            padding: const EdgeInsets.all(8.0),
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 3,
-                              crossAxisSpacing: 16.0,
-                              mainAxisSpacing: 16.0,
-                              childAspectRatio: 0.75,
-                            ),
-                            itemCount: poolsData.length,
-                            itemBuilder: (context, index) {
-                              final pool = poolsData[index];
-                              return PoolCardWidget(
-                                onTap: () => Toastification.soon(
-                                            context,
-                                            'Liquidity pool is not active'),
-                                pool: pool,
+                          child: Wrap(
+                            spacing: 16.0,
+                            runSpacing: 16.0,
+                            children: poolsData.map((pool) {
+                              return SizedBox(
+                                width: (MediaQuery.of(context).size.width / 1.7 -32) / 3, 
+                                child: PoolCardWidget(
+                                  onTap: () => Toastification.soon(
+                                      context, 'Liquidity pool is not active'),
+                                  pool: pool,
+                                ),
                               );
-                            },
-                          )),
+                            }).toList(),
+                          ),
+                        ),
                   const SizedBox(height: 32.0),
                 ],
               ),
@@ -386,9 +383,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     const SizedBox(width: 32.0),
                     BacklightText(
                         text: 'Docs',
-                        onTap: () => js.context.callMethod(
-                          'open', ['https://spice.slite.page/p/l0emu5gAcQxsrO/Unilateral-liquidity-protocol-with-zero-slippage']
-                          )),
+                        onTap: () => js.context.callMethod('open', [
+                              'https://spice.slite.page/p/l0emu5gAcQxsrO/Unilateral-liquidity-protocol-with-zero-slippage'
+                            ])),
                     const SizedBox(width: 32.0),
                     BacklightText(
                         text: 'Github',

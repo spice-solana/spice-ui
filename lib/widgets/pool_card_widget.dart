@@ -13,7 +13,7 @@ class PoolCardWidget extends StatelessWidget {
       focusColor: Colors.transparent,
       splashColor: Colors.transparent,
       child: Container(
-        height: 100.0,
+        height: 450.0,
         width: 100.0,
         decoration: BoxDecoration(
             border: Border.all(color: Colors.grey.withOpacity(0.2))),
