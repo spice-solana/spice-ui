@@ -66,7 +66,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               Image.asset('assets/icons/spice_logo.png',
                                   height: 18.0, width: 18.0),
                               const SizedBox(width: 16.0),
-                              const Text('Spice'),
+                              const Text('SPICE'),
                               const SizedBox(width: 16.0),
                               const Text('devnet',
                                   style: TextStyle(
@@ -76,7 +76,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
                       SizedBox(
-                        height: 36.0,
+                        height: 32.0,
                         width: 440.0,
                         child: TextField(
                           // onTap: _openMenu,
@@ -152,13 +152,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                 setState(() {});
                               },
                               child: Container(
-                                height: 36.0,
+                                height: 32.0,
                                 width: 160.0,
                                 alignment: Alignment.center,
                                 decoration: BoxDecoration(
                                     color: const Color(0xFF80EEFB),
                                     borderRadius: BorderRadius.circular(5.0)),
-                                child: const Text('Connect',
+                                child: const Text('CONNECT',
                                     style: TextStyle(color: Colors.black)),
                               ),
                             ),
@@ -234,6 +234,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       alignment: Alignment.centerLeft,
                                       child: Text('Pools',
                                           style: TextStyle(
+                                              fontSize: 14.0,
                                               color: Colors.grey
                                                   .withOpacity(0.5)))),
                                   Container(
@@ -241,6 +242,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       alignment: Alignment.center,
                                       child: Text('Total liquidity',
                                           style: TextStyle(
+                                              fontSize: 14.0,
                                               color: Colors.grey
                                                   .withOpacity(0.5)))),
                                   Container(
@@ -248,6 +250,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       alignment: Alignment.center,
                                       child: Text('Volume (24)',
                                           style: TextStyle(
+                                              fontSize: 14.0,
                                               color: Colors.grey
                                                   .withOpacity(0.5)))),
                                   Container(
@@ -255,6 +258,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       alignment: Alignment.center,
                                       child: Text('Fee (24)',
                                           style: TextStyle(
+                                              fontSize: 14.0,
                                               color: Colors.grey
                                                   .withOpacity(0.5)))),
                                   Container(
@@ -262,6 +266,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       alignment: Alignment.centerRight,
                                       child: Text('APY',
                                           style: TextStyle(
+                                              fontSize: 14.0,
                                               color: Colors.grey
                                                   .withOpacity(0.5)))),
                                 ],
@@ -354,7 +359,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               shape: BoxShape.circle, color: Colors.redAccent),
                         ),
                         const SizedBox(width: 16.0),
-                        const Text('Off')
+                        const Text('Off', style: TextStyle(fontSize: 14.0))
                       ],
                     ),
                     const SizedBox(width: 32.0),
