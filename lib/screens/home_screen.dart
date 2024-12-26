@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 // import 'package:rive/rive.dart' as rive;
 import 'package:spice_ui/data.dart';
 import 'package:spice_ui/adapter/phantom_adapter.dart';
@@ -9,8 +10,8 @@ import 'package:spice_ui/theme/controller/theme_states.dart';
 import 'package:spice_ui/transaction_bundle/theme_icons.dart';
 import 'package:spice_ui/utils/extensions.dart';
 import 'package:spice_ui/utils/toastification.dart';
+import 'package:spice_ui/widgets/backlight_custom_icon.dart';
 import 'package:spice_ui/widgets/backlight_icon.dart';
-import 'package:spice_ui/widgets/backlight_text.dart';
 import 'package:spice_ui/widgets/custom_tb_menu.dart';
 import 'package:spice_ui/widgets/custom_inkwell.dart';
 import 'package:spice_ui/widgets/custom_vertical_divider.dart';
@@ -18,6 +19,7 @@ import 'package:spice_ui/widgets/pool_card_widget.dart';
 import 'package:spice_ui/widgets/pool_table_widget.dart';
 // ignore: avoid_web_libraries_in_flutter
 import 'dart:js' as js;
+// ignore: avoid_web_libraries_in_flutter
 import 'dart:html' as html;
 
 class HomeScreen extends StatefulWidget {
@@ -75,8 +77,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           width: 160.0,
                           child: Row(
                             children: [
-                              Image.asset('assets/icons/spice_logo.png',
-                                  height: 18.0, width: 18.0),
+                              SvgPicture.asset('assets/icons/spice_logo.svg',
+                              height: 18.0, width: 18.0
+                              ),
                               const SizedBox(width: 16.0),
                               const Text('SPICE'),
                               const SizedBox(width: 16.0),
@@ -394,27 +397,17 @@ class _HomeScreenState extends State<HomeScreen> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    BacklightText(
-                        text: 'X',
-                        onTap: () => js.context.callMethod(
-                            'open', ['https://x.com/spice_protocol'])),
+                    BacklightCustomIcon(assetIcon: "x", onTap: () => js.context.callMethod(
+                            'open', ['https://x.com/spice_protocol']), iconSize: 17.0),
                     const SizedBox(width: 32.0),
-                    BacklightText(
-                        text: 'Telegram',
-                        onTap: () => js.context.callMethod(
-                            'open', ['empty'])),
+                    BacklightCustomIcon(assetIcon: "telegram", onTap: () => js.context.callMethod(
+                            'open', ['https://t.me/spicelp']), iconSize: 17.0),
                     const SizedBox(width: 32.0),
-                    BacklightText(
-                        text: 'Docs',
-                        onTap: () => js.context.callMethod('open', [
-                              'https://spice.slite.page/p/l0emu5gAcQxsrO/Unilateral-liquidity-protocol-with-zero-slippage'
-                            ])),
+                    BacklightCustomIcon(assetIcon: "docs", onTap: () => js.context.callMethod(
+                            'open', ['https://spice.slite.page/p/l0emu5gAcQxsrO']), iconSize: 19.0),
                     const SizedBox(width: 32.0),
-                    BacklightText(
-                        text: 'Github',
-                        onTap: () => js.context.callMethod(
-                            'open', ['https://github.com/spice-solana'])),
-                    const SizedBox(width: 16.0),
+                    BacklightCustomIcon(assetIcon: "github", onTap: () => js.context.callMethod(
+                            'open', ['https://github.com/spice-protocol']), iconSize: 21.0),
                   ],
                 )
               ],
