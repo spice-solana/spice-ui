@@ -18,6 +18,7 @@ import 'package:spice_ui/widgets/pool_card_widget.dart';
 import 'package:spice_ui/widgets/pool_table_widget.dart';
 // ignore: avoid_web_libraries_in_flutter
 import 'dart:js' as js;
+import 'dart:html' as html;
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -42,7 +43,18 @@ class _HomeScreenState extends State<HomeScreen> {
               // Container(
               //   height: 35.0,
               //   width: MediaQuery.of(context).size.width,
-              //   color: Colors.amber,
+              //   padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              //   alignment: Alignment.center,
+              //   color: Colors.greenAccent.shade200,
+              //   child: Row(
+              //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //     crossAxisAlignment: CrossAxisAlignment.center,
+              //     children: [
+              //       const SizedBox(),
+              //       TextUnderline(text: "Spice deployment on devnet in January", onTap: () {}),
+              //       const Icon(Icons.clear, size: 16.0, color: Colors.grey),
+              //     ],
+              //   ),
               // ),
               Container(
                 height: 50.0,
@@ -58,7 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       CustomInkWell(
-                        onTap: () => Navigator.pushNamed(context, '/roadmap'),
+                        onTap: () => html.window.location.reload(),
                         child: SizedBox(
                           width: 160.0,
                           child: Row(
@@ -176,7 +188,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Container(
-                    height: 360.0,
+                    height: 420.0,
                     width: MediaQuery.of(context).size.width / 1.7,
                     decoration: BoxDecoration(
                         gradient: LinearGradient(
@@ -303,6 +315,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       : SizedBox(
                           width: MediaQuery.of(context).size.width / 1.7,
                           child: Wrap(
+                            alignment: WrapAlignment.center,
                             spacing: 16.0,
                             runSpacing: 16.0,
                             children: poolsData.map((pool) {
@@ -385,6 +398,11 @@ class _HomeScreenState extends State<HomeScreen> {
                         text: 'X',
                         onTap: () => js.context.callMethod(
                             'open', ['https://x.com/spice_protocol'])),
+                    const SizedBox(width: 32.0),
+                    BacklightText(
+                        text: 'Telegram',
+                        onTap: () => js.context.callMethod(
+                            'open', ['empty'])),
                     const SizedBox(width: 32.0),
                     BacklightText(
                         text: 'Docs',
