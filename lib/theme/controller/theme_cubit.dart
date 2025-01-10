@@ -7,7 +7,7 @@ class ThemeCubit extends Cubit<ThemeState> {
 
   Future<void> changeTheme() async {
     var box = Hive.box('appBox');
-    final bool darkTheme = box.get('themeKey') ?? false;
+    final bool darkTheme = box.get('themeKey') ?? true;
     await box.put('themeKey', !darkTheme);
     emit(ThemeState(icon: !darkTheme, darkTheme: !darkTheme));
   }

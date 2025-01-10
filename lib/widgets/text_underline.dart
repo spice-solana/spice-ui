@@ -21,6 +21,6 @@ class _TextUnderlineState extends State<TextUnderline> {
         isUnderline = p0;
         setState(() {});
       },
-      child: Text(widget.text, style: TextStyle(decoration: isUnderline ? TextDecoration.underline : TextDecoration.none, decorationColor: Colors.amber.shade900, fontSize: 14.0, color: Colors.amber.shade900, fontFamily: '')));
+      child: Text(widget.text, style: TextStyle(decoration: isUnderline ? TextDecoration.underline : TextDecoration.none, decorationColor: Colors.black, fontSize: 14.0, color: Colors.black, fontFamily: '')));
   }
 }

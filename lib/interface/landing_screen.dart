@@ -1,0 +1,50 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:spice_ui/main/controller/main_cubit.dart';
+import 'package:spice_ui/main/controller/main_states.dart';
+import 'package:spice_ui/interface/bars/bottom_bar.dart';
+import 'package:spice_ui/interface/screens/liquidity_screen.dart';
+import 'package:spice_ui/interface/screens/portfolio_screen.dart';
+import 'package:spice_ui/interface/screens/swap_screen.dart';
+import 'package:spice_ui/interface/bars/top_bar.dart';
+
+class LandingScreen extends StatefulWidget {
+  const LandingScreen({super.key});
+
+  @override
+  State<LandingScreen> createState() => _LandingScreenState();
+}
+
+class _LandingScreenState extends State<LandingScreen> {
+  bool isTables = true;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Column(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        const TopBar(),
+        BlocBuilder<MainCubit, MainStates>(
+          builder: (context, state) {
+            if (state is SwapScreenState) {
+              return const SwapScreen();
+            }
+        
+            if (state is LiquidityScreenState) {
+              return const LiquidityScreen();
+            }
+        
+            if (state is PortfolioScreenState) {
+              return const PortfolioScreen();
+            }
+        
+            return const SizedBox();
+          },
+        ),
+        const BottomBar()
+      ],
+    ));
+  }
+}
