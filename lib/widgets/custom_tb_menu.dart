@@ -84,7 +84,7 @@ class _CustomTbMenuState extends State<CustomTbMenu> {
           buildMenuOption(
             title: 'Normal',
             value: '0.00004',
-            isSelected: context.read<TbCubit>().currenctPriority == 1,
+            isSelected: context.read<TbCubit>().currencyPriority == 1,
             onTap: () {
               context.read<TbCubit>().changePriority(1);
               setState(() {});
@@ -93,7 +93,7 @@ class _CustomTbMenuState extends State<CustomTbMenu> {
           buildMenuOption(
             title: 'High',
             value: '0.001583',
-            isSelected: context.read<TbCubit>().currenctPriority == 2,
+            isSelected: context.read<TbCubit>().currencyPriority == 2,
             onTap: () {
               context.read<TbCubit>().changePriority(2);
               setState(() {});
@@ -102,7 +102,7 @@ class _CustomTbMenuState extends State<CustomTbMenu> {
           buildMenuOption(
             title: 'Turbo',
             value: '0.005',
-            isSelected: context.read<TbCubit>().currenctPriority == 3,
+            isSelected: context.read<TbCubit>().currencyPriority == 3,
             onTap: () {
               context.read<TbCubit>().changePriority(3);
               setState(() {});

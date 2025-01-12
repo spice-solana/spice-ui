@@ -21,32 +21,30 @@ void main() async {
 
   await Hive.openBox('appBox');
 
-  runApp(BlocProvider<MainCubit>(
-    create: (context) => MainCubit(),
-    child: BlocProvider<AdapterCubit>(
-      create: (context) => AdapterCubit(),
-      child: BlocProvider<ThemeCubit>(
-          create: (context) => ThemeCubit(),
-          child: BlocProvider<TbCubit>(
-              create: (context) => TbCubit(),
-              child: BlocBuilder<ThemeCubit, ThemeState>(builder: (context, state) {
-                final bool isMobile = !kIsWeb ||
-                    (defaultTargetPlatform == TargetPlatform.iOS ||
-                        defaultTargetPlatform == TargetPlatform.android) ||
-                    MediaQuery.of(context).size.width < 1258;
-                return OKToast(
-                  child: MaterialApp(
-                    title: 'Spice',
-                    scrollBehavior:
-                        NoThumbScrollBehavior().copyWith(scrollbars: false),
-                    debugShowCheckedModeBanner: false,
-                    theme: state.darkTheme
-                        ? apptheme[AppTheme.dark]
-                        : apptheme[AppTheme.ligth],
-                    home: isMobile ? const NotificationScreen() : const LandingScreen(),
-                  ),
-                );
-              }))),
-    ),
+  runApp(MultiBlocProvider(
+    providers: [
+      BlocProvider<AdapterCubit>(create: (_) => AdapterCubit()),
+      BlocProvider<MainCubit>(create: (context) => MainCubit()),
+      BlocProvider<ThemeCubit>(create: (_) => ThemeCubit()),
+      BlocProvider<TbCubit>(create: (_) => TbCubit()),
+    ],
+    child: BlocBuilder<ThemeCubit, ThemeState>(builder: (context, state) {
+      final bool isMobile = !kIsWeb ||
+          (defaultTargetPlatform == TargetPlatform.iOS ||
+              defaultTargetPlatform == TargetPlatform.android) ||
+          MediaQuery.of(context).size.width < 1258;
+      return OKToast(
+        child: MaterialApp(
+          title: 'Spice',
+          scrollBehavior:
+              NoThumbScrollBehavior().copyWith(scrollbars: false),
+          debugShowCheckedModeBanner: false,
+          theme: state.darkTheme
+              ? apptheme[AppTheme.dark]
+              : apptheme[AppTheme.ligth],
+          home: isMobile ? const NotificationScreen() : const LandingScreen(),
+        ),
+      );
+    }),
   ));
 }

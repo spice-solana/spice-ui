@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:spice_ui/models/pool.dart';
 
 class PoolCardWidget extends StatelessWidget {
   final Function() onTap;
-  final Map pool;
+  final Pool pool;
   const PoolCardWidget({super.key, required this.onTap, required this.pool});
 
   @override
@@ -25,7 +26,7 @@ class PoolCardWidget extends StatelessWidget {
             ClipRRect(
               borderRadius: BorderRadius.circular(100.0),
               child: Image.network(
-                pool["pool_logo"]!,
+                pool.logoUrl,
                 width: 50,
                 height: 50,
                 errorBuilder: (context, error, stackTrace) =>
@@ -34,7 +35,7 @@ class PoolCardWidget extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             Text(
-              pool["pool_name"]!,
+              pool.symbol,
               style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
@@ -45,23 +46,23 @@ class PoolCardWidget extends StatelessWidget {
               TextSpan(
                   text: 'Liquidity: ',
                   style: TextStyle(color: Theme.of(context).hintColor)),
-              TextSpan(text: pool["pool_liquidity"]),
+              TextSpan(text: "0"),
             ])),
             Text.rich(TextSpan(children: [
               TextSpan(
                   text: 'Volume (24h): ',
                   style: TextStyle(color: Theme.of(context).hintColor)),
-              TextSpan(text: pool["pool_volume_24"]),
+              TextSpan(text: "0"),
             ])),
             Text.rich(TextSpan(children: [
               TextSpan(
                   text: 'Fees (24h): ',
                   style: TextStyle(color: Theme.of(context).hintColor)),
-              TextSpan(text: pool["pool_fee_24"]),
+              TextSpan(text: "0"),
             ])),
             const SizedBox(height: 16),
             Text(
-              "APY: ${pool["pool_apy"]}",
+              "APY: ${0}",
               style: const TextStyle(
                 color: Colors.greenAccent,
                 fontWeight: FontWeight.bold,

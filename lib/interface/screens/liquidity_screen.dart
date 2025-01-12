@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 // import 'package:rive/rive.dart' as rive;
-import 'package:spice_ui/data.dart';
+import 'package:spice_ui/data/pools.dart';
 import 'package:spice_ui/utils/toastification.dart';
 import 'package:spice_ui/widgets/pool_card_widget.dart';
 import 'package:spice_ui/widgets/pool_table_widget.dart';
@@ -15,7 +15,6 @@ class LiquidityScreen extends StatefulWidget {
 
 class _LiquidityScreen extends State<LiquidityScreen> {
   bool isTables = false;
-  String? walletAddress;
 
   @override
   Widget build(BuildContext context) {
@@ -178,14 +177,12 @@ class _LiquidityScreen extends State<LiquidityScreen> {
                               return PoolTableWidget(
                                   onTap: () => Toastification.soon(context,
                                       'Liquidity pool is not active'),
-                                  poolName: poolsData[index]['pool_name'],
-                                  poolLogo: poolsData[index]['pool_logo'],
-                                  totalLiquidity: poolsData[index]
-                                      ['pool_liquidity'],
-                                  volume24: poolsData[index]
-                                      ['pool_volume_24'],
-                                  fee24: poolsData[index]['pool_fee_24'],
-                                  apy: poolsData[index]['pool_apy']);
+                                  poolName: poolsData[index].symbol,
+                                  poolLogo: poolsData[index].logoUrl,
+                                  totalLiquidity: "0",
+                                  volume24: "0",
+                                  fee24: "0",
+                                  apy: "0");
                             }),
                       ),
                     ],
@@ -207,7 +204,7 @@ class _LiquidityScreen extends State<LiquidityScreen> {
                             pool: pool,
                           ),
                         );
-                      }).toList(),
+                      },).toList(),
                     ),
                   ),
             const SizedBox(height: 32.0),

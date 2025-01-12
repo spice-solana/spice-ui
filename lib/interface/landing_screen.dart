@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:spice_ui/interface/screens/swap/choose_token_screen.dart';
 import 'package:spice_ui/main/controller/main_cubit.dart';
 import 'package:spice_ui/main/controller/main_states.dart';
 import 'package:spice_ui/interface/bars/bottom_bar.dart';
 import 'package:spice_ui/interface/screens/liquidity_screen.dart';
 import 'package:spice_ui/interface/screens/portfolio_screen.dart';
-import 'package:spice_ui/interface/screens/swap_screen.dart';
+import 'package:spice_ui/interface/screens/swap/swap_screen.dart';
 import 'package:spice_ui/interface/bars/top_bar.dart';
 
 class LandingScreen extends StatefulWidget {
@@ -29,7 +30,11 @@ class _LandingScreenState extends State<LandingScreen> {
         BlocBuilder<MainCubit, MainStates>(
           builder: (context, state) {
             if (state is SwapScreenState) {
-              return const SwapScreen();
+              return SwapScreen(a: state.a, b: state.b, isRouteLoading: state.isRouteLoading, spiceRoute: state.sroute);
+            }
+
+            if (state is ChooseTokenScreenState) {
+              return ChooseTokenScreen(side: state.side, pools: state.pools);
             }
         
             if (state is LiquidityScreenState) {

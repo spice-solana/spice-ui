@@ -18,9 +18,9 @@ class AdapterCubit extends Cubit<AdapterStates> {
     emit(UnconnectedAdapterState());
   }
 
-  Future signTransaction(Transaction transaction) async {
+  Future<Transaction> signTransaction(Transaction transaction) async {
     var signedTransaction = await promiseToFuture(wm.signTransaction(transaction.serialize().asUint8List()));
-    return signedTransaction;
+    return Transaction.deserialize(signedTransaction);
   }
 
 }

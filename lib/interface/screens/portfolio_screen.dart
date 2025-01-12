@@ -9,11 +9,9 @@ class PortfolioScreen extends StatefulWidget {
 }
 
 class _PortfolioScreenState extends State<PortfolioScreen> {
-  bool isTables = true;
-  String? walletAddress;
 
   @override
   Widget build(BuildContext context) {
-    return Center(child: Text('No data', style: TextStyle(color: Colors.grey.withOpacity(0.2))));
+    return Center(child: Text("No data", style: TextStyle(color: Colors.grey.withOpacity(0.2))));
   }
 }

@@ -10,6 +10,10 @@ class SpiceProgram {
   static String solAddress = "So11111111111111111111111111111111111111112";
   static Pubkey spiceProgramId = Pubkey.fromBase58("HXpj1wJuWb7tVbzkQ1D5uCNpU6jvFiaVuBD3tf9JL2AM");
 
+  static Future getRoute({required Pool inputToken, required Pool outputToken, required int inputAmount}) async {
+    
+  }
+
   static Future<Transaction> swap({required String signer, required Pool inputToken, required Pool outputToken, required int inputAmount, required int minOutputAmount, required String blockhash}) async {
     final List<int> data = [];
     data.addAll(sha256.convert('global:swap'.codeUnits).bytes.getRange(0, 8).toList());

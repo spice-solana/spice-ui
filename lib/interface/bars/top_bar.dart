@@ -40,14 +40,14 @@ class _TopBarState extends State<TopBar> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const SizedBox(),
-              TextUnderline(text: "Soon to be launched at Solana Devnet", onTap: () {}),
+              TextUnderline(text: "🫡 Soon to be launched at Solana Devnet", onTap: () {}),
               CustomInkWell(
                 onTap: () {
                   setState(() {
                     hideNotification = true;
                   });
                 },
-                child: Icon(Icons.clear, size: 16.0, color: Colors.amber.shade600)),
+                child: const Icon(Icons.clear, size: 16.0, color: Colors.black)),
             ],
           ),
         ),
@@ -74,7 +74,7 @@ class _TopBarState extends State<TopBar> {
                       AppBarMenuItem(
                           onTap: () {
                             setState(() {
-                              context.read<MainCubit>().moveToSwap();
+                              context.read<MainCubit>().moveToSwapScreen();
                             });
                           },
                           title: "Swap",
@@ -86,7 +86,7 @@ class _TopBarState extends State<TopBar> {
                       const SizedBox(width: 16.0),
                       AppBarMenuItem(
                           onTap: () => setState(() {
-                                context.read<MainCubit>().moveToLiquidity();
+                                context.read<MainCubit>().moveToLiquidityScreen();
                               }),
                           title: "Liquidity",
                           isActive: mainCubit.state is LiquidityScreenState
@@ -97,7 +97,7 @@ class _TopBarState extends State<TopBar> {
                       const SizedBox(width: 16.0),
                       AppBarMenuItem(
                           onTap: () => setState(() {
-                                context.read<MainCubit>().moveToPortfolio();
+                                context.read<MainCubit>().moveToPortfolioScreen();
                               }),
                           title: "Portfolio",
                           isActive: mainCubit.state is PortfolioScreenState
