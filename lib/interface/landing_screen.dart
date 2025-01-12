@@ -4,8 +4,8 @@ import 'package:spice_ui/interface/screens/swap/choose_token_screen.dart';
 import 'package:spice_ui/main/controller/main_cubit.dart';
 import 'package:spice_ui/main/controller/main_states.dart';
 import 'package:spice_ui/interface/bars/bottom_bar.dart';
-import 'package:spice_ui/interface/screens/liquidity_screen.dart';
-import 'package:spice_ui/interface/screens/portfolio_screen.dart';
+import 'package:spice_ui/interface/screens/liquidity/liquidity_screen.dart';
+import 'package:spice_ui/interface/screens/portfolio/portfolio_screen.dart';
 import 'package:spice_ui/interface/screens/swap/swap_screen.dart';
 import 'package:spice_ui/interface/bars/top_bar.dart';
 

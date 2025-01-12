@@ -8,7 +8,7 @@ import 'package:spice_ui/models/pool.dart';
 class SpiceProgram {
 
   static String solAddress = "So11111111111111111111111111111111111111112";
-  static Pubkey spiceProgramId = Pubkey.fromBase58("HXpj1wJuWb7tVbzkQ1D5uCNpU6jvFiaVuBD3tf9JL2AM");
+  static Pubkey programId = Pubkey.fromBase58("pkiDHUHtob4vezAQhERS14pskTdxbv9S1hqW6YKVLoX");
 
   static Future getRoute({required Pool inputToken, required Pool outputToken, required int inputAmount}) async {
     
@@ -23,20 +23,20 @@ class SpiceProgram {
     final tokenAPoolPDA = Pubkey.findProgramAddress([
       "POOL".codeUnits,
       base58.decode(inputToken.mint)
-    ], spiceProgramId);
+    ], programId);
 
     final tokenBPoolPDA = Pubkey.findProgramAddress([
       "POOL".codeUnits,
       base58.decode(outputToken.mint)
-    ], spiceProgramId);
+    ], programId);
 
-    var tokenAsignerATA = inputToken.mint == solAddress ? spiceProgramId : Pubkey.findProgramAddress([
+    var tokenAsignerATA = inputToken.mint == solAddress ? programId : Pubkey.findProgramAddress([
       base58.decode(signer),
       base58.decode(TokenProgram.programId.toBase58()),
       base58.decode(inputToken.mint),
     ], AssociatedTokenProgram.programId).pubkey;
 
-    var tokenBsignerATA = outputToken.mint == solAddress ? spiceProgramId : Pubkey.findProgramAddress([
+    var tokenBsignerATA = outputToken.mint == solAddress ? programId : Pubkey.findProgramAddress([
       base58.decode(signer),
       base58.decode(TokenProgram.programId.toBase58()),
       base58.decode(outputToken.mint),
@@ -45,15 +45,15 @@ class SpiceProgram {
     var treasury = Pubkey.findProgramAddress([
       "SPICE".codeUnits,
       "TREASURY".codeUnits,
-    ], spiceProgramId);
+    ], programId);
 
-    var tokenAtreasuryATA = inputToken.mint == solAddress ? spiceProgramId : Pubkey.findProgramAddress([
+    var tokenAtreasuryATA = inputToken.mint == solAddress ? programId : Pubkey.findProgramAddress([
       base58.decode(treasury.pubkey.toBase58()),
       base58.decode(TokenProgram.programId.toBase58()),
       base58.decode(inputToken.mint),
     ], AssociatedTokenProgram.programId).pubkey;
 
-    var tokenBtreasuryATA = outputToken.mint == solAddress ? spiceProgramId : Pubkey.findProgramAddress([
+    var tokenBtreasuryATA = outputToken.mint == solAddress ? programId : Pubkey.findProgramAddress([
       base58.decode(treasury.pubkey.toBase58()),
       base58.decode(TokenProgram.programId.toBase58()),
       base58.decode(outputToken.mint),
@@ -79,7 +79,7 @@ class SpiceProgram {
             AccountMeta(TokenProgram.programId, isSigner: false, isWritable: false),
             AccountMeta(SystemProgram.programId, isSigner: false, isWritable: false),
           ], 
-          programId: spiceProgramId, 
+          programId: programId, 
           data: Uint8List.fromList(data))
       ], 
       recentBlockhash: blockhash

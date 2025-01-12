@@ -40,7 +40,7 @@ class _TopBarState extends State<TopBar> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const SizedBox(),
-              TextUnderline(text: "🫡 Soon to be launched at Solana Devnet", onTap: () {}),
+              TextUnderline(text: "✅ Launched at Solana Devnet. Click here for more details", onTap: () {}),
               CustomInkWell(
                 onTap: () {
                   setState(() {
