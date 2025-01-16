@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:spice_ui/widgets/custom_inkwell.dart';
 
 class BacklightText extends StatefulWidget {
@@ -22,6 +22,6 @@ class _BacklightTextState extends State<BacklightText> {
         setState(() {});
       },
       onTap: widget.onTap,
-      child: Text(widget.text, style: TextStyle(color: isHover ? const Color(0xFF80EEFB) : null, fontSize: 14.0)));
+      child: Text(widget.text, style: TextStyle(color: isHover ? Theme.of(context).colorScheme.onPrimary : null, fontSize: 14.0)));
   }
 }

@@ -4,7 +4,9 @@ import 'package:spice_ui/widgets/custom_inkwell.dart';
 class TextUnderline extends StatefulWidget {
   final String text;
   final Function() onTap;
-  const TextUnderline({super.key, required this.text, required this.onTap});
+  final Color? color;
+  final double? fontSize;
+  const TextUnderline({super.key, required this.text, required this.onTap, this.color, this.fontSize});
 
   @override
   State<TextUnderline> createState() => _TextUnderlineState();
@@ -21,6 +23,6 @@ class _TextUnderlineState extends State<TextUnderline> {
         isUnderline = p0;
         setState(() {});
       },
-      child: Text(widget.text, style: TextStyle(decoration: isUnderline ? TextDecoration.underline : TextDecoration.none, decorationColor: Colors.black, fontSize: 14.0, color: Colors.black, fontFamily: '')));
+      child: Text(widget.text, style: TextStyle(decoration: isUnderline ? TextDecoration.underline : TextDecoration.none, decorationColor: widget.color ?? Colors.black, fontSize: widget.fontSize ?? 14.0, color: widget.color ?? Colors.black, fontFamily: '')));
   }
 }

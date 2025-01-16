@@ -1,8 +1,12 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:math';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:solana_web3/solana_web3.dart';
+import 'package:spice_ui/adapter/controller/adapter_cubit.dart';
 import 'package:spice_ui/data/pools.dart';
+import 'package:spice_ui/main/config.dart';
 import 'package:spice_ui/main/controller/main_states.dart';
 import 'package:spice_ui/models/pool.dart';
 import 'package:spice_ui/models/pool_pda.dart';
@@ -10,12 +14,14 @@ import 'package:spice_ui/models/pyth.dart';
 import 'package:spice_ui/models/sroute.dart';
 import 'package:spice_ui/service/spice_program.dart';
 import 'package:spice_ui/utils/constants.dart';
+import 'package:spice_ui/utils/toastification.dart';
 
 
 class MainCubit extends Cubit<MainStates> {
-  MainCubit({state}): super(LiquidityScreenState());
+  final AdapterCubit adapter;
+  MainCubit(this.adapter): super(LiquidityScreenState());
 
-  final Connection connection = Connection(Cluster(Uri.parse('https://devnet.helius-rpc.com/?api-key=e73529ad-6e9e-417e-91a1-564aea0a32d3')));
+  final Connection connection = Connection(Cluster(Uri.parse(SolanaConfig.rpc)));
 
   Pool sell = poolsData[0];
   Pool buy = poolsData[1];
@@ -23,7 +29,12 @@ class MainCubit extends Cubit<MainStates> {
   Timer? debounce;
   int lastRequestId = 0;
 
-  void moveToSwapScreen() => emit(SwapScreenState(a: sell, b: buy, isRouteLoading: false));
+  void moveToSwapScreen() {
+    if (adapter.signer != null) {
+      // load balances
+    }
+    emit(SwapScreenState(a: sell, b: buy, isRouteLoading: false));
+  }
   void moveToLiquidityScreen() => emit(LiquidityScreenState());
   void moveToPortfolioScreen() => emit(PortfolioScreenState(text: 'No data'));
 
@@ -52,10 +63,14 @@ class MainCubit extends Cubit<MainStates> {
   }
 
 
-  Future<void> getRoute({required String inputAmount}) async {
+  Future<void> getRoute({required String inputAmount, num? slippage}) async {
     if (debounce?.isActive ?? false) debounce!.cancel();
 
     final int currentRequestId = ++lastRequestId;
+
+    if (inputAmount.isEmpty || num.parse(inputAmount) == 0) {
+      return emit(SwapScreenState(a: sell, b: buy, isRouteLoading: false));
+    }
 
     debounce = Timer(const Duration(milliseconds: 500), () async {
       emit(SwapScreenState(a: sell, b: buy, isRouteLoading: true));
@@ -91,22 +106,95 @@ class MainCubit extends Cubit<MainStates> {
     var deltaA = aPoolAccountInfo.balance - aPoolAccountInfo.totalLpSupply;
     var deltaB = bPoolAccountInfo.balance - bPoolAccountInfo.totalLpSupply;
 
-    var fee = 0.001;
+    var fee = 0.01;
     
     if (deltaA < 0 && deltaB > 0) {
-        fee = 0;
+        fee = 0.01;
     }
 
     var aBalance = num.parse(inputAmount) * aPrice;
-    var output = (aBalance / bPrice) * (1 - fee);
+    var outputAmount = aBalance / bPrice;
+
+    var feeOutput = outputAmount * (fee / 100);
+
+    outputAmount - feeOutput;
+
+    if (bPoolAccountInfo.balance < outputAmount * pow(10, bPoolAccountInfo.decimals)) {
+      print(bPoolAccountInfo.balance / pow(10, bPoolAccountInfo.decimals));
+      return emit(SwapScreenState(a: sell, b: buy, isRouteLoading: false, error: "Insufficient liquidity"));
+    }
+    
 
     if (currentRequestId == lastRequestId && state is SwapScreenState) {
-        emit(SwapScreenState(a: sell, b: buy, isRouteLoading: false, sroute: Sroute(outputAmount: output.toStringAsFixed(6), slippage: 0)));
+      var routeUpdateTimeInSeconds = 15;
+        emit(SwapScreenState(a: sell, b: buy, isRouteLoading: false, 
+          sroute: Sroute(
+            a: sell,
+            b: buy,
+            inputAmount: int.parse((num.parse(inputAmount) * pow(10, aPoolAccountInfo.decimals)).toStringAsFixed(0)),
+            minOutputAmount: int.parse((outputAmount * pow(10, bPoolAccountInfo.decimals)).toStringAsFixed(0)),
+            uiOutputAmount: outputAmount.toStringAsFixed(bPoolAccountInfo.decimals), 
+            slippage: 0,
+            routeUpdateTime: routeUpdateTimeInSeconds)));
       }
     });
   }
 
 
-  Future<void> sendTransaction() async {}
+  Future<void> swap(BuildContext context, {required Sroute route}) async {
+
+    var hash = await connection.getLatestBlockhash();
+
+    // Build tx
+    var transaction = await SpiceProgram.swap(
+      signer: adapter.signer!, 
+      inputToken: route.a, 
+      outputToken: route.b, 
+      inputAmount: route.inputAmount, 
+      minOutputAmount: route.minOutputAmount, 
+      blockhash: hash.blockhash
+    );
+
+    // Sign tx
+    var signedTransaction = await adapter.signTransaction(transaction);
+
+    // Send tx
+    var send = await connection.sendTransaction(signedTransaction);
+
+    context.mounted ? Toastification.processing(context, "Processing") : null;
+
+    await connection.signatureSubscribe(send, config: const CommitmentConfig(commitment: Commitment.confirmed), 
+      onDone: () {
+        Toastification.success(context, send);
+    }, onError: (error, [stackTrace]) {
+        Toastification.soon(context, "Error");
+    });
+
+  }
+
+  Future<void> increaseLiquidity(BuildContext context, {required Pool pool, required String amount}) async {
+    var hash = await connection.getLatestBlockhash();
+
+    var transaction = await SpiceProgram.increaseLiquidity(
+      signer: adapter.signer!, 
+      pool: pool, 
+      amount: int.parse((num.parse(amount) * pow(10, pool.decimals)).toStringAsFixed(0)), 
+      blockhash: hash.blockhash);
+
+    // Sign tx
+    var signedTransaction = await adapter.signTransaction(transaction);
+
+    // Send tx
+    var send = await connection.sendTransaction(signedTransaction);
+
+    context.mounted ? Toastification.processing(context, "Processing") : null;
+
+    await connection.signatureSubscribe(send, config: const CommitmentConfig(commitment: Commitment.confirmed), 
+      onDone: () {
+        Toastification.success(context, send);
+    }, onError: (error, [stackTrace]) {
+        Toastification.soon(context, "Error");
+    });
+  }
 
 }

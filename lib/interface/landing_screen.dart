@@ -30,7 +30,7 @@ class _LandingScreenState extends State<LandingScreen> {
         BlocBuilder<MainCubit, MainStates>(
           builder: (context, state) {
             if (state is SwapScreenState) {
-              return SwapScreen(a: state.a, b: state.b, isRouteLoading: state.isRouteLoading, spiceRoute: state.sroute);
+              return SwapScreen(a: state.a, b: state.b, isRouteLoading: state.isRouteLoading, spiceRoute: state.sroute, error: state.error);
             }
 
             if (state is ChooseTokenScreenState) {

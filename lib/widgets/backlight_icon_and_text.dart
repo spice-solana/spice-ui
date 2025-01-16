@@ -30,14 +30,14 @@ class _BacklightIconAndTextState extends State<BacklightIconAndText> {
             Icon(
               widget.iconData,
               size: widget.iconSize ?? 16.0,
-              color: isHover ? const Color(0xFF80EEFB) : widget.active ? null : Colors.grey.withOpacity(0.5),
+              color: isHover ? Theme.of(context).colorScheme.onPrimary : widget.active ? null : Colors.grey.withOpacity(0.5),
             ),
             const SizedBox(width: 8.0),
             Text(
               widget.text,
               style: TextStyle(
                 fontSize: 15.0,
-                color: isHover ? const Color(0xFF80EEFB) : widget.active ? null : Colors.grey.withOpacity(0.5),
+                color: isHover ? Theme.of(context).colorScheme.onPrimary : widget.active ? null : Colors.grey.withOpacity(0.5),
               ),
             ),
           ],

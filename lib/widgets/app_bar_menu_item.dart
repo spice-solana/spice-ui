@@ -25,6 +25,6 @@ class _AppBarMenuItemState extends State<AppBarMenuItem> {
         },
         child: Text(widget.title,
             style: TextStyle(
-                fontSize: 15.0, color: isHover ? const Color(0xFF80EEFB) : widget.isActive ? null : Colors.grey.withOpacity(0.5))));
+                fontSize: 15.0, color: isHover ? Theme.of(context).colorScheme.onPrimary : widget.isActive ? null : Colors.grey.withOpacity(0.5))));
   }
 }

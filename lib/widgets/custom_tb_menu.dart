@@ -49,7 +49,7 @@ class _CustomTbMenuState extends State<CustomTbMenu> {
           width: 110.0,
           decoration: BoxDecoration(
             color: isSelected
-                ? const Color(0xFF80EEFB)
+                ? Theme.of(context).colorScheme.onPrimary
                 : Colors.grey.withOpacity(0.2),
             borderRadius: BorderRadius.circular(5.0),
           ),
@@ -210,13 +210,13 @@ class _CustomTbMenuState extends State<CustomTbMenu> {
           Icon(
             Icons.speed,
             size: 21.0,
-            color: isHover ? const Color(0xFF80EEFB) : null,
+            color: isHover ? Theme.of(context).colorScheme.onPrimary : null,
           ),
           const SizedBox(width: 16.0),
           Text(
             context.read<TbCubit>().priorityType,
             style: TextStyle(
-              color: isHover ? const Color(0xFF80EEFB) : null,
+              color: isHover ? Theme.of(context).colorScheme.onPrimary : null,
               fontSize: 14.0,
             ),
           ),

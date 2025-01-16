@@ -22,8 +22,7 @@ function disconnect() {
 async function signTransaction(tx) {
     const deserializedTx = VersionedTransaction.deserialize(tx);
     const signedTransaction = await window.solana.signTransaction(deserializedTx);
-    console.log(signedTransaction);
-    return signedTransaction;
+    return signedTransaction.serialize();
 }
 
 window.walletModule = { 

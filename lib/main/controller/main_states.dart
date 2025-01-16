@@ -8,8 +8,9 @@ class SwapScreenState extends MainStates {
   final Pool b;
   final bool isRouteLoading;
   Sroute? sroute;
+  String? error;
 
-  SwapScreenState({required this.a, required this.b, required this.isRouteLoading, this.sroute});
+  SwapScreenState({required this.a, required this.b, required this.isRouteLoading, this.sroute, this.error});
 }
 
 class ChooseTokenScreenState extends MainStates {

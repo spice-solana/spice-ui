@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:spice_ui/widgets/custom_inkwell.dart';
 
 class BacklightIcon extends StatefulWidget {
@@ -23,6 +23,6 @@ class _BacklightIconState extends State<BacklightIcon> {
         setState(() {});
       },
       onTap: widget.onTap,
-      child: Icon(widget.iconData, size: widget.iconSize, color: isHover ? const Color(0xFF80EEFB) : null));
+      child: Icon(widget.iconData, size: widget.iconSize, color: isHover ? Theme.of(context).colorScheme.onPrimary : null));
   }
 }
