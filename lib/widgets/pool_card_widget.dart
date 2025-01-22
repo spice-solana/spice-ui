@@ -64,12 +64,14 @@ class _PoolCardWidgetState extends State<PoolCardWidget> {
                       style: TextStyle(color: Theme.of(context).hintColor)),
                   const TextSpan(text: "0"),
                 ])),
+                const SizedBox(height: 4),
                 Text.rich(TextSpan(children: [
                   TextSpan(
                       text: 'Volume (24h): ',
                       style: TextStyle(color: Theme.of(context).hintColor)),
                   const TextSpan(text: "0"),
                 ])),
+                const SizedBox(height: 4),
                 Text.rich(TextSpan(children: [
                   TextSpan(
                       text: 'Fees (24h): ',

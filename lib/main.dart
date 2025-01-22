@@ -23,8 +23,8 @@ void main() async {
 
   runApp(MultiBlocProvider(
     providers: [
-      BlocProvider<AdapterCubit>(create: (_) => AdapterCubit()),
-      BlocProvider<MainCubit>(create: (context) => MainCubit(context.read<AdapterCubit>())),
+      BlocProvider<MainCubit>(create: (_) => MainCubit()),
+      BlocProvider<AdapterCubit>(create: (context) => AdapterCubit(context.read<MainCubit>())),
       BlocProvider<ThemeCubit>(create: (_) => ThemeCubit()),
       BlocProvider<TbCubit>(create: (_) => TbCubit()),
     ],

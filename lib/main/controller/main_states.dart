@@ -1,4 +1,5 @@
 import 'package:spice_ui/models/pool.dart';
+import 'package:spice_ui/models/portfolio.dart';
 import 'package:spice_ui/models/sroute.dart';
 
 abstract class MainStates {}
@@ -22,6 +23,7 @@ class ChooseTokenScreenState extends MainStates {
 class LiquidityScreenState extends MainStates {}
 
 class PortfolioScreenState extends MainStates {
-  final String text;
-  PortfolioScreenState({required this.text});
+  final bool showLoadingIndicator;
+  final Portfolio? portfolio;
+  PortfolioScreenState({required this.showLoadingIndicator, this.portfolio});
 }

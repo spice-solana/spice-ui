@@ -18,5 +18,23 @@ final List<Pool> poolsData = [
       logoUrl: "https://s2.coinmarketcap.com/static/img/coins/64x64/825.png",
       mint: "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB",
       pythOracle: "HT2PLQBcG5EiCcNSaMHAjSgd9F98ecpATbk4Sk5oYuM",
-      decimals: 6)
+      decimals: 6),
+  //   Pool(
+  //     symbol: "JUP",
+  //     logoUrl: "https://s2.coinmarketcap.com/static/img/coins/64x64/29210.png",
+  //     mint: "JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN",
+  //     pythOracle: "g6eRCbboSwK4tSWngn773RCMexr1APQr4uA9bGZBYfo",
+  //     decimals: 6),
+  // Pool(
+  //     symbol: "BONK",
+  //     logoUrl: "https://s2.coinmarketcap.com/static/img/coins/64x64/23095.png",
+  //     mint: "DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263",
+  //     pythOracle: "8ihFLu5FimgTQ1Unh4dVyEHUGodJ5gJQCrQf4KUVB9bN",
+  //     decimals: 5),
+  // Pool(
+  //     symbol: "TRUMP",
+  //     logoUrl: "https://s2.coinmarketcap.com/static/img/coins/64x64/35336.png",
+  //     mint: "6p6xgHyF7AeE6TZkSmFsko444wqoP15icUSqi2jfGiPN",
+  //     pythOracle: "A8G6XyA6fSrsavG63ssAGU3Hnt2oDZARxefREzAY5axH",
+  //     decimals: 6),
 ];

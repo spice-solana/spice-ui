@@ -42,8 +42,7 @@ class _LinearRouteUpdateBarState extends State<LinearRouteUpdateBar> {
       duration: Duration(seconds: widget.duration),
       curve: Curves.linear,
       decoration: BoxDecoration(
-        border: Border.all(
-            color: Theme.of(context).colorScheme.onPrimary, width: 1.0),
+        color: Theme.of(context).colorScheme.onPrimary,
       ),
     );
   }

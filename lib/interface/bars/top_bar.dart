@@ -97,7 +97,7 @@ class _TopBarState extends State<TopBar> {
                       const SizedBox(width: 16.0),
                       AppBarMenuItem(
                           onTap: () => setState(() {
-                                context.read<MainCubit>().moveToPortfolioScreen();
+                                context.read<MainCubit>().moveToPortfolioScreen(adapterCubit.state);
                               }),
                           title: "Portfolio",
                           isActive: mainCubit.state is PortfolioScreenState

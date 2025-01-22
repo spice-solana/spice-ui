@@ -42,7 +42,7 @@ class _LandingScreenState extends State<LandingScreen> {
             }
         
             if (state is PortfolioScreenState) {
-              return const PortfolioScreen();
+              return PortfolioScreen(showLoadingIndicator: state.showLoadingIndicator, portfolio: state.portfolio);
             }
         
             return const SizedBox();

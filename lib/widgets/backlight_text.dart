@@ -4,7 +4,8 @@ import 'package:spice_ui/widgets/custom_inkwell.dart';
 class BacklightText extends StatefulWidget {
   final String text;
   final Function() onTap;
-  const BacklightText({super.key, required this.text, required this.onTap});
+  final Color? color;
+  const BacklightText({super.key, required this.text, required this.onTap, this.color});
 
   @override
   State<BacklightText> createState() => _BacklightTextState();
@@ -22,6 +23,6 @@ class _BacklightTextState extends State<BacklightText> {
         setState(() {});
       },
       onTap: widget.onTap,
-      child: Text(widget.text, style: TextStyle(color: isHover ? Theme.of(context).colorScheme.onPrimary : null, fontSize: 14.0)));
+      child: Text(widget.text, style: TextStyle(color: isHover ? Theme.of(context).colorScheme.onPrimary : widget.color, fontSize: 14.0)));
   }
 }

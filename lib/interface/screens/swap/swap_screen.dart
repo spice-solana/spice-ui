@@ -51,6 +51,12 @@ class _SwapScreenState extends State<SwapScreen> {
         children: [
           Column(
             children: [
+              // Container(
+              //   height: 28.0,
+              //   padding: const EdgeInsets.all(8.0),
+              //   decoration: BoxDecoration(
+              //     color: Colors.grey.withOpacity(0.05),
+              //   )),
               const SizedBox(height: 16.0),
               Container(
                 height: 100.0,
@@ -251,7 +257,7 @@ class _SwapScreenState extends State<SwapScreen> {
                 return Padding(
                   padding: const EdgeInsets.only(bottom: 16.0),
                   child: CustomInkWell(
-                    onTap: () => mainCubit.swap(context, route: widget.spiceRoute!),
+                    onTap: () => mainCubit.swap(context, adapter: context.read<AdapterCubit>(), route: widget.spiceRoute!),
                     child: Container(
                       height: 45.0,
                       alignment: Alignment.center,
