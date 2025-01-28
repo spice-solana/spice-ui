@@ -74,8 +74,7 @@ class _SwapScreenState extends State<SwapScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Text('Your selling',
-                            style:
-                                TextStyle(fontSize: 14.0, color: Colors.grey)),
+                            style: TextStyle(fontSize: 14.0, color: Colors.grey)),
                         const SizedBox(height: 8.0),
                         CustomInkWell(
                           onTap: () =>
@@ -233,7 +232,7 @@ class _SwapScreenState extends State<SwapScreen> {
                                 height: 50.0,
                                 alignment: Alignment.center,
                                 child: widget.isRouteLoading
-                                    ? const SizedBox(
+                                    ?  const SizedBox(
                                         height: 21.0,
                                         width: 21.0,
                                         child: CircularProgressIndicator(

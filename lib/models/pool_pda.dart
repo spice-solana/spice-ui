@@ -4,6 +4,8 @@ import 'package:fixnum/fixnum.dart';
 
 
 class PoolPda {
+  final bool isActive;
+  final int baseFee;
   final String mint;
   final String pythPriceFeedAccount;
   final String lpTokenMint;
@@ -12,17 +14,19 @@ class PoolPda {
   final int balance;
   final int protocolIncome;
 
-  PoolPda({required this.mint, required this.pythPriceFeedAccount, required this.lpTokenMint, required this.totalLpSupply, required this.cumulativeYieldPerToken, required this.balance, required this.protocolIncome});
+  PoolPda({required this.isActive, required this.baseFee, required this.mint, required this.pythPriceFeedAccount, required this.lpTokenMint, required this.totalLpSupply, required this.cumulativeYieldPerToken, required this.balance, required this.protocolIncome});
 
   factory PoolPda.fromAccountData(List<int> data) {
     return PoolPda( 
-      mint: base58.encode(Uint8List.fromList(data.getRange(8, 40).toList())), 
-      pythPriceFeedAccount: base58.encode(Uint8List.fromList(data.getRange(40, 72).toList())), 
-      lpTokenMint: base58.encode(Uint8List.fromList(data.getRange(72, 104).toList())), 
-      totalLpSupply: Int64.fromBytes(data.getRange(104, 112).toList()).toInt(), 
-      cumulativeYieldPerToken: Int64.fromBytes(data.getRange(112, 120).toList()).toInt(),
-      balance: Int64.fromBytes(data.getRange(120, 128).toList()).toInt(),
-      protocolIncome: Int64.fromBytes(data.getRange(128, 136).toList()).toInt()
+      isActive: data.getRange(8, 9).toList()[0] == 1 ? true : false,
+      baseFee: Int64.fromBytes(data.getRange(9, 17).toList()).toInt(),
+      mint: base58.encode(Uint8List.fromList(data.getRange(17, 49).toList())), 
+      pythPriceFeedAccount: base58.encode(Uint8List.fromList(data.getRange(49, 81).toList())), 
+      lpTokenMint: base58.encode(Uint8List.fromList(data.getRange(81, 113).toList())), 
+      totalLpSupply: Int64.fromBytes(data.getRange(113, 121).toList()).toInt(), 
+      cumulativeYieldPerToken: Int64.fromBytes(data.getRange(121, 129).toList()).toInt(),
+      balance: Int64.fromBytes(data.getRange(129, 137).toList()).toInt(),
+      protocolIncome: Int64.fromBytes(data.getRange(137, 145).toList()).toInt()
     );
   }
 }

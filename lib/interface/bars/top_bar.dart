@@ -10,6 +10,9 @@ import 'package:spice_ui/widgets/app_bar_menu_item.dart';
 import 'package:spice_ui/widgets/custom_inkwell.dart';
 import 'package:spice_ui/widgets/custom_vertical_divider.dart';
 import 'package:spice_ui/widgets/text_underline.dart';
+// ignore: avoid_web_libraries_in_flutter
+import 'dart:js' as js;
+
 
 class TopBar extends StatefulWidget {
   const TopBar({super.key});
@@ -40,7 +43,7 @@ class _TopBarState extends State<TopBar> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               const SizedBox(),
-              TextUnderline(text: "✅ Launched at Solana Devnet. Click here for more details", onTap: () {}),
+              TextUnderline(text: "✅ Launched at Solana Devnet. Click here for more details", onTap: () => js.context.callMethod('open', ["https://spice.slite.com/app/docs/uOMCkmaNwr11FO"])),
               CustomInkWell(
                 onTap: () {
                   setState(() {

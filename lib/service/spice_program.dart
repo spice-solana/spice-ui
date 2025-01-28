@@ -7,7 +7,7 @@ import 'package:spice_ui/models/pool.dart';
 
 class SpiceProgram {
   static String solAddress = "So11111111111111111111111111111111111111112";
-  static Pubkey programId = Pubkey.fromBase58("qG3SiMGVxsFvL3oe9smGZJST7sLYNtB75VD9CgdzMQm");
+  static Pubkey programId = Pubkey.fromBase58("FwDYeYeFMJ1odANT1bx75vqmwQx66JSsm6WStFBXKHsW");
 
 
   static Future<Transaction> increaseLiquidity(
@@ -245,13 +245,13 @@ class SpiceProgram {
       required int inputAmount,
       required int minOutputAmount,
       required String blockhash,
-      required int route}) async {
+      required bool route}) async {
     final List<int> data = [];
     data.addAll(
         sha256.convert('global:swap'.codeUnits).bytes.getRange(0, 8).toList());
     data.addAll(Int64(inputAmount).toBytes());
     data.addAll(Int64(minOutputAmount).toBytes());
-    data.addAll(Int64(route).toBytes());
+    data.addAll(Int64(route ? 1 : 0).toBytes());
 
     final tokenAPoolPDA = Pubkey.findProgramAddress(
         ["POOL".codeUnits, base58.decode(inputToken.mint)],

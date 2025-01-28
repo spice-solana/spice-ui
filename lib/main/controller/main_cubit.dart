@@ -86,7 +86,9 @@ class MainCubit extends Cubit<MainStates> {
               var liquidity = truncateToDecimals(
                   providerAccountInfo.lpBalance / pow(10, pool.decimals),
                   pool.decimals);
-              var earned = truncateToDecimals(tokenInfo.amount.toInt() / pow(10, pool.decimals) * (poolAccountInfo.cumulativeYieldPerToken / cumulativeYieldPerTokenScale) - (providerAccountInfo.cumulativeYieldClaimed / pow(10, pool.decimals)),
+              
+              var cumYieldPerToken = (poolAccountInfo.cumulativeYieldPerToken - providerAccountInfo.userLastCumulativeIncome) / cumulativeYieldPerTokenScale;
+              var earned = truncateToDecimals((tokenInfo.amount.toInt() * cumYieldPerToken + providerAccountInfo.pendingIncome) / pow(10, pool.decimals),
                   pool.decimals);
 
               positions.add(Position(
@@ -166,27 +168,22 @@ class MainCubit extends Cubit<MainStates> {
           signer: "aZZ8CAZ1b1Ar3x4UoB6QxTeobpg5DusHYDM1NpLX8mQ",
           inputToken: sell,
           outputToken: buy,
-          inputAmount: int.parse(
-              (num.parse(inputAmount) * pow(10, sell.decimals))
-                  .toStringAsFixed(0)),
+          inputAmount: int.parse((num.parse(inputAmount) * pow(10, sell.decimals)).toStringAsFixed(0)),
           minOutputAmount: 0,
           blockhash: hash.blockhash, 
-          route: 1);
+          route: true);
 
-      var simulateTransaction =
-          await connection.simulateTransaction(transaction);
+      var simulateTransaction = await connection.simulateTransaction(transaction);
 
       if (simulateTransaction.err != null) {
-        var errorMessage =
-            extractErrorMessage(simulateTransaction.logs.toString());
+        var errorMessage = extractErrorMessage(simulateTransaction.logs.toString());
         return emit(SwapScreenState(
-            a: sell, b: buy, isRouteLoading: false, error: errorMessage));
+            a: sell, b: buy, isRouteLoading: false, error: errorMessage ?? simulateTransaction.err.toString()));
       }
 
-      var outputAmount =
-          extractValue(simulateTransaction.logs.toString(), "output");
+      var outputAmount = extractValue(simulateTransaction.logs.toString(), "output");
       var fee = extractValue(simulateTransaction.logs.toString(), "fee");
-
+    
       if (currentRequestId == lastRequestId && state is SwapScreenState) {
         var routeUpdateTimeInSeconds = 15;
         emit(SwapScreenState(
@@ -221,7 +218,7 @@ class MainCubit extends Cubit<MainStates> {
         inputAmount: route.inputAmount,
         minOutputAmount: route.minOutputAmount,
         blockhash: hash.blockhash,
-        route: 0);
+        route: false);
 
     var signedTransaction = await adapter.signTransaction(transaction);
 

@@ -12,8 +12,8 @@ String extractValue(String input, String key) {
   return match != null ? match.group(1) ?? '' : '';
 }
 
-String extractErrorMessage(String input) {
+String? extractErrorMessage(String input) {
   final regex = RegExp('Error Message: ([^,]+)');
   final match = regex.firstMatch(input);
-  return match != null ? match.group(1) ?? '' : '';
+  return match?.group(1);
 }

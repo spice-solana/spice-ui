@@ -81,7 +81,7 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
                               const Text("You don't have a position"),
                               const SizedBox(height: 16.0),
                               CustomInkWell(
-                                onTap: () {},
+                                onTap: () => context.read<MainCubit>().moveToLiquidityScreen(),
                                 child: Container(
                                   height: 32.0,
                                   width: 260.0,
