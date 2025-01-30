@@ -20,7 +20,7 @@ class ChooseTokenScreen extends StatelessWidget {
       decoration: BoxDecoration(
         color: Theme.of(context).scaffoldBackgroundColor,
         border: Border.all(
-          color: Colors.grey.withOpacity(0.2),
+          color: Theme.of(context).hintColor,
           width: 1.0,
         ),
       ),
@@ -54,7 +54,7 @@ class ChooseTokenScreen extends StatelessWidget {
                               width: 25.0,
                             )),
                     title: Text(pools[index].symbol),
-                    subtitle: pools[index].mint != "So11111111111111111111111111111111111111112" ? Text(pools[index].mint.cutText(), style: TextStyle(fontSize: 12.0, color: Theme.of(context).hintColor)) : null,
+                    subtitle: pools[index].mint != "So11111111111111111111111111111111111111112" ? Text(pools[index].mint.cutText(), style: const TextStyle(fontSize: 12.0, color: Colors.grey)) : null,
                   ),
                 );
           })),

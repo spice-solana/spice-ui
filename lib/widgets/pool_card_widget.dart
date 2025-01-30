@@ -28,7 +28,7 @@ class _PoolCardWidgetState extends State<PoolCardWidget> {
         height: 450.0,
         width: 100.0,
         decoration: BoxDecoration(
-            border: Border.all(color: Colors.grey.withOpacity(0.2))),
+            border: Border.all(color: Theme.of(context).hintColor)),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -58,25 +58,25 @@ class _PoolCardWidgetState extends State<PoolCardWidget> {
                   ),
                 ),
                 const SizedBox(height: 16),
-                Text.rich(TextSpan(children: [
+                const Text.rich(TextSpan(children: [
                   TextSpan(
                       text: 'Liquidity: ',
-                      style: TextStyle(color: Theme.of(context).hintColor)),
-                  const TextSpan(text: "0"),
+                      style: TextStyle(color: Colors.grey)),
+                  TextSpan(text: "0"),
                 ])),
                 const SizedBox(height: 4),
-                Text.rich(TextSpan(children: [
+                const Text.rich(TextSpan(children: [
                   TextSpan(
                       text: 'Volume (24h): ',
-                      style: TextStyle(color: Theme.of(context).hintColor)),
-                  const TextSpan(text: "0"),
+                      style: TextStyle(color: Colors.grey)),
+                  TextSpan(text: "0"),
                 ])),
                 const SizedBox(height: 4),
-                Text.rich(TextSpan(children: [
+                const Text.rich(TextSpan(children: [
                   TextSpan(
                       text: 'Fees (24h): ',
-                      style: TextStyle(color: Theme.of(context).hintColor)),
-                  const TextSpan(text: "0"),
+                      style: TextStyle(color: Colors.grey)),
+                  TextSpan(text: "0"),
                 ])),
                 const SizedBox(height: 16),
                 const Text(
@@ -92,7 +92,7 @@ class _PoolCardWidgetState extends State<PoolCardWidget> {
               height: 45.0,
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                border: Border(top: BorderSide(color: Colors.grey.withOpacity(0.2)))
+                border: Border(top: BorderSide(color: Theme.of(context).hintColor))
               ),
               child: const Text("+ Add liquidity", style: TextStyle(fontSize: 14.0, color: Colors.grey)),
             ) : const SizedBox(height: 45.0)

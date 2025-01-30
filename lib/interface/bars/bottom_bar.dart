@@ -24,7 +24,7 @@ class BottomBar extends StatelessWidget {
               color: Theme.of(context).scaffoldBackgroundColor,
               border: Border(
                   top: BorderSide(
-                      color: Colors.grey.withOpacity(0.2), width: 1.0))),
+                      color: Theme.of(context).hintColor, width: 1.0))),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,

@@ -39,7 +39,7 @@ final apptheme = {
       canvasColor: Colors.white,
       scaffoldBackgroundColor: Colors.white,
       primaryColor: const Color.fromARGB(255, 0, 0, 0),
-      hintColor: Colors.grey,
+      hintColor: Colors.grey.withOpacity(0.3),
       iconTheme: IconThemeData(
         color: Colors.blueGrey.shade300,
       ),
@@ -48,7 +48,7 @@ final apptheme = {
         primary: Colors.white,
         brightness: Brightness.light,
         primaryContainer: Colors.white,
-        secondary: const Color(0xFF252525),
+        secondary: Colors.grey.withOpacity(0.3),
     ),
   ),
   AppTheme.dark: ThemeData(
@@ -87,14 +87,14 @@ final apptheme = {
       canvasColor: Colors.white,
       scaffoldBackgroundColor: const Color(0xFF111314),
       primaryColor: const Color.fromARGB(255, 24, 30, 37),
-      hintColor: const Color.fromARGB(255, 182, 182, 182), 
+      hintColor: Colors.grey.withOpacity(0.2), 
       colorScheme: ColorScheme.fromSwatch().copyWith(
         onPrimary: const Color(0xFF80EEFB),
         primary: Colors.black,
         brightness: Brightness.dark,
         primaryContainer: Colors.black,
-        secondary: Colors.white,
-        surface: Colors.green,
+        secondary: Colors.grey,
+        surface: Colors.grey,
         onSurface: Colors.white      
   )),
 };

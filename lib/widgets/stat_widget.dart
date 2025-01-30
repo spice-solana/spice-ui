@@ -14,7 +14,7 @@ class StatWidget extends StatelessWidget {
         alignment: Alignment.centerLeft,
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
         decoration: BoxDecoration(
-            border: Border.all(color: Colors.grey.withOpacity(0.2))),
+            border: Border.all(color: Theme.of(context).hintColor)),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.start,

@@ -12,11 +12,11 @@ class SearchWidget extends StatelessWidget {
       child: TextField(
         // onTap: _openMenu,
         textCapitalization: TextCapitalization.words,
-        cursorColor: Colors.grey.withOpacity(0.2),
+        cursorColor: Theme.of(context).hintColor,
         decoration: InputDecoration(
           contentPadding: const EdgeInsets.symmetric(horizontal: 16.0),
           fillColor: Colors.transparent,
-          hintText: "Search pool",
+          hintText: "Search crypto",
           isDense: true,
           hintStyle: TextStyle(
               fontSize: 14.0,
@@ -37,15 +37,15 @@ class SearchWidget extends StatelessWidget {
           enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(5.0),
               borderSide:
-                  BorderSide(color: Colors.grey.withOpacity(0.2), width: 1.0)),
+                  BorderSide(color: Theme.of(context).hintColor, width: 1.0)),
           focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(5.0),
               borderSide:
-                  BorderSide(color: Colors.grey.withOpacity(0.2), width: 1.0)),
+                  BorderSide(color: Theme.of(context).hintColor, width: 1.0)),
           border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(5.0),
               borderSide:
-                  BorderSide(color: Colors.grey.withOpacity(0.2), width: 1.0)),
+                  BorderSide(color: Theme.of(context).hintColor, width: 1.0)),
         ),
       ),
     );

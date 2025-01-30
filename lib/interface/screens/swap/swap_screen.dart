@@ -41,7 +41,7 @@ class _SwapScreenState extends State<SwapScreen> {
       decoration: BoxDecoration(
         color: Theme.of(context).scaffoldBackgroundColor,
         border: Border.all(
-          color: Colors.grey.withOpacity(0.2),
+          color: Theme.of(context).hintColor,
           width: 1.0,
         ),
       ),
@@ -63,7 +63,7 @@ class _SwapScreenState extends State<SwapScreen> {
                 padding: const EdgeInsets.all(8.0),
                 decoration: BoxDecoration(
                   border: Border.all(
-                    color: Colors.grey.withOpacity(0.2),
+                    color: Theme.of(context).hintColor,
                     width: 1.0,
                   ),
                 ),
@@ -172,7 +172,7 @@ class _SwapScreenState extends State<SwapScreen> {
                     padding: const EdgeInsets.all(8.0),
                     decoration: BoxDecoration(
                       border: Border.all(
-                        color: Colors.grey.withOpacity(0.2),
+                        color: Theme.of(context).hintColor,
                         width: 1.0,
                       ),
                     ),
@@ -262,7 +262,7 @@ class _SwapScreenState extends State<SwapScreen> {
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
                           color: widget.isRouteLoading
-                              ? Colors.grey
+                              ? Theme.of(context).colorScheme.secondary
                               : const Color(0xFFA1F6CA),
                           borderRadius: BorderRadius.circular(5.0)),
                       child: const Text('Swap',
@@ -281,7 +281,7 @@ class _SwapScreenState extends State<SwapScreen> {
                       height: 45.0,
                       alignment: Alignment.center,
                       decoration: BoxDecoration(
-                          color: Colors.grey,
+                          color: Theme.of(context).colorScheme.secondary,
                           borderRadius: BorderRadius.circular(5.0)),
                       child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,

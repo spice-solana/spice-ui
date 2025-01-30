@@ -10,7 +10,7 @@ class CustomVerticalDivider extends StatelessWidget {
     return Container(
       height: height,
       width: 1.0,
-      color: Colors.grey.withOpacity(0.2),
+      color: Theme.of(context).hintColor,
     );
   }
 }
