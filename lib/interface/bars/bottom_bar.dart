@@ -76,6 +76,12 @@ class BottomBar extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   BacklightCustomIcon(
+                      assetIcon: "dune",
+                      onTap: () => js.context
+                          .callMethod('open', ['https://dune.com/zelmkhan/spice']),
+                      iconSize: 21.0),
+                  const SizedBox(width: 32.0),
+                  BacklightCustomIcon(
                       assetIcon: "x",
                       onTap: () => js.context
                           .callMethod('open', ['https://x.com/spice_protocol']),

@@ -60,7 +60,7 @@ void showActionDialog(BuildContext context, {required Pool pool, required String
                     TextUnderline(
                       text: pool.mint.cutText(),
                       fontSize: 13.0,
-                      color: Theme.of(context).hintColor,
+                      color: Colors.grey,
                       onTap: () => launchUrl(Uri.parse(
                         "https://explorer.solana.com/address/${pool.mint}?cluster=${SolanaConfig.cluster}")),
                     )
@@ -74,7 +74,7 @@ void showActionDialog(BuildContext context, {required Pool pool, required String
                     padding: const EdgeInsets.all(8.0),
                     decoration: BoxDecoration(
                       border: Border.all(
-                        color: Colors.grey.withOpacity(0.2),
+                        color: Theme.of(context).hintColor,
                         width: 1.0,
                       ),
                     ),
@@ -196,7 +196,7 @@ void showActionDialog(BuildContext context, {required Pool pool, required String
                             height: 45.0,
                             alignment: Alignment.center,
                             decoration: BoxDecoration(
-                                color: Colors.grey,
+                                color: Theme.of(context).colorScheme.secondary,
                                 borderRadius: BorderRadius.circular(5.0)),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
