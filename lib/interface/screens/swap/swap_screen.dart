@@ -77,8 +77,7 @@ class _SwapScreenState extends State<SwapScreen> {
                             style: TextStyle(fontSize: 14.0, color: Colors.grey)),
                         const SizedBox(height: 8.0),
                         CustomInkWell(
-                          onTap: () =>
-                              mainCubit.moveToChooseTokenScreen("selling"),
+                          onTap: () => mainCubit.moveToChooseTokenScreen("selling"),
                           child: Container(
                               height: 50.0,
                               padding: const EdgeInsets.all(8.0),
@@ -127,8 +126,6 @@ class _SwapScreenState extends State<SwapScreen> {
                               controller: _controller,
                               onChanged: (value) =>
                                   mainCubit.getRoute(inputAmount: value),
-                              cursorColor: Theme.of(context).hintColor,
-                              cursorWidth: 1.0,
                               decoration: InputDecoration(
                                 hintText: '0.00',
                                 hintStyle: TextStyle(

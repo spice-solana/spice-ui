@@ -170,19 +170,18 @@ class MainCubit extends Cubit<MainStates> {
           outputToken: buy,
           inputAmount: int.parse((num.parse(inputAmount) * pow(10, sell.decimals)).toStringAsFixed(0)),
           minOutputAmount: 0,
-          blockhash: hash.blockhash, 
-          route: true);
+          blockhash: hash.blockhash);
 
       var simulateTransaction = await connection.simulateTransaction(transaction);
 
-      if (simulateTransaction.err != null) {
+      if (simulateTransaction.err != null && extractErrorMessage(simulateTransaction.logs.toString()) != null) {
         var errorMessage = extractErrorMessage(simulateTransaction.logs.toString());
         return emit(SwapScreenState(
             a: sell, b: buy, isRouteLoading: false, error: errorMessage ?? simulateTransaction.err.toString()));
       }
 
-      var outputAmount = extractValue(simulateTransaction.logs.toString(), "output");
-      var fee = extractValue(simulateTransaction.logs.toString(), "fee");
+      var outputAmount = extractValue(simulateTransaction.logs.toString(), "Output");
+      var fee = extractValue(simulateTransaction.logs.toString(), "Fee");
     
       if (currentRequestId == lastRequestId && state is SwapScreenState) {
         var routeUpdateTimeInSeconds = 15;
@@ -217,8 +216,7 @@ class MainCubit extends Cubit<MainStates> {
         outputToken: route.b,
         inputAmount: route.inputAmount,
         minOutputAmount: route.minOutputAmount,
-        blockhash: hash.blockhash,
-        route: false);
+        blockhash: hash.blockhash);
 
     var signedTransaction = await adapter.signTransaction(transaction);
 

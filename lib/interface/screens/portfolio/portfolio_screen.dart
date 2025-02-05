@@ -24,7 +24,7 @@ class _PortfolioScreenState extends State<PortfolioScreen> {
     return BlocBuilder<AdapterCubit, AdapterStates>(builder: (context, state) {
       if (state is ConnectedAdapterState) {
         return widget.showLoadingIndicator
-            ? const Center(child: Text('loading...'))
+            ? const Center(child: Text('Loading...'))
             : Expanded(
                 child: SingleChildScrollView(
                   physics: const ClampingScrollPhysics(),
