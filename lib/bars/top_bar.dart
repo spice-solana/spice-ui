@@ -1,21 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:spice_ui/adapter/controller/adapter_cubit.dart';
 import 'package:spice_ui/adapter/controller/adapter_states.dart';
-import 'package:spice_ui/main/controller/main_cubit.dart';
-import 'package:spice_ui/main/controller/main_states.dart';
 import 'package:spice_ui/utils/extensions.dart';
 import 'package:spice_ui/widgets/app_bar_menu_item.dart';
 import 'package:spice_ui/widgets/custom_inkwell.dart';
 import 'package:spice_ui/widgets/custom_vertical_divider.dart';
-import 'package:spice_ui/widgets/text_underline.dart';
-// ignore: avoid_web_libraries_in_flutter
-import 'dart:js' as js;
 
 
 class TopBar extends StatefulWidget {
-  const TopBar({super.key});
+  final int state;
+  const TopBar({super.key, required this.state});
 
   @override
   State<TopBar> createState() => _TopBarState();
@@ -27,33 +24,31 @@ class _TopBarState extends State<TopBar> {
 
   @override
   Widget build(BuildContext context) {
-    final MainCubit mainCubit = context.read<MainCubit>();
     final AdapterCubit adapterCubit = context.read<AdapterCubit>();
     return Column(
       children: [
-
-        hideNotification ? const SizedBox() : Container(
-          height: 35.0,
-          width: MediaQuery.of(context).size.width,
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          alignment: Alignment.center,
-          color: Colors.amber.shade200,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const SizedBox(),
-              TextUnderline(text: "✅ Launched at Solana Devnet. Click here for more details", onTap: () => js.context.callMethod('open', ["https://spice.slite.com/app/docs/uOMCkmaNwr11FO"])),
-              CustomInkWell(
-                onTap: () {
-                  setState(() {
-                    hideNotification = true;
-                  });
-                },
-                child: const Icon(Icons.clear, size: 16.0, color: Colors.black)),
-            ],
-          ),
-        ),
+        // hideNotification ? const SizedBox() : Container(
+        //   height: 35.0,
+        //   width: MediaQuery.of(context).size.width,
+        //   padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        //   alignment: Alignment.center,
+        //   color: Colors.amber.shade200,
+        //   child: Row(
+        //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        //     crossAxisAlignment: CrossAxisAlignment.center,
+        //     children: [
+        //       const SizedBox(),
+        //       TextUnderline(text: "✅ Launched at Solana Devnet. Getting ready to launch on the main network", onTap: () => js.context.callMethod('open', ["https://info.spice.so/roadmap"])),
+        //       CustomInkWell(
+        //         onTap: () {
+        //           setState(() {
+        //             hideNotification = true;
+        //           });
+        //         },
+        //         child: const Icon(Icons.clear, size: 16.0, color: Colors.black)),
+        //     ],
+        //   ),
+        // ),
 
         Container(
           height: 50.0,
@@ -75,35 +70,27 @@ class _TopBarState extends State<TopBar> {
                           height: 23.0, width: 23.0),
                       const SizedBox(width: 64.0),
                       AppBarMenuItem(
-                          onTap: () {
-                            setState(() {
-                              context.read<MainCubit>().moveToSwapScreen();
-                            });
-                          },
+                          onTap: () => context.go('/swap'),
                           title: "Swap",
-                          isActive: mainCubit.state is SwapScreenState
+                          isActive: widget.state == 1
                               ? true
                               : false),
                       const SizedBox(width: 16.0),
                       const CustomVerticalDivider(height: 12.0),
                       const SizedBox(width: 16.0),
                       AppBarMenuItem(
-                          onTap: () => setState(() {
-                                context.read<MainCubit>().moveToLiquidityScreen();
-                              }),
+                          onTap: () => context.go('/'),
                           title: "Liquidity",
-                          isActive: mainCubit.state is LiquidityScreenState
+                          isActive: widget.state == 2
                               ? true
                               : false),
                       const SizedBox(width: 16.0),
                       const CustomVerticalDivider(height: 12.0),
                       const SizedBox(width: 16.0),
                       AppBarMenuItem(
-                          onTap: () => setState(() {
-                                context.read<MainCubit>().moveToPortfolioScreen(adapterCubit.state);
-                              }),
+                          onTap: () => context.go('/portfolio'),
                           title: "Portfolio",
-                          isActive: mainCubit.state is PortfolioScreenState
+                          isActive: widget.state == 3
                               ? true
                               : false),
                     ],

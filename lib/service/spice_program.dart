@@ -7,7 +7,7 @@ import 'package:spice_ui/models/pool.dart';
 
 class SpiceProgram {
   static String solAddress = "So11111111111111111111111111111111111111112";
-  static Pubkey programId = Pubkey.fromBase58("DWs9rHogNhKwUtheext7iQVKA8BED4Fb5atzcyDsJKVx");
+  static Pubkey programId = Pubkey.fromBase58("83XtsaqkNZSPHdgNgZL6C9xT1hTdQJq5v9QM7wftXHsx");
 
 
   static Future<Transaction> increaseLiquidity(

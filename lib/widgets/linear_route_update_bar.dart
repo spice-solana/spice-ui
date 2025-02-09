@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:spice_ui/main/controller/main_cubit.dart';
+import 'package:spice_ui/swap/cubit/swap_cubit.dart';
 
 class LinearRouteUpdateBar extends StatefulWidget {
   final int duration;
@@ -24,7 +24,7 @@ class _LinearRouteUpdateBarState extends State<LinearRouteUpdateBar> {
       setState(() => containerWidth = 0.0);
     });
     debounce = Timer.periodic(Duration(seconds: widget.duration), (timer) {
-      context.read<MainCubit>().getRoute(inputAmount: widget.inputAmount);
+      context.read<SwapCubit>().getRoute(inputAmount: widget.inputAmount);
     });
   }
 

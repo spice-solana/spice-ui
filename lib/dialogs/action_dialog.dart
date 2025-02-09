@@ -4,8 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:spice_ui/adapter/controller/adapter_cubit.dart';
 import 'package:spice_ui/adapter/controller/adapter_states.dart';
-import 'package:spice_ui/main/config.dart';
-import 'package:spice_ui/main/controller/main_cubit.dart';
+import 'package:spice_ui/portfolio/cubit/portfolio_cubit.dart';
+import 'package:spice_ui/service/config.dart';
 import 'package:spice_ui/models/pool.dart';
 import 'package:spice_ui/utils/extensions.dart';
 import 'package:spice_ui/widgets/custom_inkwell.dart';
@@ -169,9 +169,9 @@ void showActionDialog(BuildContext context, {required Pool pool, required String
                         child: CustomInkWell(
                           onTap: () {
                             if (action == "add") {
-                              context.read<MainCubit>().increaseLiquidity(context, adapter: context.read<AdapterCubit>(), pool: pool, amount: controllerAmount.text);
+                              context.read<PortfolioCubit>().increaseLiquidity(context, adapter: context.read<AdapterCubit>(), pool: pool, amount: controllerAmount.text);
                             } else if (action == "withdraw") {
-                              context.read<MainCubit>().decreaseLiquidity(context, adapter: context.read<AdapterCubit>(), pool: pool, amount: controllerAmount.text);
+                              context.read<PortfolioCubit>().decreaseLiquidity(context, adapter: context.read<AdapterCubit>(), pool: pool, amount: controllerAmount.text);
                             }
                           },
                           child: Container(

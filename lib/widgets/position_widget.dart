@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:spice_ui/adapter/controller/adapter_cubit.dart';
-import 'package:spice_ui/interface/dialogs/action_dialog.dart';
-import 'package:spice_ui/main/controller/main_cubit.dart';
+import 'package:spice_ui/dialogs/action_dialog.dart';
 import 'package:spice_ui/models/portfolio.dart';
+import 'package:spice_ui/portfolio/cubit/portfolio_cubit.dart';
 import 'package:spice_ui/widgets/backlight_text.dart';
 
 class PositionWidget extends StatelessWidget {
@@ -102,7 +102,7 @@ class PositionWidget extends StatelessWidget {
                 const SizedBox(width: 36.0),
                 BacklightText(
                     text: "Claim",
-                    onTap: () => context.read<MainCubit>().claimIncome(context, adapter: context.read<AdapterCubit>(), pool: position.pool),
+                    onTap: () => context.read<PortfolioCubit>().claimIncome(context, adapter: context.read<AdapterCubit>(), pool: position.pool),
                     color: Colors.amber),
               ],
             )

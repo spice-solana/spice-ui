@@ -96,7 +96,7 @@ class BottomBar extends StatelessWidget {
                   BacklightCustomIcon(
                       assetIcon: "docs",
                       onTap: () => js.context.callMethod('open',
-                          ['https://spice.slite.page/p/l0emu5gAcQxsrO']),
+                          ['https://info.spice.so']),
                       iconSize: 19.0),
                   const SizedBox(width: 32.0),
                   BacklightCustomIcon(

@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 String truncateToDecimals(num number, int decimals) {
   if (number.toString().split('.').last.length > decimals) {
     return number.toStringAsFixed(decimals);

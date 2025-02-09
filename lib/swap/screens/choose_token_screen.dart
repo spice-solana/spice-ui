@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:spice_ui/main/controller/main_cubit.dart';
 import 'package:spice_ui/models/pool.dart';
+import 'package:spice_ui/swap/cubit/swap_cubit.dart';
 import 'package:spice_ui/utils/extensions.dart';
 
 
-class ChooseTokenScreen extends StatelessWidget {
+class ChooseCoinScreen extends StatelessWidget {
   final String side;
   final List<Pool> pools;
-  const ChooseTokenScreen({super.key, required this.side, required this.pools});
+  const ChooseCoinScreen({super.key, required this.side, required this.pools});
 
   @override
   Widget build(BuildContext context) {
-    final MainCubit mainCubit = context.read<MainCubit>();
+    final SwapCubit swapCubit = context.read<SwapCubit>();
     return Container(
       height: 500.0,
       width: 400.0,
@@ -30,7 +30,7 @@ class ChooseTokenScreen extends StatelessWidget {
         children: [
           Row(
             children: [
-              IconButton(onPressed: () => mainCubit.moveToSwapScreen(), icon: Icon(Icons.arrow_back, size: 21.0, color: Theme.of(context).iconTheme.color)),
+              IconButton(onPressed: () => swapCubit.moveToSwapScreen(), icon: Icon(Icons.arrow_back, size: 21.0, color: Theme.of(context).iconTheme.color)),
               const SizedBox(width: 16.0),
               Text('Your $side',
                         style:
@@ -45,7 +45,7 @@ class ChooseTokenScreen extends StatelessWidget {
                 return Padding(
                   padding: const EdgeInsets.only(bottom: 16.0),
                   child: ListTile(
-                    onTap: () => mainCubit.chooseToken(side: side, pool: pools[index]),
+                    onTap: () => swapCubit.chooseToken(side: side, pool: pools[index]),
                     leading: ClipRRect(
                             borderRadius: BorderRadius.circular(100.0),
                             child: Image.network(

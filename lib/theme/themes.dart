@@ -208,9 +208,9 @@ final apptheme = {
       fontFamily: "CPMono",
       cardColor: Colors.grey.shade800,
       canvasColor: Colors.white,
-      scaffoldBackgroundColor: const Color(0xFF111314),
+      scaffoldBackgroundColor: const Color(0xFF0C0E10),
       primaryColor: const Color.fromARGB(255, 24, 30, 37),
-      hintColor: Colors.grey.withOpacity(0.2),
+      hintColor: Colors.grey.withOpacity(0.1),
       colorScheme: ColorScheme.fromSwatch().copyWith(
           onPrimary: const Color(0xFF80EEFB),
           primary: Colors.black,

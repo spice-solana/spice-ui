@@ -4,9 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:spice_ui/adapter/controller/adapter_cubit.dart';
 import 'package:spice_ui/adapter/controller/adapter_states.dart';
-import 'package:spice_ui/main/controller/main_cubit.dart';
 import 'package:spice_ui/models/pool.dart';
 import 'package:spice_ui/models/sroute.dart';
+import 'package:spice_ui/swap/cubit/swap_cubit.dart';
 import 'package:spice_ui/widgets/custom_inkwell.dart';
 import 'package:spice_ui/widgets/linear_route_update_bar.dart';
 
@@ -33,7 +33,7 @@ class _SwapScreenState extends State<SwapScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final MainCubit mainCubit = context.read<MainCubit>();
+    final SwapCubit swapCubit = context.read<SwapCubit>();
     return Container(
       height: 500.0,
       width: 400.0,
@@ -74,10 +74,12 @@ class _SwapScreenState extends State<SwapScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Text('Your selling',
-                            style: TextStyle(fontSize: 14.0, color: Colors.grey)),
+                            style:
+                                TextStyle(fontSize: 14.0, color: Colors.grey)),
                         const SizedBox(height: 8.0),
                         CustomInkWell(
-                          onTap: () => mainCubit.moveToChooseTokenScreen("selling"),
+                          onTap: () =>
+                              swapCubit.moveToChooseTokenScreen("selling"),
                           child: Container(
                               height: 50.0,
                               padding: const EdgeInsets.all(8.0),
@@ -125,7 +127,7 @@ class _SwapScreenState extends State<SwapScreen> {
                             child: TextField(
                               controller: _controller,
                               onChanged: (value) =>
-                                  mainCubit.getRoute(inputAmount: value),
+                                  swapCubit.getRoute(inputAmount: value),
                               decoration: InputDecoration(
                                 hintText: '0.00',
                                 hintStyle: TextStyle(
@@ -141,8 +143,8 @@ class _SwapScreenState extends State<SwapScreen> {
                                       decimal:
                                           true), // Поддержка чисел с точкой
                               inputFormatters: [
-                                FilteringTextInputFormatter.allow(RegExp(
-                                    r'^\d*\.?\d*')), // Только числа и точка
+                                FilteringTextInputFormatter.allow(
+                                    RegExp(r'^\d*\.?\d*')),
                               ],
                             ))
                       ],
@@ -154,7 +156,7 @@ class _SwapScreenState extends State<SwapScreen> {
               CustomInkWell(
                 onTap: () {
                   _controller.clear();
-                  mainCubit.tokensFlip();
+                  swapCubit.tokensFlip();
                 },
                 child: Icon(Icons.swap_vert_rounded,
                     color: Colors.grey.withOpacity(0.5)),
@@ -163,7 +165,11 @@ class _SwapScreenState extends State<SwapScreen> {
               Stack(
                 alignment: Alignment.topLeft,
                 children: [
-                  widget.spiceRoute != null ? LinearRouteUpdateBar(inputAmount: _controller.text, duration: widget.spiceRoute!.routeUpdateTime) : const SizedBox(),
+                  widget.spiceRoute != null
+                      ? LinearRouteUpdateBar(
+                          inputAmount: _controller.text,
+                          duration: widget.spiceRoute!.routeUpdateTime)
+                      : const SizedBox(),
                   Container(
                     height: 100.0,
                     padding: const EdgeInsets.all(8.0),
@@ -180,12 +186,12 @@ class _SwapScreenState extends State<SwapScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const Text('Your buying',
-                                style:
-                                    TextStyle(fontSize: 14.0, color: Colors.grey)),
+                                style: TextStyle(
+                                    fontSize: 14.0, color: Colors.grey)),
                             const SizedBox(height: 8.0),
                             CustomInkWell(
                               onTap: () =>
-                                  mainCubit.moveToChooseTokenScreen("buying"),
+                                  swapCubit.moveToChooseTokenScreen("buying"),
                               child: Container(
                                   height: 50.0,
                                   padding: const EdgeInsets.all(8.0),
@@ -196,7 +202,8 @@ class _SwapScreenState extends State<SwapScreen> {
                                   child: Row(
                                     children: [
                                       ClipRRect(
-                                        borderRadius: BorderRadius.circular(100.0),
+                                        borderRadius:
+                                            BorderRadius.circular(100.0),
                                         child: Image.network(widget.b.logoUrl,
                                             height: 25.0, width: 25.0),
                                       ),
@@ -216,8 +223,10 @@ class _SwapScreenState extends State<SwapScreen> {
                           children: [
                             Row(
                               children: [
-                                const Icon(Icons.account_balance_wallet_outlined,
-                                    size: 14.0, color: Colors.grey),
+                                const Icon(
+                                    Icons.account_balance_wallet_outlined,
+                                    size: 14.0,
+                                    color: Colors.grey),
                                 const SizedBox(width: 8.0),
                                 Text('0 ${widget.b.symbol}',
                                     style: const TextStyle(
@@ -229,12 +238,14 @@ class _SwapScreenState extends State<SwapScreen> {
                                 height: 50.0,
                                 alignment: Alignment.center,
                                 child: widget.isRouteLoading
-                                    ?  const SizedBox(
+                                    ? const SizedBox(
                                         height: 21.0,
                                         width: 21.0,
                                         child: CircularProgressIndicator(
-                                            color: Colors.grey, strokeWidth: 1.0))
-                                    : Text(widget.spiceRoute?.uiOutputAmount ?? "",
+                                            color: Colors.grey,
+                                            strokeWidth: 1.0))
+                                    : Text(
+                                        widget.spiceRoute?.uiOutputAmount ?? "",
                                         style: const TextStyle(fontSize: 21.0)))
                           ],
                         )
@@ -245,15 +256,17 @@ class _SwapScreenState extends State<SwapScreen> {
               ),
             ],
           ),
-          Text(widget.error ?? '', style: const TextStyle(fontSize: 14.0, color: Colors.red)),
+          Text(widget.error ?? '',
+              style: const TextStyle(fontSize: 14.0, color: Colors.red)),
           BlocBuilder<AdapterCubit, AdapterStates>(
             builder: (context, state) {
-
               if (state is ConnectedAdapterState) {
                 return Padding(
                   padding: const EdgeInsets.only(bottom: 16.0),
                   child: CustomInkWell(
-                    onTap: () => mainCubit.swap(context, adapter: context.read<AdapterCubit>(), route: widget.spiceRoute!),
+                    onTap: () => swapCubit.swap(context,
+                        adapter: context.read<AdapterCubit>(),
+                        route: widget.spiceRoute!),
                     child: Container(
                       height: 45.0,
                       alignment: Alignment.center,
@@ -281,16 +294,16 @@ class _SwapScreenState extends State<SwapScreen> {
                           color: Theme.of(context).colorScheme.secondary,
                           borderRadius: BorderRadius.circular(5.0)),
                       child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              const Text('Connect',
-                                  style: TextStyle(color: Colors.black)),
-                              const SizedBox(width: 16.0),
-                              SvgPicture.asset('assets/logos/phantom_logo.svg',
-                                  height: 16.0, width: 16.0),
-                            ],
-                          ),
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          const Text('Connect',
+                              style: TextStyle(color: Colors.black)),
+                          const SizedBox(width: 16.0),
+                          SvgPicture.asset('assets/logos/phantom_logo.svg',
+                              height: 16.0, width: 16.0),
+                        ],
+                      ),
                     ),
                   ),
                 );

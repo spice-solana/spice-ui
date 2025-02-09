@@ -1,16 +1,15 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:solana_web3/solana_web3.dart';
 import 'package:spice_ui/adapter/controller/adapter_states.dart';
-import 'package:spice_ui/main/controller/main_cubit.dart';
-import 'package:spice_ui/main/controller/main_states.dart';
+import 'package:spice_ui/portfolio/cubit/portfolio_cubit.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../wallet_module.dart' as wm;
 import 'package:js/js_util.dart';
 import 'dart:async';
 
 class AdapterCubit extends Cubit<AdapterStates> {
-  final MainCubit mainCubit;
-  AdapterCubit(this.mainCubit) : super(UnconnectedAdapterState());
+  final PortfolioCubit portfolioCubit;
+  AdapterCubit(this.portfolioCubit) : super(UnconnectedAdapterState());
 
   String? signer;
 
@@ -25,10 +24,9 @@ class AdapterCubit extends Cubit<AdapterStates> {
     
     emit(ConnectedAdapterState(address: wm.address()));
 
-    if (mainCubit.state is PortfolioScreenState) {
-      mainCubit.moveToPortfolioScreen(state);
+    if (!portfolioCubit.isClosed) {
+      portfolioCubit.loadingPortfolio(signer: signer!);
     }
-
   }
 
   Future<void> disconnect() async {
