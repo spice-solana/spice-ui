@@ -63,8 +63,8 @@ class _LiquidityScreen extends State<LiquidityScreen> {
                                     isTables = value;
                                     setState(() {});
                                   },
-                                  trackColor: const Color(0xFF80EEFB),
-                                  activeColor: const Color(0xFF80EEFB)))),
+                                  inactiveTrackColor: Theme.of(context).colorScheme.onPrimary,
+                                  activeTrackColor: Theme.of(context).colorScheme.onPrimary))),
                       const SizedBox(width: 16.0),
                       const Text('Tables'),
                     ],

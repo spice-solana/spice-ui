@@ -1,6 +1,4 @@
 import 'dart:async';
-
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class LoadingText extends StatefulWidget {
@@ -12,6 +10,7 @@ class LoadingText extends StatefulWidget {
 
 class LoadingTextState extends State<LoadingText> {
   int _dotIndex = 0;
+  Timer? _timer;
 
   @override
   void initState() {
@@ -19,12 +18,18 @@ class LoadingTextState extends State<LoadingText> {
     _startDotAnimation();
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+    _timer?.cancel();
+  }
+
   void _startDotAnimation() {
-    compute((message) => Timer.periodic(const Duration(milliseconds: 250), (timer) {
+    _timer = Timer.periodic(const Duration(milliseconds: 250), (timer) {
       setState(() {
         _dotIndex = (_dotIndex + 1) % 4; // Cycling from 0 to 3
       });
-    }), null);
+    });
   }
 
   @override

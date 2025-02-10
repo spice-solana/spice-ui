@@ -104,7 +104,7 @@ final apptheme = {
         color: Colors.blueGrey.shade300,
       ),
       colorScheme: ColorScheme.fromSwatch().copyWith(
-        onPrimary: const Color(0xFF80EEFB),
+        onPrimary: const Color(0xFFA3ADD0),
         primary: Colors.white,
         brightness: Brightness.light,
         primaryContainer: Colors.white,
@@ -212,7 +212,7 @@ final apptheme = {
       primaryColor: const Color.fromARGB(255, 24, 30, 37),
       hintColor: Colors.grey.withOpacity(0.1),
       colorScheme: ColorScheme.fromSwatch().copyWith(
-          onPrimary: const Color(0xFF80EEFB),
+          onPrimary: const Color(0xFFA3ADD0),
           primary: Colors.black,
           brightness: Brightness.dark,
           primaryContainer: Colors.black,

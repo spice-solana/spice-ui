@@ -13,7 +13,9 @@ import 'package:spice_ui/widgets/text_underline.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 void showActionDialog(BuildContext context, {required Pool pool, required String action, required String title, required Color actionColor, required String balance}) {
+    Navigator.maybePop(context);
     final TextEditingController controllerAmount = TextEditingController();
+    Future.delayed(Duration(milliseconds: 100), () {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -225,4 +227,5 @@ void showActionDialog(BuildContext context, {required Pool pool, required String
         );
       },
     );
+    });
   }

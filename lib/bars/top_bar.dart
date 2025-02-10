@@ -123,7 +123,7 @@ class _TopBarState extends State<TopBar> {
                         width: 160.0,
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
-                            color: const Color(0xFF80EEFB),
+                            color: Theme.of(context).colorScheme.onPrimary,
                             borderRadius: BorderRadius.circular(5.0)),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,

@@ -163,7 +163,7 @@ class _CustomTbMenuState extends State<CustomTbMenu> {
                                       value: state.jito,
                                       onChanged: (value) =>
                                           context.read<TbCubit>().onJito(value),
-                                      activeColor: const Color(0xFF80EEFB),
+                                      activeTrackColor: Theme.of(context).colorScheme.onPrimary,
                                     ),
                                   ),
                                 ),

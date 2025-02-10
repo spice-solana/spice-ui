@@ -4,23 +4,19 @@ import 'package:go_router/go_router.dart';
 import 'package:spice_ui/adapter/controller/adapter_cubit.dart';
 import 'package:spice_ui/bars/bottom_bar.dart';
 import 'package:spice_ui/bars/top_bar.dart';
-import 'package:spice_ui/portfolio/chart.dart';
 import 'package:spice_ui/portfolio/cubit/portfolio_cubit.dart';
 import 'package:spice_ui/portfolio/cubit/portfolio_states.dart';
 import 'package:spice_ui/widgets/custom_inkwell.dart';
 import 'package:spice_ui/widgets/custom_vertical_divider.dart';
 import 'package:spice_ui/widgets/loading_text.dart';
 import 'package:spice_ui/widgets/position_widget.dart';
+import 'package:spice_ui/widgets/rotor_anim.dart';
 import 'package:spice_ui/widgets/stat_widget.dart';
 
-class PortfolioScreenController extends StatefulWidget {
+
+class PortfolioScreenController extends StatelessWidget {
   const PortfolioScreenController({super.key});
 
-  @override
-  State<PortfolioScreenController> createState() => _PortfolioScreenControllerState();
-}
-
-class _PortfolioScreenControllerState extends State<PortfolioScreenController> {
   @override
   Widget build(BuildContext context) {
     final AdapterCubit adapterCubit = context.read<AdapterCubit>();
@@ -68,10 +64,11 @@ class _PortfolioScreenControllerState extends State<PortfolioScreenController> {
                               ),
                             ),
                             const SizedBox(height: 32.0),
-                            SizedBox(
+                            Container(
                               height: MediaQuery.of(context).size.height / 3,
                               width: MediaQuery.of(context).size.width / 1.7,
-                              child: const LineChartSample2(),
+                              alignment: Alignment.center,
+                              child: RotorAnim(isPlaying: state.portfolio!.positions.isNotEmpty),
                             ),
                             const SizedBox(height: 32.0),
                             SizedBox(

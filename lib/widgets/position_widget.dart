@@ -5,10 +5,95 @@ import 'package:spice_ui/dialogs/action_dialog.dart';
 import 'package:spice_ui/models/portfolio.dart';
 import 'package:spice_ui/portfolio/cubit/portfolio_cubit.dart';
 import 'package:spice_ui/widgets/backlight_text.dart';
+import 'package:spice_ui/widgets/custom_inkwell.dart';
+import 'package:spice_ui/widgets/dots_menu_element.dart';
 
-class PositionWidget extends StatelessWidget {
+
+class PositionWidget extends StatefulWidget {
   final Position position;
   const PositionWidget({super.key, required this.position});
+
+  @override
+  State<PositionWidget> createState() => _PositionWidgetState();
+}
+
+class _PositionWidgetState extends State<PositionWidget> {
+  final GlobalKey _buttonKey = GlobalKey();
+  OverlayEntry? _overlayEntry;
+
+  void _toggleMenu() {
+    if (_overlayEntry != null) {
+      _closeMenu();
+    } else {
+      _openMenu();
+    }
+  }
+
+    void _openMenu() {
+    final RenderBox buttonBox = _buttonKey.currentContext!.findRenderObject() as RenderBox;
+    final Offset buttonPosition = buttonBox.localToGlobal(Offset.zero);
+    final Size buttonSize = buttonBox.size;
+    final Size screenSize = MediaQuery.of(context).size;
+
+    final bool openDown = buttonPosition.dy + buttonSize.height + 64.0 + 150.0 <
+        screenSize.height;
+
+    _overlayEntry = OverlayEntry(
+      builder: (BuildContext overlayContext) {
+        return GestureDetector(
+          onTap: _closeMenu,
+          child: Stack(
+            children: [
+              Container(
+                color: Colors.transparent,
+              ),
+              Positioned(
+                left: buttonPosition.dx,
+                top: openDown
+                    ? buttonPosition.dy + 64.0
+                    : buttonPosition.dy - 64.0,
+                child: Material(
+                  elevation: 8,
+                  color: Colors.transparent,
+                  child: Container(
+                    width: 220,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).scaffoldBackgroundColor,
+                      border: Border.all(
+                        color: Colors.grey.withOpacity(0.2),
+                        width: 1.0,
+                      ),
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        DotsMenuElement(title: '+ Increase liquidity', onTap: () {
+                          _closeMenu();
+                          showActionDialog(context, pool: widget.position.pool, action: "add", title: "Increase liquidity", actionColor: Colors.greenAccent, balance: widget.position.liquidity);
+                        }),
+                        DotsMenuElement(title: '- Withdraw liquidity', onTap: () {
+                          _closeMenu();
+                          showActionDialog(context, pool: widget.position.pool, action: "withdraw", title: "Withdraw liquidity", actionColor: Colors.redAccent, balance: widget.position.liquidity);
+                        }),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+
+    Overlay.of(context).insert(_overlayEntry!);
+  }
+
+  void _closeMenu() {
+    _overlayEntry?.remove();
+    _overlayEntry = null;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,11 +117,11 @@ class PositionWidget extends StatelessWidget {
                   ClipRRect(
                       borderRadius: BorderRadius.circular(100.0),
                       child: Image.network(
-                          position.pool.logoUrl,
+                          widget.position.pool.logoUrl,
                           height: 25.0,
                           width: 25.0)),
                   const SizedBox(width: 8.0),
-                  Text(position.pool.symbol),
+                  Text(widget.position.pool.symbol),
                 ],
               ),
             ),
@@ -51,9 +136,9 @@ class PositionWidget extends StatelessWidget {
                       style: TextStyle(
                           color: Theme.of(context).hintColor.withOpacity(0.5))),
                   const SizedBox(height: 4.0),
-                  Text(position.liquidity),
+                  Text(widget.position.liquidity),
                   const SizedBox(height: 4.0),
-                  Text("\$${position.liquidityInUsd}",
+                  Text("\$${widget.position.liquidityInUsd}",
                       style: TextStyle(
                           fontFamily: '',
                           fontSize: 12.0,
@@ -72,9 +157,9 @@ class PositionWidget extends StatelessWidget {
                       style: TextStyle(
                           color: Theme.of(context).hintColor.withOpacity(0.5))),
                   const SizedBox(height: 4.0),
-                  Text(position.earned),
+                  Text(widget.position.earned),
                   const SizedBox(height: 4.0),
-                  Text("\$${position.earnedInUsd}",
+                  Text("\$${widget.position.earnedInUsd}",
                       style: TextStyle(
                           fontFamily: '',
                           fontSize: 12.0,
@@ -84,26 +169,31 @@ class PositionWidget extends StatelessWidget {
             ),
             Row(
               children: [
-                IconButton(
-                    onPressed: () => showActionDialog(context,
-                        pool: position.pool,
-                        action: "withdraw",
-                        title: "- Withdraw liquidity",
-                        actionColor: Colors.redAccent, balance: position.liquidity),
-                    icon: const Icon(Icons.remove, color: Colors.redAccent)),
-                const SizedBox(width: 32.0),
-                IconButton(
-                    onPressed: () => showActionDialog(context,
-                        pool: position.pool,
-                        action: "add",
-                        title: "+ Add liquidity",
-                        actionColor: const Color(0xFFA1F6CA), balance: '0'),
-                    icon: const Icon(Icons.add, color: Colors.greenAccent)),
-                const SizedBox(width: 36.0),
+                // IconButton(
+                //     onPressed: () => showActionDialog(context,
+                //         pool: position.pool,
+                //         action: "withdraw",
+                //         title: "- Withdraw liquidity",
+                //         actionColor: Colors.redAccent, balance: position.liquidity),
+                //     icon: const Icon(Icons.remove, color: Colors.redAccent)),
+                // const SizedBox(width: 32.0),
+                // IconButton(
+                //     onPressed: () => showActionDialog(context,
+                //         pool: position.pool,
+                //         action: "add",
+                //         title: "+ Add liquidity",
+                //         actionColor: const Color(0xFFA1F6CA), balance: '0'),
+                //     icon: const Icon(Icons.add, color: Colors.greenAccent)),
+                // const SizedBox(width: 36.0),
                 BacklightText(
                     text: "Claim",
-                    onTap: () => context.read<PortfolioCubit>().claimIncome(context, adapter: context.read<AdapterCubit>(), pool: position.pool),
+                    onTap: () => context.read<PortfolioCubit>().claimIncome(context, adapter: context.read<AdapterCubit>(), pool: widget.position.pool),
                     color: Colors.amber),
+                const SizedBox(width: 36.0),
+                CustomInkWell(
+                  key: _buttonKey,
+                  onTap: _toggleMenu,
+                  child: Icon(Icons.more_vert, color: Colors.grey.withOpacity(0.6))),
               ],
             )
           ],

@@ -31,6 +31,11 @@ class AdapterCubit extends Cubit<AdapterStates> {
 
   Future<void> disconnect() async {
     wm.disconnect();
+
+    if (!portfolioCubit.isClosed) {
+      portfolioCubit.clearPortfolioScreen();
+    }
+
     emit(UnconnectedAdapterState());
   }
 

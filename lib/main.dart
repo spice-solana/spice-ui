@@ -42,6 +42,11 @@ final GoRouter _router = GoRouter(
       ),
     ),
   ],
+  errorBuilder: (context, state) => Scaffold(
+    body: Center(
+      child: Text('404', style: TextStyle(fontSize: 42.0, color: Theme.of(context).hintColor)),
+    ),
+  )
 );
 
 void main() async {

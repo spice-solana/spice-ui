@@ -26,6 +26,11 @@ class PortfolioCubit extends Cubit<PortfolioStates> {
 
   Portfolio? portfolio;
 
+  clearPortfolioScreen() {
+    portfolio = null;
+    emit(NoPortfolioScreenState());
+  }
+
   Future<void> loadingPortfolio({required String signer}) async {
       emit(LoadingPortfolioScreenState());
 
@@ -95,7 +100,9 @@ class PortfolioCubit extends Cubit<PortfolioStates> {
             allTimeClaimedInUsd: '0',
             positions: positions);
 
-      return emit(LoadedPortfolioScreenState(portfolio: portfolio));
+      if (state is LoadingPortfolioScreenState) {
+        return emit(LoadedPortfolioScreenState(portfolio: portfolio));
+      }
     } else {
       emit(LoadedPortfolioScreenState(portfolio: portfolio));
     }
