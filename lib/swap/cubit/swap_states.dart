@@ -13,9 +13,9 @@ class SwapScreenState extends SwapStates {
   SwapScreenState({required this.a, required this.b, required this.isRouteLoading, this.sroute, this.error});
 }
 
-class ChooseCoinSwapState extends SwapStates {
+class ChooseTokenSwapState extends SwapStates {
   final String side;
   final List<Pool> pools;
 
-  ChooseCoinSwapState({required this.side, required this.pools});
+  ChooseTokenSwapState({required this.side, required this.pools});
 }

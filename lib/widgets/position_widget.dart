@@ -4,7 +4,8 @@ import 'package:spice_ui/adapter/controller/adapter_cubit.dart';
 import 'package:spice_ui/dialogs/action_dialog.dart';
 import 'package:spice_ui/models/portfolio.dart';
 import 'package:spice_ui/portfolio/cubit/portfolio_cubit.dart';
-import 'package:spice_ui/widgets/backlight_text.dart';
+import 'package:spice_ui/utils/extensions.dart';
+import 'package:spice_ui/widgets/claim_button.dart';
 import 'package:spice_ui/widgets/custom_inkwell.dart';
 import 'package:spice_ui/widgets/dots_menu_element.dart';
 
@@ -70,7 +71,7 @@ class _PositionWidgetState extends State<PositionWidget> {
                       children: [
                         DotsMenuElement(title: '+ Increase liquidity', onTap: () {
                           _closeMenu();
-                          showActionDialog(context, pool: widget.position.pool, action: "add", title: "Increase liquidity", actionColor: Colors.greenAccent, balance: widget.position.liquidity);
+                          showActionDialog(context, pool: widget.position.pool, action: "add", title: "Increase liquidity", actionColor: Colors.greenAccent, balance: "0");
                         }),
                         DotsMenuElement(title: '- Withdraw liquidity', onTap: () {
                           _closeMenu();
@@ -114,12 +115,10 @@ class _PositionWidgetState extends State<PositionWidget> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  ClipRRect(
-                      borderRadius: BorderRadius.circular(100.0),
-                      child: Image.network(
-                          widget.position.pool.logoUrl,
-                          height: 25.0,
-                          width: 25.0)),
+                  Image.asset(
+                      widget.position.pool.logoUrl,
+                      height: 25.0,
+                      width: 25.0),
                   const SizedBox(width: 8.0),
                   Text(widget.position.pool.symbol),
                 ],
@@ -136,9 +135,9 @@ class _PositionWidgetState extends State<PositionWidget> {
                       style: TextStyle(
                           color: Theme.of(context).hintColor.withOpacity(0.5))),
                   const SizedBox(height: 4.0),
-                  Text(widget.position.liquidity),
+                  Text(widget.position.liquidity.formatNumWithCommas()),
                   const SizedBox(height: 4.0),
-                  Text("\$${widget.position.liquidityInUsd}",
+                  Text("\$${widget.position.liquidityInUsd.formatNumWithCommas()}",
                       style: TextStyle(
                           fontFamily: '',
                           fontSize: 12.0,
@@ -157,9 +156,9 @@ class _PositionWidgetState extends State<PositionWidget> {
                       style: TextStyle(
                           color: Theme.of(context).hintColor.withOpacity(0.5))),
                   const SizedBox(height: 4.0),
-                  Text(widget.position.earned),
+                  Text(widget.position.earned.formatNumWithCommas()),
                   const SizedBox(height: 4.0),
-                  Text("\$${widget.position.earnedInUsd}",
+                  Text("\$${widget.position.earnedInUsd.formatNumWithCommas()}",
                       style: TextStyle(
                           fontFamily: '',
                           fontSize: 12.0,
@@ -169,26 +168,7 @@ class _PositionWidgetState extends State<PositionWidget> {
             ),
             Row(
               children: [
-                // IconButton(
-                //     onPressed: () => showActionDialog(context,
-                //         pool: position.pool,
-                //         action: "withdraw",
-                //         title: "- Withdraw liquidity",
-                //         actionColor: Colors.redAccent, balance: position.liquidity),
-                //     icon: const Icon(Icons.remove, color: Colors.redAccent)),
-                // const SizedBox(width: 32.0),
-                // IconButton(
-                //     onPressed: () => showActionDialog(context,
-                //         pool: position.pool,
-                //         action: "add",
-                //         title: "+ Add liquidity",
-                //         actionColor: const Color(0xFFA1F6CA), balance: '0'),
-                //     icon: const Icon(Icons.add, color: Colors.greenAccent)),
-                // const SizedBox(width: 36.0),
-                BacklightText(
-                    text: "Claim",
-                    onTap: () => context.read<PortfolioCubit>().claimIncome(context, adapter: context.read<AdapterCubit>(), pool: widget.position.pool),
-                    color: Colors.amber),
+                ClaimButton(onTap: () => context.read<PortfolioCubit>().claimIncome(context, adapter: context.read<AdapterCubit>(), pool: widget.position.pool)),
                 const SizedBox(width: 36.0),
                 CustomInkWell(
                   key: _buttonKey,

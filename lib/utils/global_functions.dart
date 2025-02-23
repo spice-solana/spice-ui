@@ -1,11 +1,14 @@
-import 'package:flutter/material.dart';
+import 'dart:math';
+import 'package:spice_ui/utils/constants.dart';
 
 String truncateToDecimals(num number, int decimals) {
-  if (number.toString().split('.').last.length > decimals) {
-    return number.toStringAsFixed(decimals);
+  String result = number.toStringAsFixed(decimals);
+  
+  if (result.contains('.')) {
+    result = result.replaceAll(RegExp(r'0*$'), '').replaceAll(RegExp(r'\.$'), '');
   }
 
-  return number.toString();
+  return result;
 }
 
 String extractValue(String input, String key) {
@@ -18,4 +21,14 @@ String? extractErrorMessage(String input) {
   final regex = RegExp('Error Message: ([^,]+)');
   final match = regex.firstMatch(input);
   return match?.group(1);
+}
+
+String calculatingEarn({required int amount, required num poolCumulativeYield, required num userLastCumulativeYield, required num initialLiquidity, required int pendingYield, required int decimals}) {
+    if (amount == 0) {
+      return '0';
+    }
+    var cumulativeYield = (poolCumulativeYield - userLastCumulativeYield) / cumulativeYieldScaleConstant;
+    var cumulativeYieldPerToken = cumulativeYield / initialLiquidity;
+    var earn = (amount * cumulativeYieldPerToken + pendingYield) / pow(10, decimals);
+    return truncateToDecimals(earn, decimals);
 }

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:spice_ui/adapter/controller/adapter_cubit.dart';
-import 'package:spice_ui/bars/bottom_bar.dart';
-import 'package:spice_ui/bars/top_bar.dart';
+import 'package:spice_ui/bars/bottom_web_bar.dart';
+import 'package:spice_ui/bars/top_web_bar.dart';
 import 'package:spice_ui/portfolio/cubit/portfolio_cubit.dart';
 import 'package:spice_ui/portfolio/cubit/portfolio_states.dart';
 import 'package:spice_ui/widgets/custom_inkwell.dart';
@@ -14,8 +15,8 @@ import 'package:spice_ui/widgets/rotor_anim.dart';
 import 'package:spice_ui/widgets/stat_widget.dart';
 
 
-class PortfolioScreenController extends StatelessWidget {
-  const PortfolioScreenController({super.key});
+class PortfolioWebScreen extends StatelessWidget {
+  const PortfolioWebScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +27,7 @@ class PortfolioScreenController extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const TopBar(state: 3),
+          const TopWebBar(state: 3),
           BlocBuilder<PortfolioCubit, PortfolioStates>(builder: (context, state) {
             if (state is LoadingPortfolioScreenState) {
               return const Center(child: LoadingText());
@@ -50,13 +51,14 @@ class PortfolioScreenController extends StatelessWidget {
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
-                                      StatWidget(
-                                          title: "Total liquidity", data: "\$${state.portfolio != null ? state.portfolio?.totalLiquidityInUsd : 0}"),
+                                      StatWidget(title: "Total liquidity", data: "\$${state.portfolio != null ? state.portfolio?.totalLiquidityInUsd : 0}"),
                                       const CustomVerticalDivider(height: 35.0),
                                       StatWidget(title: "Earned", data: "\$${state.portfolio != null ? state.portfolio?.earnedInUsd : 0}"),
                                       const CustomVerticalDivider(height: 35.0),
-                                      StatWidget(
-                                          title: "All-time claimed", data: "\$${state.portfolio != null ? state.portfolio?.allTimeClaimedInUsd : 0}"),
+                                      StatWidget(title: "Future airdrop", data: "${state.portfolio != null ? state.portfolio?.futureAirdrop : 0}",
+                                      widget: SvgPicture.asset('assets/logos/spice_logo.svg',
+                                        height: 18.0, width: 18.0),
+                                      ),
                                     ],
                                   ),
                                   Divider(color: Theme.of(context).hintColor),
@@ -142,7 +144,7 @@ class PortfolioScreenController extends StatelessWidget {
           
             return const SizedBox();
           }),
-          const BottomBar()
+          const BottomWebBar()
         ],
       ),
     );

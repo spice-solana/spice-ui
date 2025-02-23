@@ -32,13 +32,11 @@ class PoolTableWidget extends StatelessWidget {
                   alignment: Alignment.centerLeft,
                   child: Row(
                     children: [
-                      ClipRRect(
-                          borderRadius: BorderRadius.circular(100.0),
-                          child: Image.network(
-                            poolLogo,
-                            height: 25.0,
-                            width: 25.0,
-                          )),
+                      Image.asset(
+                        poolLogo,
+                        height: 25.0,
+                        width: 25.0,
+                      ),
                       const SizedBox(width: 16.0),
                       Text(poolName),
                     ],

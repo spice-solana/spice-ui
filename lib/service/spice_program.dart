@@ -7,7 +7,7 @@ import 'package:spice_ui/models/pool.dart';
 
 class SpiceProgram {
   static String solAddress = "So11111111111111111111111111111111111111112";
-  static Pubkey programId = Pubkey.fromBase58("83XtsaqkNZSPHdgNgZL6C9xT1hTdQJq5v9QM7wftXHsx");
+  static Pubkey programId = Pubkey.fromBase58("58jZ6iRE5c8h964MrhGo6FgFFpRDUTr9YxbCkUv5Qc2f");
 
 
   static Future<Transaction> increaseLiquidity(
@@ -175,9 +175,9 @@ class SpiceProgram {
   }
 
 
-  static Future<Transaction> claimIncome({required String signer, required Pool pool, required String blockhash}) async {
+  static Future<Transaction> harvestYield({required String signer, required Pool pool, required String blockhash}) async {
     final List<int> data = [];
-    data.addAll(sha256.convert('global:claim_income'.codeUnits).bytes.getRange(0, 8).toList());
+    data.addAll(sha256.convert('global:harvest_yield'.codeUnits).bytes.getRange(0, 8).toList());
     
     final poolPDA = Pubkey.findProgramAddress(
         ["POOL".codeUnits, base58.decode(pool.mint)], programId);
@@ -250,6 +250,7 @@ class SpiceProgram {
         sha256.convert('global:swap'.codeUnits).bytes.getRange(0, 8).toList());
     data.addAll(Int64(inputAmount).toBytes());
     data.addAll(Int64(minOutputAmount).toBytes());
+    data.addAll(Int64(0).toBytes());
 
     final tokenAPoolPDA = Pubkey.findProgramAddress(
         ["POOL".codeUnits, base58.decode(inputToken.mint)],
@@ -317,11 +318,12 @@ class SpiceProgram {
                 AccountMeta.writable(treasury.pubkey),
                 AccountMeta.writable(tokenAtreasuryATA),
                 AccountMeta.writable(tokenBtreasuryATA),
+                AccountMeta.writable(SpiceProgram.programId),
                 AccountMeta(TokenProgram.programId,
                     isSigner: false, isWritable: false),
                 AccountMeta(SystemProgram.programId,
                     isSigner: false, isWritable: false),
-              ], programId: programId, data: Uint8List.fromList(data))
+              ], programId: SpiceProgram.programId, data: Uint8List.fromList(data))
             ],
             recentBlockhash: blockhash));
 

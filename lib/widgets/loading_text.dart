@@ -20,36 +20,31 @@ class LoadingTextState extends State<LoadingText> {
 
   @override
   void dispose() {
-    super.dispose();
     _timer?.cancel();
+    super.dispose();
   }
 
   void _startDotAnimation() {
-    _timer = Timer.periodic(const Duration(milliseconds: 250), (timer) {
+    _timer = Timer.periodic(const Duration(milliseconds: 300), (timer) {
       setState(() {
-        _dotIndex = (_dotIndex + 1) % 4; // Cycling from 0 to 3
+        _dotIndex = (_dotIndex + 1) % 3;
       });
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Text(
-      'Loading${_getDot()}',
-      style: const TextStyle(),
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        const Text('Loading'),
+        for (int i = 0; i < 3; i++)
+          AnimatedOpacity(
+            opacity: _dotIndex == i ? 1.0 : 0.1,
+            duration: const Duration(milliseconds: 250),
+            child: const Text('.', style: TextStyle()),
+          ),
+      ],
     );
-  }
-
-  String _getDot() {
-    switch (_dotIndex) {
-      case 0:
-        return '.';
-      case 1:
-        return '..';
-      case 2:
-        return '...';
-      default:
-        return '';
-    }
   }
 }

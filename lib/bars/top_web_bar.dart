@@ -10,15 +10,15 @@ import 'package:spice_ui/widgets/custom_inkwell.dart';
 import 'package:spice_ui/widgets/custom_vertical_divider.dart';
 
 
-class TopBar extends StatefulWidget {
+class TopWebBar extends StatefulWidget {
   final int state;
-  const TopBar({super.key, required this.state});
+  const TopWebBar({super.key, required this.state});
 
   @override
-  State<TopBar> createState() => _TopBarState();
+  State<TopWebBar> createState() => _TopWebBarState();
 }
 
-class _TopBarState extends State<TopBar> {
+class _TopWebBarState extends State<TopWebBar> {
 
   bool hideNotification = false;
 
@@ -103,14 +103,22 @@ class _TopBarState extends State<TopBar> {
                       onTap: () => adapterCubit.disconnect(),
                       child: Container(
                         height: 32.0,
-                        width: 160.0,
+                        width: 180.0,
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
                             color: Colors.transparent,
                             borderRadius: BorderRadius.circular(5.0)),
-                        child: Text(state.address.toString().cutText(),
-                            style: const TextStyle(
-                                color: Colors.redAccent, fontSize: 14.0)),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(state.address.toString().cutText(),
+                                style: const TextStyle(
+                                    color: Colors.redAccent, fontSize: 14.0)),
+                            const SizedBox(width: 8.0),
+                            const Icon(Icons.power_settings_new, size: 18.0, color: Colors.redAccent)
+                          ],
+                        ),
                       ),
                     );
                   }

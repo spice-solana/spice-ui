@@ -39,15 +39,12 @@ class _PoolCardWidgetState extends State<PoolCardWidget> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
               children: [
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(100.0),
-                  child: Image.network(
-                    widget.pool.logoUrl,
-                    width: 50,
-                    height: 50,
-                    errorBuilder: (context, error, stackTrace) =>
-                        const Icon(Icons.broken_image, size: 50),
-                  ),
+                Image.asset(
+                  widget.pool.logoUrl,
+                  width: 50,
+                  height: 50,
+                  errorBuilder: (context, error, stackTrace) =>
+                      const Icon(Icons.broken_image, size: 50),
                 ),
                 const SizedBox(height: 16),
                 Text(
@@ -62,21 +59,21 @@ class _PoolCardWidgetState extends State<PoolCardWidget> {
                   TextSpan(
                       text: 'Liquidity: ',
                       style: TextStyle(color: Colors.grey)),
-                  TextSpan(text: "0"),
+                  TextSpan(text: "\$0"),
                 ])),
                 const SizedBox(height: 4),
                 const Text.rich(TextSpan(children: [
                   TextSpan(
                       text: 'Volume (24h): ',
                       style: TextStyle(color: Colors.grey)),
-                  TextSpan(text: "0"),
+                  TextSpan(text: "\$0"),
                 ])),
                 const SizedBox(height: 4),
                 const Text.rich(TextSpan(children: [
                   TextSpan(
                       text: 'Fees (24h): ',
                       style: TextStyle(color: Colors.grey)),
-                  TextSpan(text: "0"),
+                  TextSpan(text: "\$0"),
                 ])),
                 const SizedBox(height: 16),
                 const Text(

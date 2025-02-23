@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:math';
-
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:solana_web3/programs.dart';
@@ -13,8 +12,8 @@ import 'package:spice_ui/models/portfolio.dart';
 import 'package:spice_ui/models/provider_pda.dart';
 import 'package:spice_ui/portfolio/cubit/portfolio_states.dart';
 import 'package:spice_ui/service/config.dart';
+import 'package:spice_ui/service/offchain_api.dart';
 import 'package:spice_ui/service/spice_program.dart';
-import 'package:spice_ui/utils/constants.dart';
 import 'package:spice_ui/utils/global_functions.dart';
 import 'package:spice_ui/utils/toastification.dart';
 
@@ -37,6 +36,8 @@ class PortfolioCubit extends Cubit<PortfolioStates> {
       if (portfolio == null) {
         var positions = <Position>[];
 
+        var prices = await OffchainApi.getPriceForPoolsTokens();
+
         var tokenAccountBySigner = await connection.getTokenAccountsByOwner(
             Pubkey.fromBase58(signer),
             filter: TokenAccountsFilter.programId(TokenProgram.programId));
@@ -57,8 +58,7 @@ class PortfolioCubit extends Cubit<PortfolioStates> {
             if (mintPda.pubkey.toBase58() == tokenInfo.mint) {
               var getPoolAccountInfo = await connection.getAccountInfo(
                   poolPda.pubkey,
-                  config:
-                      GetAccountInfoConfig(encoding: AccountEncoding.base64));
+                  config: GetAccountInfoConfig(encoding: AccountEncoding.base64));
               var poolAccountInfo = PoolPda.fromAccountData(
                   base64.decode(getPoolAccountInfo?.data[0]));
 
@@ -70,34 +70,56 @@ class PortfolioCubit extends Cubit<PortfolioStates> {
 
               var getProviderAccountInfo = await connection.getAccountInfo(
                   provider.pubkey,
-                  config:
-                      GetAccountInfoConfig(encoding: AccountEncoding.base64));
+                  config: GetAccountInfoConfig(encoding: AccountEncoding.base64));
               var providerAccountInfo = ProviderPda.fromAccountData(
                   base64.decode(getProviderAccountInfo?.data[0]));
 
-              var liquidity = truncateToDecimals(
+              final String liquidity = truncateToDecimals(
                   providerAccountInfo.lpBalance / pow(10, pool.decimals),
                   pool.decimals);
               
-              var cumYieldPerToken = (poolAccountInfo.cumulativeYieldPerToken - providerAccountInfo.userLastCumulativeIncome) / cumulativeYieldPerTokenScale;
-              var earned = truncateToDecimals((tokenInfo.amount.toInt() * cumYieldPerToken + (providerAccountInfo.pendingIncome / 1000000000)) / pow(10, pool.decimals),
-                  pool.decimals);
+              final String earned = calculatingEarn(
+                amount: tokenInfo.amount.toInt(), 
+                poolCumulativeYield: poolAccountInfo.cumulativeYield, 
+                userLastCumulativeYield: providerAccountInfo.userLastCumulativeYield, 
+                initialLiquidity: poolAccountInfo.initialLiquidity,
+                pendingYield: providerAccountInfo.pendingYield, 
+                decimals: pool.decimals);
+
+              num price = 0;
+
+              try {
+                var mint = pool.mint == "Gh9ZwEmdLJ8DscKNTkTqPbNwLNNBjuSzaG9Vp2KGtKJr" ? "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v" : pool.mint;
+                price = num.parse(prices[mint]['price']);
+              } catch (_) {}
+
+              final String liquidityInUsd = ((providerAccountInfo.lpBalance / pow(10, pool.decimals)) * price).toStringAsFixed(2);
+              final String earnedInUsd = earned != '0' ? (num.parse(earned) * price).toStringAsFixed(2) : '0';
 
               positions.add(Position(
                   pool: pool,
                   liquidity: liquidity,
-                  liquidityInUsd: '0',
+                  liquidityInUsd: liquidityInUsd,
                   earned: earned,
-                  earnedInUsd: '0'));
+                  earnedInUsd: earnedInUsd));
             }
           }
         }
 
+        num totalLiquidityInUsd = 0;
+        num earnedInUsd = 0;
+        num futureAirdrop = 0;
+
+        for (var position in positions) {
+          totalLiquidityInUsd += num.parse(position.liquidityInUsd);
+          earnedInUsd += num.parse(position.earnedInUsd);
+          //futureAirdrop
+        }
 
         portfolio = Portfolio(
-            totalLiquidityInUsd: '0',
-            earnedInUsd: '0',
-            allTimeClaimedInUsd: '0',
+            totalLiquidityInUsd: totalLiquidityInUsd.toStringAsFixed(2),
+            earnedInUsd: earnedInUsd.toStringAsFixed(2),
+            futureAirdrop: futureAirdrop.toStringAsFixed(0),
             positions: positions);
 
       if (state is LoadingPortfolioScreenState) {
@@ -176,7 +198,7 @@ class PortfolioCubit extends Cubit<PortfolioStates> {
       {required AdapterCubit adapter, required Pool pool}) async {
     var hash = await connection.getLatestBlockhash();
 
-    var transaction = await SpiceProgram.claimIncome(
+    var transaction = await SpiceProgram.harvestYield(
         signer: adapter.signer!, pool: pool, blockhash: hash.blockhash);
 
     var signedTransaction = await adapter.signTransaction(transaction);

@@ -1,4 +1,6 @@
+// ignore: constant_identifier_names
 const String BUYING = "buying";
+// ignore: constant_identifier_names
 const String SELLING = "selling";
 
-const int cumulativeYieldPerTokenScale = 1000000000;
+const int cumulativeYieldScaleConstant = 1000;

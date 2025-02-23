@@ -10,13 +10,13 @@ import 'package:spice_ui/swap/cubit/swap_cubit.dart';
 import 'package:spice_ui/widgets/custom_inkwell.dart';
 import 'package:spice_ui/widgets/linear_route_update_bar.dart';
 
-class SwapScreen extends StatefulWidget {
+class SwapWebScreen extends StatefulWidget {
   final Pool a;
   final Pool b;
   final bool isRouteLoading;
   final Sroute? spiceRoute;
   final String? error;
-  const SwapScreen(
+  const SwapWebScreen(
       {super.key,
       required this.a,
       required this.b,
@@ -25,10 +25,10 @@ class SwapScreen extends StatefulWidget {
       this.error});
 
   @override
-  State<SwapScreen> createState() => _SwapScreenState();
+  State<SwapWebScreen> createState() => _SwapWebScreenState();
 }
 
-class _SwapScreenState extends State<SwapScreen> {
+class _SwapWebScreenState extends State<SwapWebScreen> {
   final TextEditingController _controller = TextEditingController();
 
   @override
@@ -51,12 +51,6 @@ class _SwapScreenState extends State<SwapScreen> {
         children: [
           Column(
             children: [
-              // Container(
-              //   height: 28.0,
-              //   padding: const EdgeInsets.all(8.0),
-              //   decoration: BoxDecoration(
-              //     color: Colors.grey.withOpacity(0.05),
-              //   )),
               const SizedBox(height: 16.0),
               Container(
                 height: 100.0,
@@ -89,11 +83,8 @@ class _SwapScreenState extends State<SwapScreen> {
                                   borderRadius: BorderRadius.circular(5.0)),
                               child: Row(
                                 children: [
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(100.0),
-                                    child: Image.network(widget.a.logoUrl,
-                                        height: 25.0, width: 25.0),
-                                  ),
+                                  Image.asset(widget.a.logoUrl,
+                                      height: 25.0, width: 25.0),
                                   const SizedBox(width: 8.0),
                                   Text(widget.a.symbol),
                                   const SizedBox(width: 8.0),
@@ -126,8 +117,7 @@ class _SwapScreenState extends State<SwapScreen> {
                                 maxHeight: 50.0, maxWidth: 200.0),
                             child: TextField(
                               controller: _controller,
-                              onChanged: (value) =>
-                                  swapCubit.getRoute(inputAmount: value),
+                              onChanged: (value) => swapCubit.getRoute(inputAmount: value),
                               decoration: InputDecoration(
                                 hintText: '0.00',
                                 hintStyle: TextStyle(
@@ -201,12 +191,8 @@ class _SwapScreenState extends State<SwapScreen> {
                                       borderRadius: BorderRadius.circular(5.0)),
                                   child: Row(
                                     children: [
-                                      ClipRRect(
-                                        borderRadius:
-                                            BorderRadius.circular(100.0),
-                                        child: Image.network(widget.b.logoUrl,
-                                            height: 25.0, width: 25.0),
-                                      ),
+                                      Image.asset(widget.b.logoUrl,
+                                          height: 25.0, width: 25.0),
                                       const SizedBox(width: 8.0),
                                       Text(widget.b.symbol),
                                       const SizedBox(width: 8.0),
@@ -281,7 +267,7 @@ class _SwapScreenState extends State<SwapScreen> {
                   ),
                 );
               }
-
+    
               if (state is UnconnectedAdapterState) {
                 return Padding(
                   padding: const EdgeInsets.only(bottom: 16.0),
@@ -308,7 +294,7 @@ class _SwapScreenState extends State<SwapScreen> {
                   ),
                 );
               }
-
+    
               return const SizedBox();
             },
           ),

@@ -7,12 +7,12 @@ import 'package:spice_ui/widgets/backlight_custom_icon.dart';
 import 'package:spice_ui/widgets/backlight_icon.dart';
 import 'package:spice_ui/widgets/custom_tb_menu.dart';
 import 'package:spice_ui/widgets/custom_vertical_divider.dart';
-// ignore: avoid_web_libraries_in_flutter
+// ignore: deprecated_member_use, avoid_web_libraries_in_flutter
 import 'dart:js' as js;
 
 
-class BottomBar extends StatelessWidget {
-  const BottomBar({super.key});
+class BottomWebBar extends StatelessWidget {
+  const BottomWebBar({super.key});
 
   @override
   Widget build(BuildContext context) {

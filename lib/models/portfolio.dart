@@ -3,10 +3,10 @@ import 'package:spice_ui/models/pool.dart';
 class Portfolio {
   String totalLiquidityInUsd;
   String earnedInUsd;
-  String allTimeClaimedInUsd;
+  String futureAirdrop;
   final List<Position> positions;
 
-  Portfolio({required this.totalLiquidityInUsd, required this.earnedInUsd, required this.allTimeClaimedInUsd, required this.positions});
+  Portfolio({required this.totalLiquidityInUsd, required this.earnedInUsd, required this.futureAirdrop, required this.positions});
 }
 
 class Position {

@@ -5,25 +5,17 @@ import 'package:spice_ui/swap/cubit/swap_cubit.dart';
 import 'package:spice_ui/utils/extensions.dart';
 
 
-class ChooseCoinScreen extends StatelessWidget {
+class ChooseTokenMobScreen extends StatelessWidget {
   final String side;
   final List<Pool> pools;
-  const ChooseCoinScreen({super.key, required this.side, required this.pools});
+  const ChooseTokenMobScreen({super.key, required this.side, required this.pools});
 
   @override
   Widget build(BuildContext context) {
     final SwapCubit swapCubit = context.read<SwapCubit>();
-    return Container(
+    return SizedBox(
       height: 500.0,
       width: 400.0,
-      padding: const EdgeInsets.all(16.0),
-      decoration: BoxDecoration(
-        color: Theme.of(context).scaffoldBackgroundColor,
-        border: Border.all(
-          color: Theme.of(context).hintColor,
-          width: 1.0,
-        ),
-      ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -46,13 +38,11 @@ class ChooseCoinScreen extends StatelessWidget {
                   padding: const EdgeInsets.only(bottom: 16.0),
                   child: ListTile(
                     onTap: () => swapCubit.chooseToken(side: side, pool: pools[index]),
-                    leading: ClipRRect(
-                            borderRadius: BorderRadius.circular(100.0),
-                            child: Image.network(
-                              pools[index].logoUrl,
-                              height: 25.0,
-                              width: 25.0,
-                            )),
+                    leading: Image.asset(
+                      pools[index].logoUrl,
+                      height: 25.0,
+                      width: 25.0,
+                    ),
                     title: Text(pools[index].symbol),
                     subtitle: pools[index].mint != "So11111111111111111111111111111111111111112" ? Text(pools[index].mint.cutText(), style: const TextStyle(fontSize: 12.0, color: Colors.grey)) : null,
                   ),

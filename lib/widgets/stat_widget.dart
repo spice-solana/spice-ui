@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:spice_ui/utils/extensions.dart';
 
 
 class StatWidget extends StatelessWidget {
   final String title;
   final String data;
-  const StatWidget({super.key, required this.title, required this.data});
+  final Widget? widget;
+  const StatWidget({super.key, required this.title, required this.data, this.widget});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +23,18 @@ class StatWidget extends StatelessWidget {
             Text(title,
                 style: TextStyle(color: Theme.of(context).hintColor.withOpacity(0.5))),
             const SizedBox(height: 8.0),
-            Text(data, style: const TextStyle(fontSize: 18.0))
+            Row(
+              children: [
+                Text(data.formatNumWithCommas(), style: const TextStyle(fontSize: 18.0)),
+                
+                widget != null ? Row(
+                  children: [
+                    const SizedBox(width: 8.0),
+                    widget!
+                  ],
+                ) : const SizedBox()
+              ],
+            )
           ],
         ));
   }

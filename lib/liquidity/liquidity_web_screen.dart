@@ -1,22 +1,22 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:spice_ui/bars/bottom_web_bar.dart';
 // import 'package:rive/rive.dart' as rive;
 import 'package:spice_ui/data/pools.dart';
-import 'package:spice_ui/bars/bottom_bar.dart';
-import 'package:spice_ui/bars/top_bar.dart';
+import 'package:spice_ui/bars/top_web_bar.dart';
 import 'package:spice_ui/dialogs/action_dialog.dart';
 import 'package:spice_ui/widgets/pool_card_widget.dart';
 import 'package:spice_ui/widgets/pool_table_widget.dart';
 import 'package:spice_ui/widgets/search_widget.dart';
 
-class LiquidityScreen extends StatefulWidget {
-  const LiquidityScreen({super.key});
+class LiquidityWebScreen extends StatefulWidget {
+  const LiquidityWebScreen({super.key});
 
   @override
-  State<LiquidityScreen> createState() => _LiquidityScreen();
+  State<LiquidityWebScreen> createState() => _LiquidityWebScreen();
 }
 
-class _LiquidityScreen extends State<LiquidityScreen> {
+class _LiquidityWebScreen extends State<LiquidityWebScreen> {
 
   bool isTables = false;
 
@@ -27,7 +27,7 @@ class _LiquidityScreen extends State<LiquidityScreen> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          const TopBar(state: 2),
+          const TopWebBar(state: 2),
           Expanded(
             child: SingleChildScrollView(
               physics: const ClampingScrollPhysics(),
@@ -167,7 +167,7 @@ class _LiquidityScreen extends State<LiquidityScreen> {
               ),
             ),
           ),
-          const BottomBar()
+          const BottomWebBar()
         ],
       ),
     );

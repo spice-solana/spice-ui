@@ -31,7 +31,7 @@ class SwapCubit extends Cubit<SwapStates> {
       emit(SwapScreenState(a: sell, b: buy, isRouteLoading: false));
 
   void moveToChooseTokenScreen(String side) =>
-      emit(ChooseCoinSwapState(side: side, pools: poolsData));
+      emit(ChooseTokenSwapState(side: side, pools: poolsData));
 
   Future<void> tokensFlip() async {
     final Pool storage = sell;
@@ -84,10 +84,9 @@ class SwapCubit extends Cubit<SwapStates> {
         return emit(SwapScreenState(
             a: sell, b: buy, isRouteLoading: false, error: errorMessage ?? simulateTransaction.err.toString()));
       }
-
-      var outputAmount = extractValue(simulateTransaction.logs.toString(), "Output");
+      var outputAmount = extractValue(simulateTransaction.logs.toString(), "Actual output");
       //var fee = extractValue(simulateTransaction.logs.toString(), "Fee");
-    
+
       if (currentRequestId == lastRequestId && state is SwapScreenState) {
         var routeUpdateTimeInSeconds = 15;
         emit(SwapScreenState(
@@ -102,7 +101,7 @@ class SwapCubit extends Cubit<SwapStates> {
                         .toStringAsFixed(0)),
                 minOutputAmount: int.parse(outputAmount),
                 uiOutputAmount:
-                    (int.parse(outputAmount) / pow(10, buy.decimals))
+                    (BigInt.parse(outputAmount).toInt() / pow(10, buy.decimals))
                         .toStringAsFixed(buy.decimals),
                 slippage: 0,
                 routeUpdateTime: routeUpdateTimeInSeconds)));

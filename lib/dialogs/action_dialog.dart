@@ -7,6 +7,7 @@ import 'package:spice_ui/adapter/controller/adapter_states.dart';
 import 'package:spice_ui/portfolio/cubit/portfolio_cubit.dart';
 import 'package:spice_ui/service/config.dart';
 import 'package:spice_ui/models/pool.dart';
+import 'package:spice_ui/service/spice_program.dart';
 import 'package:spice_ui/utils/extensions.dart';
 import 'package:spice_ui/widgets/custom_inkwell.dart';
 import 'package:spice_ui/widgets/text_underline.dart';
@@ -15,7 +16,6 @@ import 'package:url_launcher/url_launcher.dart';
 void showActionDialog(BuildContext context, {required Pool pool, required String action, required String title, required Color actionColor, required String balance}) {
     Navigator.maybePop(context);
     final TextEditingController controllerAmount = TextEditingController();
-    Future.delayed(Duration(milliseconds: 100), () {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -40,15 +40,12 @@ void showActionDialog(BuildContext context, {required Pool pool, required String
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(100.0),
-                      child: Image.network(
-                        pool.logoUrl,
-                        width: 50,
-                        height: 50,
-                        errorBuilder: (context, error, stackTrace) =>
-                            const Icon(Icons.broken_image, size: 50),
-                      ),
+                    Image.asset(
+                      pool.logoUrl,
+                      width: 50,
+                      height: 50,
+                      errorBuilder: (context, error, stackTrace) =>
+                          const Icon(Icons.broken_image, size: 50),
                     ),
                     const SizedBox(height: 16),
                     Text(
@@ -60,7 +57,7 @@ void showActionDialog(BuildContext context, {required Pool pool, required String
                     ),
                     const SizedBox(height: 8),
                     TextUnderline(
-                      text: pool.mint.cutText(),
+                      text: pool.mint == SpiceProgram.solAddress ? "Native" : pool.mint.cutText(),
                       fontSize: 13.0,
                       color: Colors.grey,
                       onTap: () => launchUrl(Uri.parse(
@@ -99,12 +96,8 @@ void showActionDialog(BuildContext context, {required Pool pool, required String
                                     borderRadius: BorderRadius.circular(5.0)),
                                 child: Row(
                                   children: [
-                                    ClipRRect(
-                                      borderRadius:
-                                          BorderRadius.circular(100.0),
-                                      child: Image.network(pool.logoUrl,
-                                          height: 25.0, width: 25.0),
-                                    ),
+                                    Image.asset(pool.logoUrl,
+                                        height: 25.0, width: 25.0),
                                     const SizedBox(width: 8.0),
                                     Text(pool.symbol),
                                     const SizedBox(width: 8.0),
@@ -123,7 +116,7 @@ void showActionDialog(BuildContext context, {required Pool pool, required String
                                     size: 14.0,
                                     color: Colors.grey),
                                 const SizedBox(width: 8.0),
-                                Text('$balance ${pool.symbol}',
+                                Text('${balance.formatNumWithCommas()} ${pool.symbol}',
                                     style: const TextStyle(
                                         fontSize: 14.0, color: Colors.grey)),
                               ],
@@ -151,10 +144,10 @@ void showActionDialog(BuildContext context, {required Pool pool, required String
                                   keyboardType:
                                       const TextInputType.numberWithOptions(
                                           decimal:
-                                              true), // Поддержка чисел с точкой
+                                              true),
                                   inputFormatters: [
                                     FilteringTextInputFormatter.allow(RegExp(
-                                        r'^\d*\.?\d*')), // Только числа и точка
+                                        r'^\d*\.?\d*')),
                                   ],
                                 ))
                           ],
@@ -227,5 +220,4 @@ void showActionDialog(BuildContext context, {required Pool pool, required String
         );
       },
     );
-    });
   }
