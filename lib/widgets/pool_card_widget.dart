@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:spice_ui/models/pool.dart';
+import 'package:spice_ui/widgets/custom_inkwell.dart';
 
 class PoolCardWidget extends StatefulWidget {
   final Function() onTap;
@@ -15,19 +16,17 @@ class _PoolCardWidgetState extends State<PoolCardWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return CustomInkWell(
       onTap: widget.onTap,
       onHover: (value) {
         isHover = value;
         setState(() {});
       },
-      highlightColor: Colors.transparent,
-      focusColor: Colors.transparent,
-      splashColor: Colors.transparent,
-      child: Container(
+      child: AnimatedContainer(
         height: 450.0,
-        width: 100.0,
+        duration: const Duration(milliseconds: 250),
         decoration: BoxDecoration(
+            color: isHover ? Theme.of(context).hoverColor : Colors.transparent,
             border: Border.all(color: Theme.of(context).hintColor)),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -55,30 +54,30 @@ class _PoolCardWidgetState extends State<PoolCardWidget> {
                   ),
                 ),
                 const SizedBox(height: 16),
-                const Text.rich(TextSpan(children: [
-                  TextSpan(
+                Text.rich(TextSpan(children: [
+                  const TextSpan(
                       text: 'Liquidity: ',
                       style: TextStyle(color: Colors.grey)),
-                  TextSpan(text: "\$0"),
+                  TextSpan(text: "\$${widget.pool.liquidity}"),
                 ])),
                 const SizedBox(height: 4),
-                const Text.rich(TextSpan(children: [
-                  TextSpan(
+                Text.rich(TextSpan(children: [
+                  const TextSpan(
                       text: 'Volume (24h): ',
                       style: TextStyle(color: Colors.grey)),
-                  TextSpan(text: "\$0"),
+                  TextSpan(text: "\$${widget.pool.volume}"),
                 ])),
                 const SizedBox(height: 4),
-                const Text.rich(TextSpan(children: [
-                  TextSpan(
+                Text.rich(TextSpan(children: [
+                  const TextSpan(
                       text: 'Fees (24h): ',
                       style: TextStyle(color: Colors.grey)),
-                  TextSpan(text: "\$0"),
+                  TextSpan(text: "\$${widget.pool.fees}"),
                 ])),
                 const SizedBox(height: 16),
-                const Text(
-                  "APY: ${0}",
-                  style: TextStyle(
+                Text(
+                  "APY: ${widget.pool.apy}",
+                  style: const TextStyle(
                     color: Colors.greenAccent,
                     fontWeight: FontWeight.bold,
                   ),
@@ -88,10 +87,7 @@ class _PoolCardWidgetState extends State<PoolCardWidget> {
             isHover ? Container(
               height: 45.0,
               alignment: Alignment.center,
-              decoration: BoxDecoration(
-                border: Border(top: BorderSide(color: Theme.of(context).hintColor))
-              ),
-              child: const Text("+ Add liquidity", style: TextStyle(fontSize: 14.0, color: Colors.grey)),
+              child: Text("+", style: TextStyle(fontSize: 32.0, color: Colors.grey.withOpacity(0.2))),
             ) : const SizedBox(height: 45.0)
           ],
         ),

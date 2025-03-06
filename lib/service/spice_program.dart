@@ -7,7 +7,7 @@ import 'package:spice_ui/models/pool.dart';
 
 class SpiceProgram {
   static String solAddress = "So11111111111111111111111111111111111111112";
-  static Pubkey programId = Pubkey.fromBase58("58jZ6iRE5c8h964MrhGo6FgFFpRDUTr9YxbCkUv5Qc2f");
+  static Pubkey programId = Pubkey.fromBase58("CcoYv1X4RczUmuGCUw3Vg1XWxspaofsh8dtD26cmN7nm");
 
 
   static Future<Transaction> increaseLiquidity(
@@ -244,7 +244,7 @@ class SpiceProgram {
       required Pool outputToken,
       required int inputAmount,
       required int minOutputAmount,
-      required String blockhash}) async {
+      required String blockhash, required bool createAta}) async {
     final List<int> data = [];
     data.addAll(
         sha256.convert('global:swap'.codeUnits).bytes.getRange(0, 8).toList());
@@ -262,21 +262,11 @@ class SpiceProgram {
 
     var tokenAsignerATA = inputToken.mint == solAddress
         ? SpiceProgram.programId
-        : Pubkey.findProgramAddress([
-            base58.decode(signer),
-            base58.decode(TokenProgram.programId.toBase58()),
-            base58.decode(inputToken.mint),
-          ], AssociatedTokenProgram.programId)
-            .pubkey;
+        : Pubkey.findAssociatedTokenAddress(Pubkey.fromBase58(signer), Pubkey.fromBase58(inputToken.mint)).pubkey;
 
     var tokenBsignerATA = outputToken.mint == solAddress
         ? SpiceProgram.programId
-        : Pubkey.findProgramAddress([
-            base58.decode(signer),
-            base58.decode(TokenProgram.programId.toBase58()),
-            base58.decode(outputToken.mint),
-          ], AssociatedTokenProgram.programId)
-            .pubkey;
+        : Pubkey.findAssociatedTokenAddress(Pubkey.fromBase58(signer), Pubkey.fromBase58(outputToken.mint)).pubkey;
 
     var treasury = Pubkey.findProgramAddress([
       "SPICE".codeUnits,
@@ -285,26 +275,22 @@ class SpiceProgram {
 
     var tokenAtreasuryATA = inputToken.mint == solAddress
         ? SpiceProgram.programId
-        : Pubkey.findProgramAddress([
-            base58.decode(treasury.pubkey.toBase58()),
-            base58.decode(TokenProgram.programId.toBase58()),
-            base58.decode(inputToken.mint),
-          ], AssociatedTokenProgram.programId)
-            .pubkey;
+        : Pubkey.findAssociatedTokenAddress(treasury.pubkey, Pubkey.fromBase58(inputToken.mint)).pubkey;
 
     var tokenBtreasuryATA = outputToken.mint == solAddress
         ? SpiceProgram.programId
-        : Pubkey.findProgramAddress([
-            base58.decode(treasury.pubkey.toBase58()),
-            base58.decode(TokenProgram.programId.toBase58()),
-            base58.decode(outputToken.mint),
-          ], AssociatedTokenProgram.programId)
-            .pubkey;
+        : Pubkey.findAssociatedTokenAddress(treasury.pubkey, Pubkey.fromBase58(outputToken.mint)).pubkey;
 
     var transaction = Transaction(
         message: Message.v0(
             payer: Pubkey.fromBase58(signer),
             instructions: [
+              if (createAta) 
+                AssociatedTokenProgram.create(
+                fundingAccount: Pubkey.fromBase58(signer), 
+                associatedTokenAccount: tokenBsignerATA, 
+                associatedTokenAccountOwner: Pubkey.fromBase58(signer), 
+                tokenMint: Pubkey.fromBase58(outputToken.mint)),
               TransactionInstruction(keys: [
                 AccountMeta.signerAndWritable(Pubkey.fromBase58(signer)),
                 AccountMeta.writable(Pubkey.fromBase58(inputToken.mint)),

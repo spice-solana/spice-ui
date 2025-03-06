@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:spice_ui/models/portfolio.dart';
 import 'package:spice_ui/utils/constants.dart';
 
 String truncateToDecimals(num number, int decimals) {
@@ -31,4 +32,11 @@ String calculatingEarn({required int amount, required num poolCumulativeYield, r
     var cumulativeYieldPerToken = cumulativeYield / initialLiquidity;
     var earn = (amount * cumulativeYieldPerToken + pendingYield) / pow(10, decimals);
     return truncateToDecimals(earn, decimals);
+}
+
+num calculatingAirdrop({required Position position}) {
+  if (position.pool.mint == "So11111111111111111111111111111111111111112") {
+    return num.parse(position.liquidity) * 600;
+  }
+  return num.parse(position.liquidity) * 3;
 }

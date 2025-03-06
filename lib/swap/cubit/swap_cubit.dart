@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:math';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:solana_web3/solana_web3.dart';
@@ -18,8 +19,7 @@ import 'package:spice_ui/utils/toastification.dart';
 class SwapCubit extends Cubit<SwapStates> {
   SwapCubit(super.initialState);
 
-  final Connection connection =
-      Connection(Cluster(Uri.parse(SolanaConfig.rpc)));
+  final Connection connection = Connection(Cluster(Uri.parse(SolanaConfig.rpc)));
 
   Pool sell = poolsData[0];
   Pool buy = poolsData[1];
@@ -67,7 +67,7 @@ class SwapCubit extends Cubit<SwapStates> {
     debounce = Timer(const Duration(milliseconds: 500), () async {
       emit(SwapScreenState(a: sell, b: buy, isRouteLoading: true));
 
-      var hash = await connection.getLatestBlockhash();
+      var hash = await compute((_) => connection.getLatestBlockhash(), null);
 
       var transaction = await SpiceProgram.swap(
           signer: "aZZ8CAZ1b1Ar3x4UoB6QxTeobpg5DusHYDM1NpLX8mQ",
@@ -75,21 +75,22 @@ class SwapCubit extends Cubit<SwapStates> {
           outputToken: buy,
           inputAmount: int.parse((num.parse(inputAmount) * pow(10, sell.decimals)).toStringAsFixed(0)),
           minOutputAmount: 0,
-          blockhash: hash.blockhash);
+          blockhash: hash.blockhash, createAta: false);
 
-      var simulateTransaction = await connection.simulateTransaction(transaction);
+      var simulateTransaction = await connection.simulateTransaction(transaction, includeAccounts: false);
 
       if (simulateTransaction.err != null && extractErrorMessage(simulateTransaction.logs.toString()) != null) {
         var errorMessage = extractErrorMessage(simulateTransaction.logs.toString());
+        debugPrint(errorMessage);
         return emit(SwapScreenState(
             a: sell, b: buy, isRouteLoading: false, error: errorMessage ?? simulateTransaction.err.toString()));
       }
-      var outputAmount = extractValue(simulateTransaction.logs.toString(), "Actual output");
+
+      var outputAmount = extractValue(simulateTransaction.logs.toString(), "Net output");
       //var fee = extractValue(simulateTransaction.logs.toString(), "Fee");
 
       if (currentRequestId == lastRequestId && state is SwapScreenState) {
-        var routeUpdateTimeInSeconds = 15;
-        emit(SwapScreenState(
+          emit(SwapScreenState(
             a: sell,
             b: buy,
             isRouteLoading: false,
@@ -103,15 +104,21 @@ class SwapCubit extends Cubit<SwapStates> {
                 uiOutputAmount:
                     (BigInt.parse(outputAmount).toInt() / pow(10, buy.decimals))
                         .toStringAsFixed(buy.decimals),
-                slippage: 0,
-                routeUpdateTime: routeUpdateTimeInSeconds)));
+                slippage: 0)));
       }
     });
   }
 
     Future<void> swap(BuildContext context,
-      {required AdapterCubit adapter, required Sroute route}) async {
-    var hash = await connection.getLatestBlockhash();
+      {required AdapterCubit adapter, required Sroute route, required bool isDark}) async {
+    Toastification.processing("Approving in wallet");
+    var hash = await compute((_) => connection.getLatestBlockhash(config: const CommitmentAndMinContextSlotConfig(commitment: Commitment.confirmed)), null);
+
+    var tokenBsignerATA = route.b.mint == SpiceProgram.solAddress
+        ? SpiceProgram.programId
+        : Pubkey.findAssociatedTokenAddress(Pubkey.fromBase58(adapter.signer!), Pubkey.fromBase58(route.b.mint)).pubkey;
+
+    var checkAta = await connection.getAccountInfo(tokenBsignerATA);
 
     var transaction = await SpiceProgram.swap(
         signer: adapter.signer!,
@@ -119,20 +126,23 @@ class SwapCubit extends Cubit<SwapStates> {
         outputToken: route.b,
         inputAmount: route.inputAmount,
         minOutputAmount: route.minOutputAmount,
-        blockhash: hash.blockhash);
+        blockhash: hash.blockhash,
+        createAta: checkAta != null ? false : true);
 
-    var signedTransaction = await adapter.signTransaction(transaction);
+    try {
+      var signature = await adapter.signAndSendTransaction(transaction);
 
-    var send = await connection.sendTransaction(signedTransaction);
+      Toastification.processing("Processing");
 
-    context.mounted ? Toastification.processing(context, "Processing") : null;
-
-    await connection.signatureSubscribe(send,
-        config: const CommitmentConfig(commitment: Commitment.confirmed),
-        onDone: () {
-      Toastification.success(context, send);
-    }, onError: (error, [stackTrace]) {
-      Toastification.soon(context, "Error");
-    });
+      await connection.signatureSubscribe(signature,
+          config: const CommitmentConfig(commitment: Commitment.confirmed),
+          onDone: () {
+        Toastification.success(signature);
+      }, onError: (error, [stackTrace]) {
+        Toastification.error("Error");
+      });
+    } catch (e) {
+      Toastification.error(e.toString());
+    }
   }
 }

@@ -4,7 +4,7 @@ import 'package:spice_ui/adapter/controller/adapter_states.dart';
 import 'package:spice_ui/portfolio/cubit/portfolio_cubit.dart';
 import 'package:spice_ui/service/config.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../wallet_module.dart' as wm;
+import '../wallet_module.dart' as wallet_module;
 import 'package:js/js_util.dart';
 import 'dart:async';
 
@@ -19,23 +19,23 @@ class AdapterCubit extends Cubit<AdapterStates> {
   Map? balances;
 
   Future<void> connect() async {
-    if (!wm.isPhantomInstalled()) {
+    if (!wallet_module.isPhantomInstalled()) {
       await launchUrl(Uri.parse("https://phantom.app/download"));
       return;
     }
 
-    await promiseToFuture(wm.connect());
-    signer = wm.address();
+    await promiseToFuture(wallet_module.connect());
+    signer = wallet_module.address();
     
-    emit(ConnectedAdapterState(address: wm.address()));
+    emit(ConnectedAdapterState(address: wallet_module.address()));
 
     if (!portfolioCubit.isClosed) {
-      portfolioCubit.loadingPortfolio(signer: wm.address());
+      portfolioCubit.loadingPortfolio(signer: wallet_module.address());
     }
   }
 
   Future<void> disconnect() async {
-    wm.disconnect();
+    wallet_module.disconnect();
 
     if (!portfolioCubit.isClosed) {
       portfolioCubit.clearPortfolioScreen();
@@ -44,8 +44,8 @@ class AdapterCubit extends Cubit<AdapterStates> {
     emit(UnconnectedAdapterState());
   }
 
-  Future<Transaction> signTransaction(Transaction transaction) async {
-    var signedTransaction = await promiseToFuture(wm.signTransaction(transaction.serialize().asUint8List()));
-    return Transaction.deserialize(signedTransaction);
+  Future<String> signAndSendTransaction(Transaction transaction) async {
+    var signature = await promiseToFuture(wallet_module.sendTransaction(transaction.serialize().asUint8List()));
+    return signature;
   }
 }

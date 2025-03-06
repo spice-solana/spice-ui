@@ -210,7 +210,7 @@ final apptheme = {
       canvasColor: Colors.white,
       scaffoldBackgroundColor: const Color(0xFF0C0E10),
       primaryColor: const Color.fromARGB(255, 24, 30, 37),
-      hintColor: Colors.grey.withOpacity(0.1),
+      hintColor: Colors.grey.withOpacity(0.2),
       colorScheme: ColorScheme.fromSwatch().copyWith(
           onPrimary: const Color(0xFFA3ADD0),
           primary: Colors.black,

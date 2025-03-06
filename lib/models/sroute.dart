@@ -7,7 +7,6 @@ class Sroute {
   final int minOutputAmount;
   final String uiOutputAmount;
   final int slippage;
-  final int routeUpdateTime;
 
-  Sroute({required this.a, required this.b, required this.inputAmount, required this.minOutputAmount, required this.uiOutputAmount, required this.slippage, required this.routeUpdateTime});
+  Sroute({required this.a, required this.b, required this.inputAmount, required this.minOutputAmount, required this.uiOutputAmount, required this.slippage});
 }

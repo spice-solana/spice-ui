@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:math';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:solana_web3/programs.dart';
 import 'package:solana_web3/solana_web3.dart';
@@ -113,7 +113,7 @@ class PortfolioCubit extends Cubit<PortfolioStates> {
         for (var position in positions) {
           totalLiquidityInUsd += num.parse(position.liquidityInUsd);
           earnedInUsd += num.parse(position.earnedInUsd);
-          //futureAirdrop
+          futureAirdrop += calculatingAirdrop(position: position);
         }
 
         portfolio = Portfolio(
@@ -136,40 +136,46 @@ class PortfolioCubit extends Cubit<PortfolioStates> {
   }
 
 
-  Future<void> increaseLiquidity(BuildContext context,
+  Future<void> increaseLiquidity(
       {required AdapterCubit adapter,
       required Pool pool,
-      required String amount}) async {
-    var hash = await connection.getLatestBlockhash();
+      required String amount, required bool isDark}) async {
+    
+    Toastification.processing("Approving in wallet");
+    var hash = await compute((_) => connection.getLatestBlockhash(), null);
 
     var transaction = await SpiceProgram.increaseLiquidity(
         signer: adapter.signer!,
         pool: pool,
-        amount: int.parse(
-            (num.parse(amount) * pow(10, pool.decimals)).toStringAsFixed(0)),
+        amount: int.parse((num.parse(amount) * pow(10, pool.decimals)).toStringAsFixed(0)),
         blockhash: hash.blockhash);
 
-    var signedTransaction = await adapter.signTransaction(transaction);
+    try {
+      var signature = await adapter.signAndSendTransaction(transaction);
 
-    var send = await connection.sendTransaction(signedTransaction);
+      Toastification.processing("Processing");
 
-    context.mounted ? Toastification.processing(context, "Processing") : null;
-
-    await connection.signatureSubscribe(send,
-        config: const CommitmentConfig(commitment: Commitment.confirmed),
-        onDone: () {
-      Toastification.success(context, send);
-    }, onError: (error, [stackTrace]) {
-      Toastification.soon(context, "Error");
-    });
+      await connection.signatureSubscribe(signature,
+          config: const CommitmentConfig(commitment: Commitment.confirmed),
+          onDone: () {
+        Toastification.success(signature);
+      }, onError: (error, [stackTrace]) {
+        Toastification.error("Error");
+      });
+    } catch (e) {
+      print(e.toString());
+      Toastification.error(e.toString());
+    }
   }
 
 
-  Future<void> decreaseLiquidity(BuildContext context,
+  Future<void> decreaseLiquidity(
       {required AdapterCubit adapter,
       required Pool pool,
-      required String amount}) async {
-    var hash = await connection.getLatestBlockhash();
+      required String amount,
+      required bool isDark}) async {
+    Toastification.processing("Approving in wallet");
+    var hash = await compute((_) => connection.getLatestBlockhash(), null);
 
     var transaction = await SpiceProgram.decreaseLiquidity(
         signer: adapter.signer!,
@@ -178,41 +184,45 @@ class PortfolioCubit extends Cubit<PortfolioStates> {
             (num.parse(amount) * pow(10, pool.decimals)).toStringAsFixed(0)),
         blockhash: hash.blockhash);
 
-    var signedTransaction = await adapter.signTransaction(transaction);
+    try {
+      var signature = await adapter.signAndSendTransaction(transaction);
 
-    var send = await connection.sendTransaction(signedTransaction);
+      Toastification.processing("Processing");
 
-    context.mounted ? Toastification.processing(context, "Processing") : null;
-
-    await connection.signatureSubscribe(send,
-        config: const CommitmentConfig(commitment: Commitment.confirmed),
-        onDone: () {
-      Toastification.success(context, send);
-    }, onError: (error, [stackTrace]) {
-      Toastification.soon(context, "Error");
-    });
+      await connection.signatureSubscribe(signature,
+          config: const CommitmentConfig(commitment: Commitment.confirmed),
+          onDone: () {
+        Toastification.success(signature);
+      }, onError: (error, [stackTrace]) {
+        Toastification.error("Error");
+      });
+    } catch (e) {
+      Toastification.error(e.toString());
+    }
   }
 
 
-  Future<void> claimIncome(BuildContext context,
-      {required AdapterCubit adapter, required Pool pool}) async {
-    var hash = await connection.getLatestBlockhash();
+  Future<void> claimIncome(
+      {required AdapterCubit adapter, required Pool pool, required bool isDark}) async {
+    Toastification.processing("Approving in wallet");
+    var hash = await compute((_) => connection.getLatestBlockhash(), null);
 
     var transaction = await SpiceProgram.harvestYield(
         signer: adapter.signer!, pool: pool, blockhash: hash.blockhash);
 
-    var signedTransaction = await adapter.signTransaction(transaction);
+    try {
+      var signature = await adapter.signAndSendTransaction(transaction);
+      Toastification.processing("Processing");
 
-    var send = await connection.sendTransaction(signedTransaction);
-
-    context.mounted ? Toastification.processing(context, "Processing") : null;
-
-    await connection.signatureSubscribe(send,
-        config: const CommitmentConfig(commitment: Commitment.confirmed),
-        onDone: () {
-      Toastification.success(context, send);
-    }, onError: (error, [stackTrace]) {
-      Toastification.soon(context, "Error");
-    });
+      await connection.signatureSubscribe(signature,
+          config: const CommitmentConfig(commitment: Commitment.confirmed),
+          onDone: () {
+        Toastification.success(signature);
+      }, onError: (error, [stackTrace]) {
+        Toastification.error("Error");
+      });
+    } catch (e) {
+      Toastification.error(e.toString());
+    }
   }
 }

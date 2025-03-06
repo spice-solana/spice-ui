@@ -8,8 +8,10 @@ import 'package:hive/hive.dart';
 import 'package:oktoast/oktoast.dart';
 import 'package:spice_ui/adapter/controller/adapter_cubit.dart';
 import 'package:spice_ui/data/pools.dart';
-import 'package:spice_ui/liquidity/liquidity_mob_screen.dart';
-import 'package:spice_ui/liquidity/liquidity_web_screen.dart';
+import 'package:spice_ui/liquidity/cubit/liquidity_cubit.dart';
+import 'package:spice_ui/liquidity/cubit/liquidity_states.dart';
+import 'package:spice_ui/liquidity/screens/mobile/liquidity_mob_screen.dart';
+import 'package:spice_ui/liquidity/screens/web/liquidity_web_screen.dart';
 import 'package:spice_ui/portfolio/cubit/portfolio_cubit.dart';
 import 'package:spice_ui/portfolio/cubit/portfolio_states.dart';
 import 'package:spice_ui/portfolio/screens/portfolio_mob_screen.dart';
@@ -24,7 +26,6 @@ import 'package:spice_ui/theme/themes.dart';
 import 'package:spice_ui/transaction_bundle/controller/tb_cubit.dart';
 import 'package:spice_ui/widgets/no_thumb_scroll_behavior.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
-
 
 final GoRouter _router = GoRouter(
   routes: [
@@ -70,7 +71,7 @@ void main() async {
   Hive.init(path);
 
   await Hive.openBox('appBox');
-
+  
   runApp(MultiBlocProvider(
     providers: [
       BlocProvider<PortfolioCubit>(create: (context) => PortfolioCubit(NoPortfolioScreenState())),
@@ -79,6 +80,7 @@ void main() async {
       BlocProvider<SwapCubit>(create: (context) => SwapCubit(SwapScreenState(a: poolsData[0], b: poolsData[1], isRouteLoading: false))),
       BlocProvider<ThemeCubit>(create: (_) => ThemeCubit()),
       BlocProvider<TbCubit>(create: (_) => TbCubit()),
+      BlocProvider<LiquidityCubit>(create: (_) => LiquidityCubit(HomeLiquidityScreenState(pools: poolsData)))
     ],
     child: BlocBuilder<ThemeCubit, ThemeState>(builder: (context, state) {
       return OKToast(

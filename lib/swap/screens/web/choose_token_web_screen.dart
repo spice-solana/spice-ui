@@ -15,7 +15,7 @@ class ChooseTokenWebScreen extends StatelessWidget {
     final SwapCubit swapCubit = context.read<SwapCubit>();
     return Container(
       height: 500.0,
-      width: 400.0,
+      width: 410.0,
       padding: const EdgeInsets.all(16.0),
       decoration: BoxDecoration(
         color: Theme.of(context).scaffoldBackgroundColor,

@@ -9,9 +9,9 @@ class ProviderPda {
 
   factory ProviderPda.fromAccountData(List<int> data) {
     return ProviderPda( 
-      lpBalance: Int64.fromBytes(data.getRange(8, 16).toList()).toInt(),
-      userLastCumulativeYield: Int64.fromBytes(data.getRange(16, 24).toList()).toInt(),
-      pendingYield: Int64.fromBytes(data.getRange(24, 32).toList()).toInt()
+      lpBalance: Int64.fromBytes(data.getRange(40, 48).toList()).toInt(),
+      userLastCumulativeYield: Int64.fromBytes(data.getRange(48, 56).toList()).toInt(),
+      pendingYield: Int64.fromBytes(data.getRange(56, 64).toList()).toInt()
     );
   }
 }

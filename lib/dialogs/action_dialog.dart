@@ -8,10 +8,12 @@ import 'package:spice_ui/portfolio/cubit/portfolio_cubit.dart';
 import 'package:spice_ui/service/config.dart';
 import 'package:spice_ui/models/pool.dart';
 import 'package:spice_ui/service/spice_program.dart';
+import 'package:spice_ui/theme/controller/theme_cubit.dart';
 import 'package:spice_ui/utils/extensions.dart';
 import 'package:spice_ui/widgets/custom_inkwell.dart';
 import 'package:spice_ui/widgets/text_underline.dart';
 import 'package:url_launcher/url_launcher.dart';
+
 
 void showActionDialog(BuildContext context, {required Pool pool, required String action, required String title, required Color actionColor, required String balance}) {
     Navigator.maybePop(context);
@@ -162,11 +164,12 @@ void showActionDialog(BuildContext context, {required Pool pool, required String
                       return Padding(
                         padding: const EdgeInsets.only(bottom: 16.0, right: 16.0, left: 16.0),
                         child: CustomInkWell(
-                          onTap: () {
+                          onTap: () async {
+                            Navigator.maybePop(context);
                             if (action == "add") {
-                              context.read<PortfolioCubit>().increaseLiquidity(context, adapter: context.read<AdapterCubit>(), pool: pool, amount: controllerAmount.text);
+                              await context.read<PortfolioCubit>().increaseLiquidity(adapter: context.read<AdapterCubit>(), pool: pool, amount: controllerAmount.text, isDark: context.read<ThemeCubit>().state.darkTheme);
                             } else if (action == "withdraw") {
-                              context.read<PortfolioCubit>().decreaseLiquidity(context, adapter: context.read<AdapterCubit>(), pool: pool, amount: controllerAmount.text);
+                              await context.read<PortfolioCubit>().decreaseLiquidity(adapter: context.read<AdapterCubit>(), pool: pool, amount: controllerAmount.text, isDark: context.read<ThemeCubit>().state.darkTheme);
                             }
                           },
                           child: Container(

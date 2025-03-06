@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rive/rive.dart' as rive;
 import 'package:spice_ui/theme/controller/theme_cubit.dart';
 import 'package:spice_ui/theme/controller/theme_states.dart';
 import 'package:spice_ui/transaction_bundle/theme_icons.dart';
@@ -31,29 +32,21 @@ class BottomWebBar extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  Row(
+                  const Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      // SizedBox(
-                      //   height: 10.0,
-                      //   width: 10.0,
-                      //   child: rive.RiveAnimation.asset(
-                      //     'assets/rive/live.riv',
-                      //     fit: BoxFit.cover,
-                      //     alignment: Alignment.center,
-                      //   ),
-                      // ),
-                      // SizedBox(width: 16.0),
-                      // Text('Live')
-                      Container(
+                      SizedBox(
                         height: 8.0,
                         width: 8.0,
-                        decoration: const BoxDecoration(
-                            shape: BoxShape.circle, color: Colors.amber),
+                        child: rive.RiveAnimation.asset(
+                          'assets/rive/live.riv',
+                          fit: BoxFit.cover,
+                          alignment: Alignment.center,
+                        ),
                       ),
-                      const SizedBox(width: 16.0),
-                      const Text('Testnet', style: TextStyle(fontSize: 14.0))
+                      SizedBox(width: 16.0),
+                      Text('Mainnet', style: TextStyle(fontSize: 14.0))
                     ],
                   ),
                   const SizedBox(width: 32.0),

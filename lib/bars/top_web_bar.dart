@@ -103,7 +103,7 @@ class _TopWebBarState extends State<TopWebBar> {
                       onTap: () => adapterCubit.disconnect(),
                       child: Container(
                         height: 32.0,
-                        width: 180.0,
+                        width: 160.0,
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
                             color: Colors.transparent,

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -7,8 +9,8 @@ import 'package:spice_ui/adapter/controller/adapter_states.dart';
 import 'package:spice_ui/models/pool.dart';
 import 'package:spice_ui/models/sroute.dart';
 import 'package:spice_ui/swap/cubit/swap_cubit.dart';
+import 'package:spice_ui/theme/controller/theme_cubit.dart';
 import 'package:spice_ui/widgets/custom_inkwell.dart';
-import 'package:spice_ui/widgets/linear_route_update_bar.dart';
 
 class SwapWebScreen extends StatefulWidget {
   final Pool a;
@@ -31,12 +33,28 @@ class SwapWebScreen extends StatefulWidget {
 class _SwapWebScreenState extends State<SwapWebScreen> {
   final TextEditingController _controller = TextEditingController();
 
+  Timer? debounce;
+
+    @override
+  void initState() {
+    super.initState();
+    debounce = Timer.periodic(const Duration(seconds: 5), (timer) {
+      context.read<SwapCubit>().getRoute(inputAmount: _controller.text);
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    debounce?.cancel();
+  }
+
   @override
   Widget build(BuildContext context) {
     final SwapCubit swapCubit = context.read<SwapCubit>();
     return Container(
       height: 500.0,
-      width: 400.0,
+      width: 410.0,
       padding: const EdgeInsets.all(16.0),
       decoration: BoxDecoration(
         color: Theme.of(context).scaffoldBackgroundColor,
@@ -51,6 +69,18 @@ class _SwapWebScreenState extends State<SwapWebScreen> {
         children: [
           Column(
             children: [
+              // Container(
+              //   height: 25.0,
+              //   width: MediaQuery.of(context).size.width,
+              //   padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              //   color: Colors.grey.withOpacity(0.05),
+              //   child: Row(
+              //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //     crossAxisAlignment: CrossAxisAlignment.center,
+              //     children: [
+              //     ],
+              //   ),
+              // ),
               const SizedBox(height: 16.0),
               Container(
                 height: 100.0,
@@ -152,93 +182,83 @@ class _SwapWebScreenState extends State<SwapWebScreen> {
                     color: Colors.grey.withOpacity(0.5)),
               ),
               const SizedBox(height: 16.0),
-              Stack(
-                alignment: Alignment.topLeft,
-                children: [
-                  widget.spiceRoute != null
-                      ? LinearRouteUpdateBar(
-                          inputAmount: _controller.text,
-                          duration: widget.spiceRoute!.routeUpdateTime)
-                      : const SizedBox(),
-                  Container(
-                    height: 100.0,
-                    padding: const EdgeInsets.all(8.0),
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Theme.of(context).hintColor,
-                        width: 1.0,
-                      ),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              Container(
+                height: 100.0,
+                padding: const EdgeInsets.all(8.0),
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: Theme.of(context).hintColor,
+                    width: 1.0,
+                  ),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text('Your buying',
-                                style: TextStyle(
-                                    fontSize: 14.0, color: Colors.grey)),
-                            const SizedBox(height: 8.0),
-                            CustomInkWell(
-                              onTap: () =>
-                                  swapCubit.moveToChooseTokenScreen("buying"),
-                              child: Container(
-                                  height: 50.0,
-                                  padding: const EdgeInsets.all(8.0),
-                                  alignment: Alignment.center,
-                                  decoration: BoxDecoration(
-                                      color: Colors.grey.withOpacity(0.1),
-                                      borderRadius: BorderRadius.circular(5.0)),
-                                  child: Row(
-                                    children: [
-                                      Image.asset(widget.b.logoUrl,
-                                          height: 25.0, width: 25.0),
-                                      const SizedBox(width: 8.0),
-                                      Text(widget.b.symbol),
-                                      const SizedBox(width: 8.0),
-                                      const Icon(Icons.arrow_drop_down_rounded,
-                                          color: Colors.grey)
-                                    ],
-                                  )),
-                            )
-                          ],
-                        ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Row(
-                              children: [
-                                const Icon(
-                                    Icons.account_balance_wallet_outlined,
-                                    size: 14.0,
-                                    color: Colors.grey),
-                                const SizedBox(width: 8.0),
-                                Text('0 ${widget.b.symbol}',
-                                    style: const TextStyle(
-                                        fontSize: 14.0, color: Colors.grey)),
-                              ],
-                            ),
-                            const SizedBox(height: 8.0),
-                            Container(
-                                height: 50.0,
-                                alignment: Alignment.center,
-                                child: widget.isRouteLoading
-                                    ? const SizedBox(
-                                        height: 21.0,
-                                        width: 21.0,
-                                        child: CircularProgressIndicator(
-                                            color: Colors.grey,
-                                            strokeWidth: 1.0))
-                                    : Text(
-                                        widget.spiceRoute?.uiOutputAmount ?? "",
-                                        style: const TextStyle(fontSize: 21.0)))
-                          ],
+                        const Text('Your buying',
+                            style: TextStyle(
+                                fontSize: 14.0, color: Colors.grey)),
+                        const SizedBox(height: 8.0),
+                        CustomInkWell(
+                          onTap: () =>
+                              swapCubit.moveToChooseTokenScreen("buying"),
+                          child: Container(
+                              height: 50.0,
+                              padding: const EdgeInsets.all(8.0),
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                  color: Colors.grey.withOpacity(0.1),
+                                  borderRadius: BorderRadius.circular(5.0)),
+                              child: Row(
+                                children: [
+                                  Image.asset(widget.b.logoUrl,
+                                      height: 25.0, width: 25.0),
+                                  const SizedBox(width: 8.0),
+                                  Text(widget.b.symbol),
+                                  const SizedBox(width: 8.0),
+                                  const Icon(Icons.arrow_drop_down_rounded,
+                                      color: Colors.grey)
+                                ],
+                              )),
                         )
                       ],
                     ),
-                  ),
-                ],
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Row(
+                          children: [
+                            const Icon(
+                                Icons.account_balance_wallet_outlined,
+                                size: 14.0,
+                                color: Colors.grey),
+                            const SizedBox(width: 8.0),
+                            Text('0 ${widget.b.symbol}',
+                                style: const TextStyle(
+                                    fontSize: 14.0, color: Colors.grey)),
+                          ],
+                        ),
+                        const SizedBox(height: 8.0),
+                        Container(
+                            height: 50.0,
+                            alignment: Alignment.center,
+                            child: widget.isRouteLoading
+                                ? const SizedBox(
+                                    height: 21.0,
+                                    width: 21.0,
+                                    child: CircularProgressIndicator(
+                                        color: Colors.grey,
+                                        strokeWidth: 1.0))
+                                : Text(
+                                    widget.spiceRoute?.uiOutputAmount ?? "",
+                                    style: const TextStyle(fontSize: 21.0)))
+                      ],
+                    )
+                  ],
+                ),
               ),
             ],
           ),
@@ -252,7 +272,8 @@ class _SwapWebScreenState extends State<SwapWebScreen> {
                   child: CustomInkWell(
                     onTap: () => swapCubit.swap(context,
                         adapter: context.read<AdapterCubit>(),
-                        route: widget.spiceRoute!),
+                        route: widget.spiceRoute!,
+                        isDark: context.read<ThemeCubit>().state.darkTheme),
                     child: Container(
                       height: 45.0,
                       alignment: Alignment.center,

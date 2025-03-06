@@ -10,7 +10,7 @@ final List<Pool> poolsData = [
   Pool(
       symbol: "USDC",
       logoUrl: "assets/logos/usdc_logo.png",
-      mint: "Gh9ZwEmdLJ8DscKNTkTqPbNwLNNBjuSzaG9Vp2KGtKJr",
+      mint: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
       pythOracle: "Dpw1EAVrSB1ibxiDQyTAW6Zip3J4Btk2x4SgApQCeFbX",
       decimals: 6),
   Pool(

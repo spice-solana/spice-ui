@@ -3,11 +3,11 @@ const { VersionedTransaction } = solanaWeb3;
 let pubKey = '';
 
 function isPhantomInstalled() {
-    return window.solana && window.solana.isPhantom;
+    return window.phantom?.solana?.isPhantom;
 }
 
 async function connect() {
-    const resp = await window.solana.connect();
+    const resp = await window.phantom?.solana.connect();
     pubKey = resp.publicKey.toString();
 }
 
@@ -16,13 +16,13 @@ function address() {
 }
 
 function disconnect() {
-    window.solana.disconnect();
+    window.phantom?.solana.disconnect();
 }
 
-async function signTransaction(tx) {
+async function sendTransaction(tx) {
     const deserializedTx = VersionedTransaction.deserialize(tx);
-    const signedTransaction = await window.solana.signTransaction(deserializedTx);
-    return signedTransaction.serialize();
+    const transaction = await window.phantom?.solana.signAndSendTransaction(deserializedTx);
+    return transaction.signature;
 }
 
 window.walletModule = { 
@@ -30,5 +30,5 @@ window.walletModule = {
     connect,
     address,
     disconnect,
-    signTransaction
+    sendTransaction
 };

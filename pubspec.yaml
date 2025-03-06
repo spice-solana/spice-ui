@@ -24,7 +24,7 @@ dependencies:
   http: ^1.3.0
   go_router: ^14.8.0
   adaptive_screen_flutter: ^0.0.5
-
+  
 
   cupertino_icons: ^1.0.8
 

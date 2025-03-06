@@ -55,9 +55,13 @@ class PortfolioWebScreen extends StatelessWidget {
                                       const CustomVerticalDivider(height: 35.0),
                                       StatWidget(title: "Earned", data: "\$${state.portfolio != null ? state.portfolio?.earnedInUsd : 0}"),
                                       const CustomVerticalDivider(height: 35.0),
-                                      StatWidget(title: "Future airdrop", data: "${state.portfolio != null ? state.portfolio?.futureAirdrop : 0}",
-                                      widget: SvgPicture.asset('assets/logos/spice_logo.svg',
-                                        height: 18.0, width: 18.0),
+                                      Row(
+                                        children: [
+                                          StatWidget(title: "Future airdrop", data: "${state.portfolio != null ? state.portfolio?.futureAirdrop : 0}",
+                                          widget: SvgPicture.asset('assets/logos/spice_logo.svg',
+                                            height: 18.0, width: 18.0),
+                                          ),
+                                        ],
                                       ),
                                     ],
                                   ),

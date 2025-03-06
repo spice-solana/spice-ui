@@ -15,5 +15,5 @@ external String address();
 @JS('disconnect')
 external void disconnect();
 
-@JS('signTransaction')
-external Future<dynamic> signTransaction(tx);
+@JS('sendTransaction')
+external Future<dynamic> sendTransaction(tx);
