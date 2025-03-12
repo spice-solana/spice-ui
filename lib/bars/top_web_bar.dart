@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:spice_ui/adapter/controller/adapter_cubit.dart';
-import 'package:spice_ui/adapter/controller/adapter_states.dart';
+import 'package:spice_ui/adapter/cubit/adapter_cubit.dart';
+import 'package:spice_ui/adapter/cubit/adapter_states.dart';
 import 'package:spice_ui/utils/extensions.dart';
+import 'package:spice_ui/utils/links.dart';
 import 'package:spice_ui/widgets/app_bar_menu_item.dart';
 import 'package:spice_ui/widgets/custom_inkwell.dart';
 import 'package:spice_ui/widgets/custom_vertical_divider.dart';
@@ -140,7 +141,7 @@ class _TopWebBarState extends State<TopWebBar> {
                             const Text('Connect',
                                 style: TextStyle(color: Colors.black)),
                             const SizedBox(width: 16.0),
-                            SvgPicture.asset('assets/logos/phantom_logo.svg',
+                            SvgPicture.asset(walletLogo,
                                 height: 16.0, width: 16.0),
                           ],
                         ),

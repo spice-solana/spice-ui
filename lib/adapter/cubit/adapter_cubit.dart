@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:solana_web3/solana_web3.dart';
-import 'package:spice_ui/adapter/controller/adapter_states.dart';
+import 'package:spice_ui/adapter/cubit/adapter_states.dart';
 import 'package:spice_ui/portfolio/cubit/portfolio_cubit.dart';
 import 'package:spice_ui/service/config.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -19,8 +19,8 @@ class AdapterCubit extends Cubit<AdapterStates> {
   Map? balances;
 
   Future<void> connect() async {
-    if (!wallet_module.isPhantomInstalled()) {
-      await launchUrl(Uri.parse("https://phantom.app/download"));
+    if (!wallet_module.isBackpackInstalled()) {
+      await launchUrl(Uri.parse("https://backpack.app"));
       return;
     }
 

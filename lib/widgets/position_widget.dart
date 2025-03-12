@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:spice_ui/adapter/controller/adapter_cubit.dart';
+import 'package:spice_ui/adapter/cubit/adapter_cubit.dart';
 import 'package:spice_ui/dialogs/action_dialog.dart';
 import 'package:spice_ui/models/portfolio.dart';
 import 'package:spice_ui/portfolio/cubit/portfolio_cubit.dart';
-import 'package:spice_ui/theme/controller/theme_cubit.dart';
+import 'package:spice_ui/theme/cubit/theme_cubit.dart';
 import 'package:spice_ui/utils/extensions.dart';
 import 'package:spice_ui/widgets/claim_button.dart';
 import 'package:spice_ui/widgets/custom_inkwell.dart';

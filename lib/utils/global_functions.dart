@@ -36,7 +36,7 @@ String calculatingEarn({required int amount, required num poolCumulativeYield, r
 
 num calculatingAirdrop({required Position position}) {
   if (position.pool.mint == "So11111111111111111111111111111111111111112") {
-    return num.parse(position.liquidity) * 600;
+    return num.parse(position.liquidity) * 300;
   }
-  return num.parse(position.liquidity) * 3;
+  return num.parse(position.liquidity) * 2;
 }

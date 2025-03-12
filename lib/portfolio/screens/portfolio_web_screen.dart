@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:spice_ui/adapter/controller/adapter_cubit.dart';
+import 'package:spice_ui/adapter/cubit/adapter_cubit.dart';
 import 'package:spice_ui/bars/bottom_web_bar.dart';
 import 'package:spice_ui/bars/top_web_bar.dart';
 import 'package:spice_ui/portfolio/cubit/portfolio_cubit.dart';
@@ -11,7 +11,6 @@ import 'package:spice_ui/widgets/custom_inkwell.dart';
 import 'package:spice_ui/widgets/custom_vertical_divider.dart';
 import 'package:spice_ui/widgets/loading_text.dart';
 import 'package:spice_ui/widgets/position_widget.dart';
-import 'package:spice_ui/widgets/rotor_anim.dart';
 import 'package:spice_ui/widgets/stat_widget.dart';
 
 
@@ -74,7 +73,7 @@ class PortfolioWebScreen extends StatelessWidget {
                               height: MediaQuery.of(context).size.height / 3,
                               width: MediaQuery.of(context).size.width / 1.7,
                               alignment: Alignment.center,
-                              child: RotorAnim(isPlaying: state.portfolio!.positions.isNotEmpty),
+                              child: Text("data empty", style: TextStyle(color: Colors.grey.withOpacity(0.4))),
                             ),
                             const SizedBox(height: 32.0),
                             SizedBox(
@@ -133,6 +132,7 @@ class PortfolioWebScreen extends StatelessWidget {
                                     return PositionWidget(position: state.portfolio!.positions[index]);
                                 }),
                             ),
+                            const SizedBox(height: 16.0),
                           ],
                         ),
                       ),

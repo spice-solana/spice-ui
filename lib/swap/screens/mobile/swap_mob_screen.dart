@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:spice_ui/adapter/controller/adapter_cubit.dart';
-import 'package:spice_ui/adapter/controller/adapter_states.dart';
+import 'package:spice_ui/adapter/cubit/adapter_cubit.dart';
+import 'package:spice_ui/adapter/cubit/adapter_states.dart';
 import 'package:spice_ui/models/pool.dart';
 import 'package:spice_ui/models/sroute.dart';
 import 'package:spice_ui/swap/cubit/swap_cubit.dart';
-import 'package:spice_ui/theme/controller/theme_cubit.dart';
+import 'package:spice_ui/theme/cubit/theme_cubit.dart';
+import 'package:spice_ui/utils/links.dart';
 import 'package:spice_ui/widgets/custom_inkwell.dart';
 
 
@@ -276,7 +277,7 @@ class _SwapMobScreenState extends State<SwapMobScreen> {
                                 const Text('Connect',
                                     style: TextStyle(color: Colors.black)),
                                 const SizedBox(width: 16.0),
-                                SvgPicture.asset('assets/logos/phantom_logo.svg',
+                                SvgPicture.asset(walletLogo,
                                     height: 16.0, width: 16.0),
                               ],
                             ),

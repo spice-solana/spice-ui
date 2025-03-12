@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:solana_web3/programs.dart';
 import 'package:solana_web3/solana_web3.dart';
-import 'package:spice_ui/adapter/controller/adapter_cubit.dart';
+import 'package:spice_ui/adapter/cubit/adapter_cubit.dart';
 import 'package:spice_ui/data/pools.dart';
 import 'package:spice_ui/models/pool.dart';
 import 'package:spice_ui/models/pool_pda.dart';
@@ -164,7 +164,7 @@ class PortfolioCubit extends Cubit<PortfolioStates> {
       });
     } catch (e) {
       print(e.toString());
-      Toastification.error(e.toString());
+      Toastification.error("Rejected");
     }
   }
 
@@ -197,7 +197,7 @@ class PortfolioCubit extends Cubit<PortfolioStates> {
         Toastification.error("Error");
       });
     } catch (e) {
-      Toastification.error(e.toString());
+      Toastification.error("Rejected");
     }
   }
 
@@ -222,7 +222,7 @@ class PortfolioCubit extends Cubit<PortfolioStates> {
         Toastification.error("Error");
       });
     } catch (e) {
-      Toastification.error(e.toString());
+      Toastification.error("Rejected");
     }
   }
 }

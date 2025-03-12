@@ -1,0 +1,1 @@
+const String walletLogo = "assets/logos/backpack_logo.svg";

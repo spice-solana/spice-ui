@@ -31,6 +31,13 @@ class LiquidityCubit extends Cubit<HomeLiquidityScreenState> {
       var getPoolAccountInfo = await connection.getAccountInfo(poolPda.pubkey,
           config: GetAccountInfoConfig(encoding: AccountEncoding.base64));
       var poolAccountInfo = PoolPda.fromAccountData(base64.decode(getPoolAccountInfo?.data[0]));
+
+      var price = num.parse(prices[pool.mint]['price']);
+      var liquidity = (poolAccountInfo.currentLiquidity / pow(10, pool.decimals)) * price;
+      var volume = ((poolAccountInfo.protocolIncome / cumulativeYieldScaleConstant / pow(10, pool.decimals)) * (100 - poolAccountInfo.baseFee / 1000)) * 2;
+      var fees = (((poolAccountInfo.protocolIncome / cumulativeYieldScaleConstant / pow(10, pool.decimals)) / pow(10, pool.decimals)) * price) * 2;
+      var apy = fees / liquidity;
+
       list.add(
         Pool(
           symbol: pool.symbol, 
@@ -38,8 +45,10 @@ class LiquidityCubit extends Cubit<HomeLiquidityScreenState> {
           mint: pool.mint, 
           pythOracle: pool.pythOracle, 
           decimals: pool.decimals,
-          liquidity: ((poolAccountInfo.currentLiquidity / pow(10, pool.decimals)) * num.parse(prices[pool.mint]['price'])).toStringAsFixed(2).formatNumWithCommas(),
-          volume: ((100 / (poolAccountInfo.baseFee / 1000)) * (poolAccountInfo.cumulativeYield / cumulativeYieldScaleConstant / pow(10, pool.decimals))).toStringAsFixed(2).formatNumWithCommas()
+          liquidity: liquidity.toStringAsFixed(2).formatNumWithCommas(),
+          volume: volume.toStringAsFixed(2).formatNumWithCommas(),
+          fees: fees.toStringAsFixed(2).formatNumWithCommas(),
+          apy: apy.toStringAsFixed(2).formatNumWithCommas()
         )
       );
     }

@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:solana_web3/solana_web3.dart';
-import 'package:spice_ui/adapter/controller/adapter_cubit.dart';
+import 'package:spice_ui/adapter/cubit/adapter_cubit.dart';
 import 'package:spice_ui/data/pools.dart';
 import 'package:spice_ui/service/config.dart';
 import 'package:spice_ui/models/pool.dart';
@@ -23,6 +23,7 @@ class SwapCubit extends Cubit<SwapStates> {
 
   Pool sell = poolsData[0];
   Pool buy = poolsData[1];
+  var lastOutputAmount = "";
 
   Timer? debounce;
   int lastRequestId = 0;
@@ -89,7 +90,7 @@ class SwapCubit extends Cubit<SwapStates> {
       var outputAmount = extractValue(simulateTransaction.logs.toString(), "Net output");
       //var fee = extractValue(simulateTransaction.logs.toString(), "Fee");
 
-      if (currentRequestId == lastRequestId && state is SwapScreenState) {
+      if (currentRequestId == lastRequestId && state is SwapScreenState && outputAmount != lastOutputAmount) {
           emit(SwapScreenState(
             a: sell,
             b: buy,
@@ -105,6 +106,7 @@ class SwapCubit extends Cubit<SwapStates> {
                     (BigInt.parse(outputAmount).toInt() / pow(10, buy.decimals))
                         .toStringAsFixed(buy.decimals),
                 slippage: 0)));
+          lastOutputAmount = outputAmount;
       }
     });
   }
@@ -142,7 +144,7 @@ class SwapCubit extends Cubit<SwapStates> {
         Toastification.error("Error");
       });
     } catch (e) {
-      Toastification.error(e.toString());
+      Toastification.error("Rejected");
     }
   }
 }

@@ -3,8 +3,8 @@ library wallet_module;
 
 import 'package:js/js.dart';
 
-@JS('isPhantomInstalled')
-external bool isPhantomInstalled();
+@JS('isBackpackInstalled')
+external bool isBackpackInstalled();
 
 @JS('connect')
 external Future<void> connect();

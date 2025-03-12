@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rive/rive.dart' as rive;
-import 'package:spice_ui/theme/controller/theme_cubit.dart';
-import 'package:spice_ui/theme/controller/theme_states.dart';
+import 'package:spice_ui/theme/cubit/theme_cubit.dart';
+import 'package:spice_ui/theme/cubit/theme_states.dart';
 import 'package:spice_ui/transaction_bundle/theme_icons.dart';
 import 'package:spice_ui/widgets/backlight_custom_icon.dart';
 import 'package:spice_ui/widgets/backlight_icon.dart';
