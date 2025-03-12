@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:spice_ui/utils/extensions.dart';
 import 'package:spice_ui/utils/global_functions.dart';
 
 
@@ -19,6 +20,12 @@ void main() {
       decimals: 6);
 
     expect(earned, equals('0.049974'));
+  });
+
+  test("calculating earn", () {
+    var number = 0.00000137412312321.roundToSignificantFigures(2);
+
+    expect(number, equals(0.0000014));
   });
 
 }

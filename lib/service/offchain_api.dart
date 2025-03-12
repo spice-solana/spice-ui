@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:spice_ui/data/pools.dart';
+import 'package:spice_ui/models/dune.dart';
 
 class OffchainApi {
 
@@ -29,6 +30,13 @@ class OffchainApi {
     }
   }
 
-  
+  static Future<List<Dune>> getDuneStat() async {
+    var uri = Uri.parse("https://api.dune.com/api/v1/query/4841560/results?limit=100");
+    var api = "pW4mdu3UGFmfRlVSpUB6yi0BPZr45qJu";
+
+    final response = await http.get(uri, headers: {"X-Dune-Api-Key": api});
+    final List jsonDecode = json.decode(response.body)['result']['rows'];
+    return jsonDecode.map((json) => Dune.fromJson(json)).toList();
+  }
   
 }

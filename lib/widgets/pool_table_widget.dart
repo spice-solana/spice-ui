@@ -56,7 +56,7 @@ class PoolTableWidget extends StatelessWidget {
               Container(
                   width: 100.0,
                   alignment: Alignment.centerRight,
-                  child: Text(apy)),
+                  child: Text('$apy%')),
             ],
           ),
         ),

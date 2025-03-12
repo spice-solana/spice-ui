@@ -157,7 +157,9 @@ void showActionDialog(BuildContext context, {required Pool pool, required String
                                       FilteringTextInputFormatter.allow(RegExp(
                                           r'^\d*\.?\d*')),
                                     ],
-                                  ))
+                                  )),
+                                  const SizedBox(height: 16.0),
+                                  action == "add" ? Text("By providing liquidity, you'll earn a portion of trading fees") : SizedBox()
                             ],
                           )
                         ],

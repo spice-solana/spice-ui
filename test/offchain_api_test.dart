@@ -10,5 +10,10 @@ void main() {
     debugPrint(prices.toString());
   });
 
+  test("get dune state", () async {
+    var stat = await OffchainApi.getDuneStat();
+    debugPrint(stat.first.feeUsd.toString());
+  });
+
 
 }

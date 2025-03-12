@@ -1,3 +1,5 @@
+import 'dart:math';
+
 extension StringExtension on String {
   String capitalize() {
     return "${this[0].toUpperCase()}${substring(1).toLowerCase()}";
@@ -61,5 +63,15 @@ extension NumExtension on num {
     );
     String decimalPart = parts.length > 1 ? '.${parts[1]}' : '';
     return '$integerPart$decimalPart';
+  }
+
+  double roundToSignificantFigures(int significantFigures) {
+  if (this == 0) return 0;
+
+  int digits = (log(abs()) / log(10)).floor() + 1;
+
+  num scale = pow(10, significantFigures - digits);
+
+  return (this * scale).round() / scale;
   }
 }
